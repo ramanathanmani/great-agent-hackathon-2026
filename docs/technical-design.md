@@ -55,7 +55,7 @@ Every layer has an independent fallback:
 | Layer | Primary | Fallback |
 |-|-|-|
 | STT | ElevenLabs Scribe v2 | Browser SpeechRecognition API |
-| Understanding | Gemini 3.7 Flash | Deterministic offline engine |
+| Understanding | Gemini 3.6 Flash | Deterministic offline engine |
 | TTS | ElevenLabs Multilingual v2 | Browser speechSynthesis API |
 
 The `merge()` function is the critical piece: it takes a potentially incomplete live result and fills any missing fields from the guaranteed-complete offline result. The screen never goes blank.

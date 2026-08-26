@@ -24,7 +24,7 @@ graph TD
     subgraph Process ["🧠 Processing Layer"]
         E --> F["offlineAnalyse(utt)<br/>Always runs first as base"]
         E --> G{"Gemini key present?"}
-        G -->|Yes| H["liveAnalyse(utt)<br/>Gemini 3.7 Flash"]
+        G -->|Yes| H["liveAnalyse(utt)<br/>Gemini 3.6 Flash"]
         G -->|No| I["Skip — use offline only"]
         H -->|"503/429"| J["Retry ×2<br/>1.2s, 4.8s backoff"]
         J -->|Fail| I

@@ -109,7 +109,7 @@
         <label class="f" for="key">Gemini API key — powers the understanding</label>
         <input type="password" id="key" placeholder="AIza...">
         <label class="f" for="gmodel">Gemini model</label>
-        <input type="text" id="gmodel" value="gemini-3.7-flash">
+        <input type="text" id="gmodel" value="gemini-3.6-flash">
         <label class="f" for="ekey">ElevenLabs API key — powers listening and speaking</label>
         <input type="password" id="ekey" placeholder="sk_...">
         <label class="f" for="voice">ElevenLabs voice ID</label>
@@ -314,7 +314,7 @@ Rules: "l" is "hi" for ANY Indic-language word written in Latin script (Hindi, T
 async function liveAnalyse(utt){
   const key=$("key").value.trim();
   if(!key) throw new Error("no key");
-  const model=($("gmodel").value.trim()||"gemini-3.7-flash").replace(/^models\//,"");
+  const model=($("gmodel").value.trim()||"gemini-3.6-flash").replace(/^models\//,"");
   let r, last="";
   // 503 = model overloaded, 429 = rate limited. Both are worth retrying.
   for(let attempt=0; attempt<3; attempt++){
