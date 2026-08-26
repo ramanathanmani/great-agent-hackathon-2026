@@ -14,9 +14,13 @@ The caller switches language mid-sentence. The ticket stays in English.
 
 ## Track
 
-Track 2 — Platform Agent Skills \& Knowledge
+Track 2 — Platform Agent Skills & Knowledge
 
-\---
+## Video Demo Link
+
+[https://youtu.be/YOUR_VIDEO_ID](https://youtu.be/YOUR_VIDEO_ID)
+
+---
 
 ## Problem
 
