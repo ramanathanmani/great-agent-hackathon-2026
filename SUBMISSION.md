@@ -58,11 +58,11 @@ support, sales, HR — and stops breaking when the customer switches language.
 ## How we built it
 
 * ElevenLabs Scribe v2 for listening, because it doesn't force a single language up front
-* Gemini 3.6 Flash for the understanding layer — token-level language tagging, intent,
+* Gemini 2.5 Flash for the understanding layer — token-level language tagging, intent,
 and the English ticket
 * ElevenLabs Multilingual v2 for the spoken reply
 * Freshworks Agent Studio as the agent surface
-* A deterministic fallback engine running in the browser
+* A standalone score-based offline engine module (codemix.js) running in the browser
 
 ## Challenges
 

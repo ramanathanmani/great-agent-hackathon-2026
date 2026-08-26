@@ -2,14 +2,14 @@
 
 ## Current state
 
-Working single-page demo with:
+Working modular application with:
+- ✅ Standalone `codemix.js` skill module (importable in any agent or browser)
+- ✅ Score-based weighted intent classification engine
+- ✅ Automated 20-sentence benchmark evaluation suite
 - ✅ Token-level language tagging (9 Indic scripts + romanized)
-- ✅ Intent extraction (keyword-based offline + Gemini live)
-- ✅ Mixed-language reply generation
-- ✅ English ticket creation
+- ✅ Code-mixed voice reply synthesis + clean English CRM ticket creation
 - ✅ Three-layer fallback (Gemini → offline, ElevenLabs → browser, partial → merge)
-- ✅ Live audio recording via ElevenLabs Scribe v2
-- ✅ TTS via ElevenLabs Multilingual v2
+- ✅ Live audio recording via ElevenLabs Scribe v2 + Multilingual v2 TTS
 
 ---
 

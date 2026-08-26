@@ -20,10 +20,10 @@
 
 | Mode | Technology | Trigger |
 |-|-|-|
-| **Live** | Gemini 3.6 Flash API | Gemini key present and API responding |
+| **Live** | Gemini 2.5 Flash API | Gemini key present and API responding |
 | **Retry** | Same, with exponential backoff | 503 or 429 response |
-| **Fallback** | Deterministic offline engine | No key, 3 failed retries, or invalid JSON |
-| **Merge** | `merge(live, base)` | Always runs — fills gaps in live result |
+| **Fallback** | Score-Based Offline Engine (`codemix.js`) | No key, 3 failed retries, or invalid JSON |
+| **Merge** | `CodemixSkill.merge(live, base)` | Always runs — fills gaps in live result |
 
 ### Retry logic
 ```

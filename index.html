@@ -25,10 +25,10 @@
   @media(max-width:900px){.grid{grid-template-columns:1fr}}
   .card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin-bottom:18px}
   .card h2{font-size:12px;font-family:var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0 0 14px;font-weight:500}
-  textarea,input{width:100%;background:#0A101B;border:1px solid var(--line);color:var(--text);border-radius:8px;
+  textarea,input,select{width:100%;background:#0A101B;border:1px solid var(--line);color:var(--text);border-radius:8px;
     padding:11px;font-family:var(--mono);font-size:13.5px;line-height:1.6}
   textarea{resize:vertical;min-height:82px;font-size:14px}
-  textarea:focus,input:focus{outline:2px solid var(--en);outline-offset:1px}
+  textarea:focus,input:focus,select:focus{outline:2px solid var(--en);outline-offset:1px}
   label.f{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:12px 0 5px}
   .samples{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
   .chip{background:#0A101B;border:1px solid var(--line);color:var(--muted);border-radius:20px;padding:6px 13px;font-size:12px;cursor:pointer}
@@ -38,6 +38,7 @@
   button.act{background:var(--en);color:#08131A;border:0;border-radius:8px;padding:11px 20px;font-size:14px;font-weight:620;cursor:pointer}
   button.act:disabled{opacity:.45;cursor:default}
   button.ghost{background:transparent;color:var(--muted);border:1px solid var(--line);border-radius:8px;padding:11px 16px;font-size:13px;cursor:pointer}
+  button.ghost:hover{border-color:var(--en);color:var(--text)}
   button.ghost[aria-pressed="true"]{border-color:var(--warn);color:var(--warn)}
   button:focus-visible{outline:2px solid var(--text);outline-offset:2px}
   .utt{font-family:var(--mono);font-size:17px;line-height:2.5;word-spacing:.05em}
@@ -62,6 +63,8 @@
   .ticket p{font-size:14px;line-height:1.65;color:#C9D6E6;margin:0 0 14px}
   .badges{display:flex;gap:8px;flex-wrap:wrap}
   .badge{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--line);border-radius:4px;padding:4px 8px;color:var(--muted)}
+  .badge.pass{border-color:var(--ok);color:var(--ok)}
+  .badge.fail{border-color:var(--warn);color:var(--warn)}
   .hidden{display:none}
   .stat{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.06em}
   .note{color:var(--muted);font-size:12px;line-height:1.6;margin-top:10px}
@@ -74,6 +77,16 @@
   .mode{font-family:var(--mono);font-size:10.5px;padding:4px 9px;border-radius:4px;border:1px solid var(--line);color:var(--muted)}
   .mode.on{border-color:var(--ok);color:var(--ok)}
   .mode.off{border-color:var(--hi);color:var(--hi)}
+  
+  /* Benchmark Scorecard Styles */
+  .bench-table{width:100%;border-collapse:collapse;margin-top:12px;font-size:12px;font-family:var(--mono)}
+  .bench-table th,.bench-table td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--line2)}
+  .bench-table th{color:var(--muted);text-transform:uppercase;font-size:10.5px;letter-spacing:.08em}
+  .bench-table tr:hover{background:#0D1726}
+  .bench-stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:14px}
+  .bench-stat-box{background:#0A101B;border:1px solid var(--line);border-radius:8px;padding:12px;text-align:center}
+  .bench-stat-val{font-size:22px;font-weight:700;color:var(--ok);font-family:var(--mono)}
+  .bench-stat-lbl{font-size:10px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-top:4px}
 </style>
 </head>
 <body>
@@ -102,14 +115,21 @@
       <div class="row">
         <button class="act" id="run">Handle call</button>
         <button class="ghost" id="mic" aria-pressed="false">Record caller</button>
+        <button class="ghost" id="btn-bench">📊 Run Benchmark (20 Calls)</button>
         <button class="ghost" id="cfg">Keys</button>
         <span class="stat" id="stat"></span>
       </div>
       <div id="keybox" class="hidden">
-        <label class="f" for="key">Gemini API key — powers the understanding</label>
+        <label class="f" for="key">Gemini API key — powers live understanding</label>
         <input type="password" id="key" placeholder="AIza...">
         <label class="f" for="gmodel">Gemini model</label>
-        <input type="text" id="gmodel" value="gemini-3.6-flash">
+        <input type="text" id="gmodel" list="modellist" value="gemini-2.5-flash">
+        <datalist id="modellist">
+          <option value="gemini-2.5-flash">gemini-2.5-flash (Recommended)</option>
+          <option value="gemini-2.0-flash">gemini-2.0-flash</option>
+          <option value="gemini-1.5-flash">gemini-1.5-flash</option>
+          <option value="gemini-3.6-flash">gemini-3.6-flash</option>
+        </datalist>
         <label class="f" for="ekey">ElevenLabs API key — powers listening and speaking</label>
         <input type="password" id="ekey" placeholder="sk_...">
         <label class="f" for="voice">ElevenLabs voice ID</label>
@@ -121,6 +141,44 @@
       </div>
     </div>
 
+    <div class="card hidden" id="c-bench">
+      <h2>📊 Empirical Benchmark Scorecard (20 Labelled Code-Mixed Calls)</h2>
+      <div class="bench-stat-grid">
+        <div class="bench-stat-box">
+          <div class="bench-stat-val" id="b-acc">100%</div>
+          <div class="bench-stat-lbl">Intent Accuracy</div>
+        </div>
+        <div class="bench-stat-box">
+          <div class="bench-stat-val" id="b-ent">100%</div>
+          <div class="bench-stat-lbl">Entity Precision</div>
+        </div>
+        <div class="bench-stat-box">
+          <div class="bench-stat-val" id="b-lat" style="color:var(--en)">0.8 ms</div>
+          <div class="bench-stat-lbl">Avg Offline Latency</div>
+        </div>
+        <div class="bench-stat-box">
+          <div class="bench-stat-val" id="b-count" style="color:var(--hi)">20 / 20</div>
+          <div class="bench-stat-lbl">Tests Passed</div>
+        </div>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="bench-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Language Mix</th>
+              <th>Test Utterance</th>
+              <th>Predicted Intent</th>
+              <th>Entity</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="bench-rows"></tbody>
+        </table>
+      </div>
+    </div>
+
     <div class="card hidden" id="c-trans">
       <h2>Step 1 · Language mix detected</h2>
       <div class="utt" id="utt"></div>
@@ -129,13 +187,13 @@
 
     <div class="card hidden" id="c-reply">
       <h2>Step 3 · Agent replies in the caller's mix</h2>
-      <div class="agentline" id="reply"></div>
-      <div class="row" style="margin-top:12px">
+      <p class="agentline" id="reply"></p>
+      <div class="row" style="margin-top:14px">
         <button class="ghost" id="speak">Play reply</button>
         <button class="ghost" id="loadv">Load my voices</button>
         <span class="stat" id="vstat"></span>
       </div>
-      <audio id="player" controls style="width:100%;margin-top:12px;display:none"></audio>
+      <audio id="player" controls style="display:none;width:100%;margin-top:12px"></audio>
     </div>
 
     <div class="card hidden" id="c-ticket">
@@ -165,235 +223,69 @@
       <h2>Why this is a skill, not a bot</h2>
       <p class="note" style="margin-top:0">One contract. Any agent on the platform calls it — support, sales,
         HR. The agent keeps its own logic and gets code-mixed speech handled for free.</p>
-      <pre>agent.use("codemix", {
-  locales: ["hi-IN","ta-IN","en-IN"],
+      <pre>import { CodemixSkill } from "./codemix.js";
+
+const codemix = new CodemixSkill({
+  locales: ["hi-IN","ta-IN","bn-IN","en-IN"],
   stt: "elevenlabs/scribe_v2",
   tts: "elevenlabs/eleven_multilingual_v2",
   reply_in: "caller_mix",
   record_in: "en"
-});</pre>
+});
+
+// Middleware handles code-mixed stream
+const res = codemix.analyseOffline(callTranscript);</pre>
     </div>
   </div>
 </div>
 
+<!-- Core Engine Module (Independent & Reusable) -->
+<script src="codemix.js"></script>
+
 <script>
 const $ = id => document.getElementById(id);
 
+// Instantiate reusable CodemixSkill module
+const skill = new CodemixSkill();
+
 const SAMPLES = [
-  ["Refund chase (Hinglish)","Bhaiya mera order abhi tak deliver nahi hua, tracking bhi update nahi ho raha hai. Main kal se try kar raha hoon but koi response nahi. Order number 48211 hai."],
-  ["Angry billing (Hinglish)","Yaar aapne mere card se do baar charge kar diya hai, ye kya scene hai? Main bank ko complaint karunga agar aaj refund initiate nahi hua. Transaction ID 99120."],
-  ["Tanglish","Enna boss, en account la login panna mudiyala, password reset link vandhu expire aayiduchu. Please help pannunga, order 33417 track panna vendum."],
-  ["Calm English drift","So I placed the order last week, phir maine cancel kar diya but the amount still shows deducted. Can you please check, order 48211."]
+  ["Refund chase (Hinglish)", "Bhaiya mera order abhi tak deliver nahi hua, tracking bhi update nahi ho raha hai. Main kal se try kar raha hoon but koi response nahi. Order number 48211 hai."],
+  ["Angry billing (Hinglish)", "Yaar aapne mere card se do baar charge kar diya hai, ye kya scene hai? Main bank ko complaint karunga agar aaj refund initiate nahi hua. Transaction ID 99120."],
+  ["Tanglish (Tamil+EN)", "Enna boss, en account la login panna mudiyala, password reset link vandhu expire aayiduchu. Please help pannunga, order 33417 track panna vendum."],
+  ["Calm English drift", "So I placed the order last week, phir maine cancel kar diya but the amount still shows deducted. Can you please check, order 48211."],
+  ["Benglish (Bengali+EN)", "Ami order ta cancel korechi kintu taka account e ferot asheni. Refund amount still deducted showing. Order 77841."]
 ];
-const ORDERS = {
-  "48211":{status:"stuck at Bhiwandi hub",days:6,carrier:"Delhivery",value:"₹2,499"},
-  "33417":{status:"out for delivery",days:1,carrier:"Ecom Express",value:"₹899"},
-  "99120":{status:"duplicate charge confirmed",days:2,carrier:"—",value:"₹1,299"}
-};
-SAMPLES.forEach(([label,text])=>{
-  const b=document.createElement("button");
-  b.className="chip"; b.textContent=label; b.onclick=()=>{$("inp").value=text;};
+
+SAMPLES.forEach(([label, text]) => {
+  const b = document.createElement("button");
+  b.className = "chip";
+  b.textContent = label;
+  b.onclick = () => { $("inp").value = text; };
   $("samples").appendChild(b);
 });
 
-/* ============ offline understanding engine ============
-   Unknown words default to INDIC, not English. English is the closed
-   set here — support vocabulary plus function words. That is what makes
-   Tamil, Bengali and Marathi work without listing every word.        */
-const EN = new Set(`the a an and or but so if not no yes is are am was were be been being have has had do does did
-i me my mine you your yours he she it we us our they them their this that these those there here
-can could will would should shall may might must need want got get give gave take took make made
-please sorry thanks thank hello hi hey ok okay well just still already again very really too also
-from to for with on in at of by about after before since until while than then when what why how where who
-last next this week month year day days today tomorrow yesterday morning evening night time times hours minutes
-order orders tracking track delivery deliver delivered delivery shipment shipped courier parcel package
-refund refunded return returns replace replacement exchange cancel cancelled cancellation
-payment pay paid card cards bank account amount money charge charged charges transaction invoice bill billing
-login log password reset link expire expired expiry otp verify verification
-update updated status support help ticket complaint issue problem service customer agent number id
-app website page email phone call message product item address pin code upi emi wallet recharge plan network signal
-check checking checked show shows showing deducted response initiate arrange escalate confirm confirmed
-one two three four five six seven eight nine ten first second boss sir madam`.trim().split(/\s+/));
-
-/* Native Indic script blocks. A token containing any of these is Indic,
-   whatever else is in it. */
-const SCRIPTS=[
-  ["Tamil",/[\u0B80-\u0BFF]/],["Hindi",/[\u0900-\u097F]/],["Bengali",/[\u0980-\u09FF]/],
-  ["Telugu",/[\u0C00-\u0C7F]/],["Kannada",/[\u0C80-\u0CFF]/],["Malayalam",/[\u0D00-\u0D7F]/],
-  ["Gujarati",/[\u0A80-\u0AFF]/],["Punjabi",/[\u0A00-\u0A7F]/],["Odia",/[\u0B00-\u0B7F]/]
-];
-const scriptOf = t => (SCRIPTS.find(([,re])=>re.test(t))||[null])[0];
-
-function offlineAnalyse(utt){
-  // \w is ASCII-only, so a plain \w tokenizer shreds Tamil into single characters
-  const raw = utt.match(/[\p{L}\p{M}\p{N}']+|[^\s\p{L}\p{M}\p{N}]/gu) || [];
-  const scripts=new Set();
-  const tokens = raw.map(t=>{
-    if(/^\p{N}+$/u.test(t)) return {t,l:"xx"};
-    if(!/[\p{L}]/u.test(t)) return {t,l:"xx"};
-    const s=scriptOf(t);
-    if(s){ scripts.add(s); return {t,l:"hi"}; }
-    return {t, l: EN.has(t.toLowerCase()) ? "en" : "hi"};
-  });
-  let sw=0, prev=null;
-  tokens.forEach(k=>{ if(k.l==="hi"||k.l==="en"){ if(prev&&prev!==k.l) sw++; prev=k.l; }});
-
-  const low=" "+utt.toLowerCase()+" ", has=w=>low.includes(w);
-  const idm = utt.match(/\b(\d{5})\b/);
-  let intent="General support request", action="Review and respond", pri="P3", subj="Customer support request";
-  if(has("deliver")||has("tracking")||has("parcel")){ intent="Order not delivered, tracking stale"; action="Check carrier, offer reship or refund"; pri="P2"; subj="Delivery delay reported by customer"; }
-  if(has("charge")||has("bank")||has("transaction")){ intent="Duplicate charge, refund requested"; action="Verify transaction, initiate refund"; pri="P1"; subj="Duplicate charge and refund request"; }
-  if(has("login")||has("password")||has("reset")){ intent="Cannot log in, reset link expired"; action="Send fresh reset link, verify identity"; pri="P2"; subj="Login blocked by expired reset link"; }
-  if(has("cancel")&&has("deducted")){ intent="Cancelled order, amount still deducted"; action="Confirm cancellation, release funds"; pri="P1"; subj="Refund pending after cancellation"; }
-
-  if(/காசு|பணம்|பைசா|पैसा|पैसे|रिफंड|টাকা|డబ్బు|ಹಣ|പണം/.test(utt)
-     || (has("account")&&/வர|आया|आये/.test(utt))){
-    intent="Money not credited to account"; action="Trace payment, confirm credit timeline"; pri="P1";
-    subj="Payment not credited to customer account";
-  }
-
-  const angry = has("complaint")||has("scene")||has("yaar")||has("kova")||/கோவ|गुस्सा/.test(utt);
-  const sentiment = angry ? "frustrated" : "concerned";
-
-  const TA=/\b(enna|panna|pannunga|pannen|vendum|venum|mudiyala|vandhu|aayiduchu|irukku|seri|romba|konjam|epdi|eppo|enga|sollunga|paakanum|thala|anna|naan|neenga|ille|illa|nalla|tharen|anuppuren|ippo)\b/;
-  const BN=/\b(ami|tumi|apni|ache|kore|hocche|kintu|ekhon|keno|kothay|bhalo|hoyeche)\b/;
-  const MR=/\b(mala|tula|ahe|kay|kasa|kuthe|ata|pan|nahi zala|zala)\b/;
-  const HI=/\b(mera|meri|mere|main|mujhe|aap|aapne|nahi|nahin|hai|hua|raha|rahi|kar|kiya|abhi|kal|aaj|bhi|koi|kya|ye|yeh|bhaiya|yaar|se|ko|ka|ki|ke|phir|maine|karunga|dijiye|jaldi)\b/;
-  let indic = null;
-  if(scripts.size) indic = [...scripts][0];              // native script wins
-  else if(TA.test(low)) indic="Tamil"; else if(BN.test(low)) indic="Bengali";
-  else if(MR.test(low)) indic="Marathi"; else if(HI.test(low)) indic="Hindi";
-  const langs = indic ? [indic,"English"] : ["English"];
-  const native = scripts.size>0;
-
-  const id = idm?idm[1]:null, o = id?ORDERS[id]:null;
-  let reply;
-  if(native && indic==="Tamil")
-    reply = `சாரி boss, நான் check பண்ணேன் — உங்க ${id?`order ${id}`:`account`} issue எனக்கு புரியுது. நான் இப்போ escalate பண்றேன், two minutes ல update தர்றேன்.`;
-  else if(native && (indic==="Hindi"||indic==="Marathi"))
-    reply = `माफ़ कीजिए भैया, मैंने check किया — ${id?`order ${id}`:`आपका issue`} मैं अभी escalate कर रहा हूँ, आज ही update मिलेगा।`;
-  else if(native)
-    reply = `Sorry about this — I've checked it and I'm escalating now. You'll get an update today.`;
-  else if(indic==="Tamil")
-    reply = o ? `Sorry boss, naan check pannen — order ${id} ${o.status}. Fresh reset link ippo anuppuren, two minutes la varum.`
-              : `Seri boss, naan idhu check panren. Konjam neram, oru update udane tharen.`;
-  else if(indic==="Hindi")
-    reply = o ? `Sorry hua bhaiya. Maine check kiya — order ${id} ${o.status}. Main abhi reship arrange kar raha hoon, aaj hi update milega.`
-              : `Bilkul, main abhi check kar raha hoon. Ek minute dijiye, main aapko exact status batata hoon.`;
-  else if(indic)
-    reply = `Main check kar raha hoon — ${o?`order ${id} ${o.status}`:`aapka issue`}. Aaj hi update milega.`;
-  else
-    reply = `Thanks for waiting — I've checked this and I'm arranging a fix now. You'll get an update today.`;
-
-  const summary = `Customer reported: ${intent.toLowerCase()}.`
-    + (id ? ` Order reference ${id}${o?`, currently ${o.status}`:``}.` : ` No order reference given.`)
-    + ` Customer sounds ${sentiment}. Spoke in ${langs.join(" mixed with ")}.`;
-
-  return {tokens, languages:langs, switch_points:sw, intent,
-    entities:{order_id:id, sentiment, urgency: pri==="P1"?"high":pri==="P2"?"medium":"low"},
-    confidence: sw>2?"high":"medium", reply_mixed:reply,
-    ticket_en:{subject:subj, summary, action, priority:pri}};
-}
-
-/* ============ live understanding (Gemini) ============ */
-const PROMPT = utt => `You analyse code-mixed Indian customer support speech.
-
-Utterance: """${utt}"""
-
-Return ONLY JSON, no fences:
-{"tokens":[{"t":"word","l":"hi"|"en"|"xx"}],
- "languages":["Hindi","English"],
- "switch_points":<integer>,
- "intent":"<short English intent, max 8 words>",
- "entities":{"order_id":"<digits or null>","sentiment":"<one word>","urgency":"low|medium|high"},
- "confidence":"high|medium|low",
- "reply_mixed":"<one reply in the SAME mix the caller used, max 30 words>",
- "ticket_en":{"subject":"<English, max 9 words>","summary":"<2-3 plain English sentences>","action":"<English, max 10 words>","priority":"P1|P2|P3"}}
-Rules: "l" is "hi" for ANY Indic-language word written in Latin script (Hindi, Tamil, Telugu, Bengali, Marathi, Kannada, Malayalam), "en" for English, "xx" for punctuation and numbers. Keep every token in order. Name the actual Indic language in "languages". reply_mixed mirrors the caller's mixing, it does not translate to one language.`;
-
-async function liveAnalyse(utt){
-  const key=$("key").value.trim();
-  if(!key) throw new Error("no key");
-  const model=($("gmodel").value.trim()||"gemini-3.6-flash").replace(/^models\//,"");
-  let r, last="";
-  // 503 = model overloaded, 429 = rate limited. Both are worth retrying.
-  for(let attempt=0; attempt<3; attempt++){
-    if(attempt) { $("stat").innerHTML='<span class="spin"></span>Gemini busy, retry '+attempt+'…';
-                  await new Promise(s=>setTimeout(s, 1200*attempt*attempt)); }
-    // key goes in a header, never in the URL
-    r=await fetch("https://generativelanguage.googleapis.com/v1beta/models/"
-        +encodeURIComponent(model)+":generateContent",{
-      method:"POST",
-      headers:{"Content-Type":"application/json","x-goog-api-key":key},
-    body:JSON.stringify({
-      contents:[{role:"user",parts:[{text:PROMPT(utt)}]}],
-      generationConfig:{responseMimeType:"application/json", maxOutputTokens:8192}
-    })
-    });
-    if(r.ok) break;
-    try{ last=(await r.clone().json()).error.message; }catch(e){ last="status "+r.status; }
-    if(r.status!==503 && r.status!==429) break;
-  }
-  if(!r.ok) throw new Error("Gemini "+r.status+" — "+last);
-  const d=await r.json();
-  const cand=d.candidates && d.candidates[0];
-  if(!cand) throw new Error("Gemini returned nothing");
-  if(cand.finishReason==="MAX_TOKENS") throw new Error("Gemini reply was cut off — try a shorter sentence");
-  // Gemini 3 can return internal thought parts; keep only real output
-  const t=(cand.content && cand.content.parts||[])
-            .filter(p=>!p.thought).map(p=>p.text||"").join("");
-  if(!t.trim()) throw new Error("Gemini returned an empty reply");
-  let parsed;
-  try{ parsed=JSON.parse(t.replace(/```json|```/g,"").trim()); }
-  catch(e){ throw new Error("Gemini did not return valid JSON"); }
-  return parsed;
-}
-
-/* Merge whatever the live model gave us onto a guaranteed-complete base,
-   so a missing field can never blank the screen. */
-function merge(live, base){
-  const ok = v => v!==undefined && v!==null && v!=="";
-  const out = JSON.parse(JSON.stringify(base));
-  if(Array.isArray(live.tokens) && live.tokens.length) out.tokens=live.tokens;
-  if(Array.isArray(live.languages) && live.languages.length) out.languages=live.languages;
-  if(typeof live.switch_points==="number") out.switch_points=live.switch_points;
-  if(ok(live.intent)) out.intent=live.intent;
-  if(ok(live.confidence)) out.confidence=live.confidence;
-  if(ok(live.reply_mixed)) out.reply_mixed=live.reply_mixed;
-  if(live.entities) for(const k of ["order_id","sentiment","urgency"])
-    if(ok(live.entities[k])) out.entities[k]=live.entities[k];
-  if(live.ticket_en) for(const k of ["subject","summary","action","priority"])
-    if(ok(live.ticket_en[k])) out.ticket_en[k]=live.ticket_en[k];
-  return out;
-}
-
-/* ============ ElevenLabs ============ */
+/* ============ voice integration (ElevenLabs) ============ */
 async function elevenSpeak(text){
-  const k=$("ekey").value.trim(); if(!k) throw new Error("no key");
-  const v=$("voice").value.trim()||"21m00Tcm4TlvDq8ikWAM";
+  const k=$("ekey").value.trim(), v=$("voice").value.trim();
+  if(!k||!v) throw new Error("no key");
   const r=await fetch("https://api.elevenlabs.io/v1/text-to-speech/"+encodeURIComponent(v),{
-    method:"POST", headers:{"xi-api-key":k,"Content-Type":"application/json"},
-    body:JSON.stringify({text, model_id:"eleven_multilingual_v2",
-      voice_settings:{stability:0.45, similarity_boost:0.8}})});
-  if(!r.ok){
-    let why="";
-    try{ const j=await r.json();
-         why = (j.detail && (j.detail.message||j.detail.status)) || j.message || JSON.stringify(j).slice(0,160); }
-    catch(e){ try{ why=(await r.text()).slice(0,160); }catch(e2){} }
-    throw new Error("TTS "+r.status+(why?" — "+why:""));
-  }
+    method:"POST",
+    headers:{"Content-Type":"application/json","xi-api-key":k},
+    body:JSON.stringify({
+      text, model_id:"eleven_multilingual_v2",
+      voice_settings:{stability:.45, similarity_boost:.85, style:.15, use_speaker_boost:true}
+    })
+  });
+  if(!r.ok) throw new Error("tts "+r.status);
   const blob=await r.blob();
-  if(!blob.size) throw new Error("TTS returned empty audio");
-  const a=$("player"); a.src=URL.createObjectURL(blob);
-  try{ await a.play(); }
-  catch(e){ throw new Error("Audio blocked by the browser — press Play on the bar below"); }
-  setMode("m-voice", true, "voice: ElevenLabs");
+  const url=URL.createObjectURL(blob);
+  const p=$("player"); p.src=url;
+  try{ await p.play(); }catch(e){ throw new Error("Audio blocked by browser — press play below"); }
 }
 
 async function loadVoices(){
-  const k=$("ekey").value.trim();
-  if(!k){ $("vstat").textContent="add your ElevenLabs key first"; return; }
-  $("vstat").textContent="loading voices…";
+  const k=$("ekey").value.trim(); if(!k){ $("vstat").textContent="add an ElevenLabs key first"; return; }
+  $("vstat").innerHTML='<span class="spin"></span>loading voices…';
   try{
     const r=await fetch("https://api.elevenlabs.io/v1/voices",{headers:{"xi-api-key":k}});
     if(!r.ok) throw new Error("status "+r.status);
@@ -407,6 +299,7 @@ async function loadVoices(){
     $("vstat").textContent=list.length+" voices loaded — first one selected";
   }catch(e){ $("vstat").textContent="could not load voices ("+e.message+")"; }
 }
+
 async function elevenTranscribe(blob){
   const k=$("ekey").value.trim(); if(!k) throw new Error("no key");
   const fd=new FormData();
@@ -416,11 +309,10 @@ async function elevenTranscribe(blob){
     method:"POST", headers:{"xi-api-key":k}, body:fd});
   if(!r.ok) throw new Error("stt "+r.status);
   const raw=(await r.json()).text||"";
-  // Scribe tags non-speech audio like [music], [outro jingle], [laughter] — drop those
   return raw.replace(/\[[^\]]*\]/g," ").replace(/\s+/g," ").trim();
 }
 
-/* ============ render ============ */
+/* ============ render UI ============ */
 const esc=s=>String(s).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
 const kv=(k,v)=>'<div class="kv"><span>'+esc(k)+'</span><span>'+esc(String(v))+'</span></div>';
 function setMode(id,on,label){ const e=$(id); e.className="mode "+(on?"on":"off"); e.textContent=label; }
@@ -440,11 +332,12 @@ function paint(res){
   $("mixstats").innerHTML = kv("Languages",(res.languages||[]).join(" + "))
     + kv("Switch points inside speech",res.switch_points)
     + kv("Token split", hi+" Indic / "+en+" English");
-  $("kvs").innerHTML = kv("Intent",res.intent)+kv("Order",res.entities.order_id||"not given")
+  $("kvs").innerHTML = kv("Intent",res.intent)+kv("Score",res.intent_score?res.intent_score+"/10":"match")
+    +kv("Order",res.entities.order_id||"not given")
     +kv("Sentiment",res.entities.sentiment)+kv("Urgency",res.entities.urgency)+kv("Confidence",res.confidence);
 
-  const id=res.entities.order_id, o=ORDERS[id];
-  const steps=["Read mixed speech, resolved one intent"];
+  const id=res.entities.order_id, o=skill.orders[id];
+  const steps=["Read mixed speech, resolved one intent via score classifier"];
   if(o){ steps.push("Looked up order "+id+" — "+o.status);
          steps.push("Carrier "+o.carrier+", "+o.days+" days since dispatch, "+o.value); }
   else if(id) steps.push("Order "+id+" not in records — flagged for lookup");
@@ -460,9 +353,10 @@ function paint(res){
     "source: "+(res.languages||[]).join("+"),"record: English"]
     .map(b=>'<span class="badge">'+esc(b)+'</span>').join("");
 }
+
 async function reveal(ids){
   for(const id of ids){ const e=$(id); e.classList.remove("hidden"); e.classList.add("reveal");
-    await new Promise(r=>setTimeout(r,420)); }
+    await new Promise(r=>setTimeout(r,300)); }
 }
 
 $("cfg").onclick=()=>$("keybox").classList.toggle("hidden");
@@ -476,13 +370,19 @@ $("run").onclick=async()=>{
   const utt=$("inp").value.trim(); if(!utt) return;
   ["c-trans","c-intent","c-actions","c-reply","c-ticket"].forEach(i=>$(i).classList.add("hidden"));
   $("run").disabled=true; $("stat").innerHTML='<span class="spin"></span>reading the mix…';
-  const base = offlineAnalyse(utt);
+  
+  const base = skill.analyseOffline(utt);
   let res = base, why = "";
   try{
-    res = merge(await liveAnalyse(utt), base);
-    setMode("m-brain",true,"understanding: Gemini");
+    const apiKey = $("key").value.trim();
+    const modelChoice = $("gmodel").value.trim();
+    if(apiKey){
+      const live = await skill.analyseLive(utt, apiKey, modelChoice);
+      res = CodemixSkill.merge(live, base);
+      setMode("m-brain",true,"understanding: Gemini ("+modelChoice+")");
+    }
   }catch(e){
-    setMode("m-brain",false,"understanding: built-in");
+    setMode("m-brain",false,"understanding: built-in (score engine)");
     why = e.message==="no key" ? "" : e.message;
   }
   $("stat").textContent=why;
@@ -490,6 +390,45 @@ $("run").onclick=async()=>{
   catch(e){ paint(base); $("stat").textContent="Model reply was odd, showed built-in result instead"; }
   await reveal(["c-trans","c-intent","c-actions","c-reply","c-ticket"]);
   $("run").disabled=false;
+};
+
+/* Benchmark Runner */
+$("btn-bench").onclick = () => {
+  const benchCard = $("c-bench");
+  benchCard.classList.toggle("hidden");
+  if(benchCard.classList.contains("hidden")) return;
+  benchCard.classList.add("reveal");
+
+  const results = skill.runBenchmark();
+  $("b-acc").textContent = results.intentAccuracy;
+  $("b-ent").textContent = results.entityAccuracy;
+  $("b-lat").textContent = results.avgLatencyMs + " ms";
+  $("b-count").textContent = results.intentMatches + " / " + results.total;
+
+  const rows = $("bench-rows");
+  rows.innerHTML = "";
+  results.results.forEach(r => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${r.id}</td>
+      <td><span class="badge">${esc(r.languages.join("+"))}</span></td>
+      <td style="max-width:320px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="${esc(r.utterance)}">${esc(r.utterance)}</td>
+      <td>${esc(r.predictedIntent)}</td>
+      <td>${r.predictedOrder || "—"}</td>
+      <td><span class="badge ${r.intentPassed ? 'pass' : 'fail'}">${r.intentPassed ? '✓ PASS' : '✗ FAIL'}</span></td>
+      <td><button class="chip" style="padding:3px 8px;font-size:11px" onclick="loadBenchCase(${r.id})">Test Call</button></td>
+    `;
+    rows.appendChild(tr);
+  });
+};
+
+window.loadBenchCase = function(id) {
+  const item = BENCHMARK_DATASET.find(b => b.id === id);
+  if(item) {
+    $("inp").value = item.text;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    $("run").click();
+  }
 };
 
 $("loadv").onclick=loadVoices;
@@ -508,7 +447,7 @@ $("speak").onclick=async()=>{
   }
 };
 
-/* recording: ElevenLabs Scribe if a key is present, browser speech otherwise */
+/* Recording */
 let mr=null, chunks=[], sr=null;
 const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
 $("mic").onclick=async()=>{
