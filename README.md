@@ -25,6 +25,32 @@ That is where support calls die.
 
 The customer speaks how they speak. The company's records stay in one language.
 
+## Architecture
+
+```mermaid
+graph TD
+    A["Caller Input\n(text or mic)"] --> B{"ElevenLabs key?"}
+    B -->|Yes| C["Scribe v2 STT"]
+    B -->|No| D["Browser SpeechRecognition"]
+    C --> E["Transcript"]
+    D --> E
+    E --> F{"Gemini key?"}
+    F -->|Yes| G["Gemini 3.7 Flash\n(token tagging + intent)"]
+    F -->|No| H["Offline Engine\n(deterministic)"]
+    G -->|"503 / 429"| I["Retry x2\n(exponential backoff)"]
+    I -->|Fail| H
+    G -->|OK| J["merge(live, base)\nfill gaps from offline"]
+    H --> J
+    J --> K["Render"]
+    K --> L["Token-tagged display\n(Indic / English / switch points)"]
+    K --> M["Intent + Entities\n(order ID, sentiment, urgency)"]
+    K --> N["Mixed-language reply\n(mirrors caller's mix)"]
+    K --> O["English ticket\n(subject, summary, action, priority)"]
+    N --> P{"ElevenLabs key?"}
+    P -->|Yes| Q["Multilingual v2 TTS"]
+    P -->|No| R["Browser speechSynthesis"]
+```
+
 ## Why it is a skill, not a bot
 
 Any agent on the platform can call it — support, sales, HR. The agent keeps its own
