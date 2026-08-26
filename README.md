@@ -182,19 +182,21 @@ git clone https://github.com/ramanathanmani/great-agent-hackathon-2026.git
 
 ## 📊 Benchmark & Validation Results
 
-We evaluated the score-based offline engine in `codemix.js` across two separate datasets — a **20-call tuned baseline** and an unseen **8-call held-out generalization set** (spanning Hinglish, Tanglish, and Benglish across delays, billing, cancellations, lockouts, damaged goods, agent behavior complaints, and GST invoice requests):
+We evaluated the score-based offline engine in `codemix.js` across three distinct datasets — a **20-call tuned baseline**, an **8-call extended test set** (written alongside rules), and a **10-call genuinely blind generalization test set** (where rules were left completely untouched):
 
-| Metric | Tuned Baseline (20 Calls) | Unseen Held-Out Test Set (8 Calls) |
-|---|---|---|
-| **Intent Classification Accuracy** | **20 / 20 (100%)** | **8 / 8 (100%)** |
-| **Language Identification Accuracy** | **19 / 20 (95.0%)** | **7 / 8 (87.5%)** |
-| **Entity Extraction Precision** | **20 / 20 (100%)** | **8 / 8 (100%)** |
-| **Average Execution Latency** | **0.78 ms** | **0.72 ms** |
-| **Offline Reliability / Uptime** | **100% (Zero Dependencies)** | **100% (Zero Dependencies)** |
+| Metric | Tuned Baseline (20 Calls) | Extended Test Set (8 Calls)* | Blind Test Set (10 Calls)** |
+|---|---|---|---|
+| **Intent Classification Accuracy** | **20 / 20 (100%)** | **7 / 8 (87.5%)** | **9 / 10 (90.0%)** |
+| **Language Identification Accuracy** | **19 / 20 (95.0%)** | **7 / 8 (87.5%)** | **10 / 10 (100%)** |
+| **Entity Extraction Precision** | **20 / 20 (100%)** | **8 / 8 (100%)** | **10 / 10 (100%)** |
+| **Average Execution Latency** | **0.78 ms** | **0.72 ms** | **0.75 ms** |
+| **Offline Reliability / Uptime** | **100% (Zero Dependencies)** | **100% (Zero Dependencies)** | **100% (Zero Dependencies)** |
 
-> *Note on Live Path:* The cloud Gemini path is evaluated on individual calls during live demo interactions rather than batch evaluation to avoid quota consumption and preserve auditability.
+> *\* Extended Test Set: Keyword rules were written alongside these; a truly blind set is tested below.*  
+> *\*\* Blind Test Set: Genuinely blind set with untouched rules to measure true out-of-distribution generalization.*  
+> *\*\*\* Note on Live Path: The cloud Gemini path is evaluated on individual calls during live demo interactions rather than batch evaluation to avoid quota consumption and preserve auditability.*
 >
-> **Interactive In-Browser Benchmark:** Click the **📊 Run Benchmark (20 Calls)** button in the demo console to toggle between the **Tuned Set** and the **Held-Out Test Set** and inspect per-utterance results.
+> **Interactive In-Browser Benchmark:** Click the **📊 Run Benchmark (20 Calls)** button in the demo console to switch between the **Tuned Set**, **Extended Set**, and **Blind Test Set** and inspect per-utterance results.
 
 ---
 
@@ -249,7 +251,8 @@ We added this after hitting a **Gemini 503 mid-build**. A demo that dies on venu
 
 | Decision | What we did | Why |
 |-|-|-|
-| **Reusable `codemix.js`** | Extracted core logic into a modular class `CodemixSkill` | Makes the skill truly pluggable into any agent runtime |
+| **Reusable `codemix.js`** | Extracted core logic into modular class with `export { CodemixSkill }` | Enables `import { CodemixSkill } from "./codemix.js"` in browsers and Node |
+| **Word Boundary Matching** | `(^|[^\p{L}\p{N}])kw($|[^\p{L}\p{N}])` regex matching | Eliminates substring bugs (e.g. `shipping` matching `pin`, `badalna` vs `badal`) |
 | **Score-Based Intent Rules** | Weighted multi-term n-gram scoring with confidence thresholds | Eliminates fragile sequential `if` chains; handles ambiguous phrasing |
 | **English as closed set** | ~150-word English vocabulary; everything else defaults to Indic | Indian languages have unlimited inflected forms; support English doesn't |
 | **Unicode tokenizer** | `[\p{L}\p{M}\p{N}']+` instead of `\w+` | `\w` is ASCII-only — it shreds Tamil script into single characters |

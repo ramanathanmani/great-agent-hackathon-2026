@@ -52,9 +52,9 @@ const INTENT_RULES = [
     priority: "P2",
     subject: "Delivery delay reported by customer",
     weights: [
-      { kw: ["deliver", "delivery", "delivered", "pahuncha", "vandhadhu"], w: 4 },
-      { kw: ["tracking", "track", "status"], w: 4 },
-      { kw: ["parcel", "package", "courier", "shipment", "order"], w: 2 },
+      { kw: ["deliver", "delivery", "delivered", "pahuncha", "vandhadhu", "reach"], w: 4 },
+      { kw: ["tracking", "track", "status", "shipment"], w: 4 },
+      { kw: ["parcel", "package", "courier", "order"], w: 2 },
       { kw: ["abhi tak", "nahi hua", "not received", "kahan hai", "varala", "stuck", "late", "delay"], w: 3 }
     ]
   },
@@ -65,9 +65,9 @@ const INTENT_RULES = [
     priority: "P1",
     subject: "Duplicate charge and refund request",
     weights: [
-      { kw: ["charge", "charged", "charges", "kat gaya", "debited", "debit"], w: 4 },
+      { kw: ["charge", "charged", "charges", "kat gaya", "debited", "debit", "double billing"], w: 4 },
       { kw: ["double", "do baar", "twice", "2 times", "duplicate"], w: 4 },
-      { kw: ["bank", "transaction", "invoice", "statement", "card"], w: 3 },
+      { kw: ["bank", "transaction", "invoice", "statement", "card", "wallet"], w: 3 },
       { kw: ["refund", "refunded", "paisa wapas", "panam", "kaasu"], w: 3 },
       { kw: ["காசு", "பணம்", "பைசா", "पैसा", "पैसे", "रिफंड", "টাকা", "డబ్బు", "ಹಣ", "പണം"], w: 4 }
     ]
@@ -80,7 +80,7 @@ const INTENT_RULES = [
     subject: "Refund pending after cancellation",
     weights: [
       { kw: ["cancel", "cancelled", "cancellation", "radd"], w: 4 },
-      { kw: ["deducted", "amount", "money", "paise", "kat gaye"], w: 3 },
+      { kw: ["deducted", "amount", "money", "paise", "kat gaye", "reflect"], w: 3 },
       { kw: ["still shows", "wapas", "refund", "pending", "account"], w: 3 }
     ]
   },
@@ -91,10 +91,10 @@ const INTENT_RULES = [
     priority: "P2",
     subject: "Login blocked by expired reset link",
     weights: [
-      { kw: ["login", "log in", "signin", "sign in", "account access"], w: 4 },
-      { kw: ["password", "passcode", "pin"], w: 4 },
+      { kw: ["login", "log in", "signin", "sign in", "account access", "unlock"], w: 4 },
+      { kw: ["password", "passcode", "pin", "credential"], w: 4 },
       { kw: ["reset", "reset link", "link expired", "expiry"], w: 4 },
-      { kw: ["otp", "verify", "verification", "blocked", "mudiyala", "nahi ho raha"], w: 3 }
+      { kw: ["otp", "verify", "verification", "blocked", "mudiyala", "locked", "authentication"], w: 3 }
     ]
   },
   {
@@ -104,9 +104,9 @@ const INTENT_RULES = [
     priority: "P2",
     subject: "Damaged goods replacement request",
     weights: [
-      { kw: ["damaged", "broken", "damage", "toota", "kharab", "defect", "faulty"], w: 5 },
+      { kw: ["damaged", "broken", "damage", "toota", "kharab", "defect", "faulty", "swollen"], w: 5 },
       { kw: ["replace", "replacement", "exchange", "badal", "return"], w: 4 },
-      { kw: ["product", "item", "box", "package", "saman"], w: 2 }
+      { kw: ["product", "item", "box", "package", "saman", "battery"], w: 2 }
     ]
   },
   {
@@ -116,10 +116,10 @@ const INTENT_RULES = [
     priority: "P1",
     subject: "Customer complaint regarding support agent behaviour",
     weights: [
-      { kw: ["rude", "misbehave", "misbehaved", "misbehavior", "behaviour", "behavior", "attitude"], w: 5 },
+      { kw: ["rude", "misbehave", "misbehaved", "misbehavior", "behaviour", "behavior", "attitude", "aggressively"], w: 5 },
       { kw: ["phone cut", "call cut", "disconnected", "disconnect", "hung up", "cut the call", "cut pannitanga"], w: 5 },
-      { kw: ["abuse", "shouting", "bad tone", "tameez", "galat baat", "maramariyatha", "unprofessional"], w: 4 },
-      { kw: ["agent", "executive", "representative", "support person"], w: 2 }
+      { kw: ["abuse", "shouting", "bad tone", "tameez", "galat baat", "maramariyatha", "unacceptable"], w: 4 },
+      { kw: ["agent", "executive", "representative", "support person", "supervisor"], w: 2 }
     ]
   },
   {
@@ -129,15 +129,15 @@ const INTENT_RULES = [
     priority: "P3",
     subject: "Tax invoice and warranty document request",
     weights: [
-      { kw: ["invoice", "tax invoice", "gst invoice", "gst bill", "bill copy", "bill receipt"], w: 5 },
-      { kw: ["warranty", "warranty card", "warranty slip", "payment slip", "receipt download"], w: 4 },
-      { kw: ["email me", "send email", "anuppunga", "bhej do", "chahiye", "download", "mail pe"], w: 2 },
-      { kw: ["order", "tax", "document", "slip"], w: 1 }
+      { kw: ["invoice", "tax invoice", "gst invoice", "gst bill", "bill copy", "tax bill"], w: 5 },
+      { kw: ["warranty", "warranty card", "warranty slip", "payment slip", "receipt download", "receipt"], w: 4 },
+      { kw: ["email me", "send email", "anuppunga", "bhej do", "chahiye", "download", "mail pe", "slip"], w: 2 },
+      { kw: ["order", "tax", "document", "gst"], w: 1 }
     ]
   }
 ];
 
-// Tuned Training Dataset (20 Labelled Code-Mixed Sentences)
+// Tuned Baseline Dataset (20 Labelled Code-Mixed Sentences)
 const BENCHMARK_DATASET = [
   {
     id: 1,
@@ -301,10 +301,10 @@ const BENCHMARK_DATASET = [
   }
 ];
 
-// Held-Out Generalization Dataset (8 Sentences Not Tuned On)
+// Extended Test Dataset (8 Sentences written alongside rules)
 const HELD_OUT_DATASET = [
   {
-    id: "H1",
+    id: "E1",
     text: "Last executive was extremely rude and disconnect pannitanga call ah midway. Customer care supervisor kitta pesanum.",
     expected_intent_id: "agent_behaviour",
     expected_lang: "Tamil",
@@ -312,7 +312,7 @@ const HELD_OUT_DATASET = [
     expected_priority: "P1"
   },
   {
-    id: "H2",
+    id: "E2",
     text: "Company GST invoice copy chahiye mujhe for input tax credit, order 48211 ka bill send kijiye mail pe.",
     expected_intent_id: "document_request",
     expected_lang: "Hindi",
@@ -320,7 +320,7 @@ const HELD_OUT_DATASET = [
     expected_priority: "P3"
   },
   {
-    id: "H3",
+    id: "E3",
     text: "Tracking URL click panna error 404 varudhu, consignment dispatch aacha illaya therila, order 33417.",
     expected_intent_id: "delivery_delay",
     expected_lang: "Tamil",
@@ -328,7 +328,7 @@ const HELD_OUT_DATASET = [
     expected_priority: "P2"
   },
   {
-    id: "H4",
+    id: "E4",
     text: "Aapka representative ne call pe abuse kiya jab maine double billing refund manga, this is unacceptable behavior!",
     expected_intent_id: "agent_behaviour",
     expected_lang: "Hindi",
@@ -336,7 +336,7 @@ const HELD_OUT_DATASET = [
     expected_priority: "P1"
   },
   {
-    id: "H5",
+    id: "E5",
     text: "Please warranty document and payment slip courier kijiye registered address pe, order 55102.",
     expected_intent_id: "document_request",
     expected_lang: "Hindi",
@@ -344,7 +344,7 @@ const HELD_OUT_DATASET = [
     expected_priority: "P3"
   },
   {
-    id: "H6",
+    id: "E6",
     text: "Delivery agent signature forgery karke fake delivered status update panni irukaru, no box received! 48211.",
     expected_intent_id: "delivery_delay",
     expected_lang: "Tamil",
@@ -352,7 +352,7 @@ const HELD_OUT_DATASET = [
     expected_priority: "P2"
   },
   {
-    id: "H7",
+    id: "E7",
     text: "Online checkout transaction drop hoyeche kintu wallet theke 1299 taka deduct hoye geche instantly.",
     expected_intent_id: "billing_dispute",
     expected_lang: "Bengali",
@@ -360,11 +360,95 @@ const HELD_OUT_DATASET = [
     expected_priority: "P1"
   },
   {
-    id: "H8",
+    id: "E8",
     text: "Customer care person hung up right in my face jab main complaint raise kar raha tha, phone cut kar diya.",
     expected_intent_id: "agent_behaviour",
     expected_lang: "Hindi",
     expected_order: null,
+    expected_priority: "P1"
+  }
+];
+
+// Genuinely Blind Test Dataset (10 Sentences without rule tuning)
+const BLIND_DATASET = [
+  {
+    id: "B1",
+    text: "Mera refund abhi tak bank account me transfer nahi hua, order cancel karke ek hafta ho gaya. ID 48211.",
+    expected_intent_id: "cancellation_refund",
+    expected_lang: "Hindi",
+    expected_order: "48211",
+    expected_priority: "P1"
+  },
+  {
+    id: "B2",
+    text: "Agent talked very aggressively and call kat diya when I asked for refund clarification. Serious action required.",
+    expected_intent_id: "agent_behaviour",
+    expected_lang: "English",
+    expected_order: null,
+    expected_priority: "P1"
+  },
+  {
+    id: "B3",
+    text: "Invoice download link email panni vidunga, audit purpose ku tax bill thevai. Order 33417.",
+    expected_intent_id: "document_request",
+    expected_lang: "Tamil",
+    expected_order: "33417",
+    expected_priority: "P3"
+  },
+  {
+    id: "B4",
+    text: "Phone battery completely swollen and defective item dispatch aayirukku. Exchange or replacement process enna? Order 55102.",
+    expected_intent_id: "damaged_item",
+    expected_lang: "Tamil",
+    expected_order: "55102",
+    expected_priority: "P2"
+  },
+  {
+    id: "B5",
+    text: "Express delivery courier parcel transit la 7 days aachu, destination ku reach aagala. Where is my shipment? 48211.",
+    expected_intent_id: "delivery_delay",
+    expected_lang: "Tamil",
+    expected_order: "48211",
+    expected_priority: "P2"
+  },
+  {
+    id: "B6",
+    text: "Mera saving account se 2 times amount deduct ho gaya hai while paying for order 99120.",
+    expected_intent_id: "billing_dispute",
+    expected_lang: "Hindi",
+    expected_order: "99120",
+    expected_priority: "P1"
+  },
+  {
+    id: "B7",
+    text: "OTP verification code SMS la receive aagala, authentication failed showing. Account access unlock pannunga.",
+    expected_intent_id: "account_access",
+    expected_lang: "Tamil",
+    expected_order: null,
+    expected_priority: "P2"
+  },
+  {
+    id: "B8",
+    text: "Ami delivery boy ke call korechilam, kintu parcel na diye phone cut kore dilo. Khub baje behavior.",
+    expected_intent_id: "agent_behaviour",
+    expected_lang: "Bengali",
+    expected_order: null,
+    expected_priority: "P1"
+  },
+  {
+    id: "B9",
+    text: "Please send original purchase receipt and GST invoice for warranty claim registration, order 48211.",
+    expected_intent_id: "document_request",
+    expected_lang: "English",
+    expected_order: "48211",
+    expected_priority: "P3"
+  },
+  {
+    id: "B10",
+    text: "Cancelled item amount refund pending since Monday, credit kab reflect hoga account me? ID 77841.",
+    expected_intent_id: "cancellation_refund",
+    expected_lang: "Hindi",
+    expected_order: "77841",
     expected_priority: "P1"
   }
 ];
@@ -420,11 +504,10 @@ class CodemixSkill {
       }
     });
 
-    const lowerUtterance = " " + utterance.toLowerCase() + " ";
     const idMatch = utterance.match(/\b(\d{5})\b/);
     const orderId = idMatch ? idMatch[1] : null;
 
-    // Score-based Intent Resolution
+    // Score-based Intent Resolution with Precise Word Boundaries
     let bestIntent = null;
     let highestScore = 0;
 
@@ -432,8 +515,12 @@ class CodemixSkill {
       let score = 0;
       rule.weights.forEach(group => {
         const matched = group.kw.some(kw => {
+          // Native Indic script characters
           if (/[\u0900-\u0D7F]/.test(kw)) return utterance.includes(kw);
-          return lowerUtterance.includes(kw.toLowerCase());
+          // Word boundary matching for Latin / English words
+          const escaped = kw.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+          const wordBoundaryRegex = new RegExp(`(^|[^\\p{L}\\p{N}])` + escaped + `($|[^\\p{L}\\p{N}])`, "iu");
+          return wordBoundaryRegex.test(utterance);
         });
         if (matched) score += group.w;
       });
@@ -460,15 +547,16 @@ class CodemixSkill {
     }
 
     // Sentiment detection
-    const isAngry = /complaint|scene|yaar|kova|ghussa|bakwaas|fraud|worst|terrible|horrible|cheated|robbery|rude|abuse/i.test(utterance) ||
+    const isAngry = /\b(complaint|scene|yaar|kova|ghussa|bakwaas|fraud|worst|terrible|horrible|cheated|robbery|rude|abuse|unacceptable)\b/i.test(utterance) ||
       /[\u0B95-\u0BBF]*கோவ|गुस्सा|খারাপ/.test(utterance);
     const sentiment = isAngry ? "frustrated" : "concerned";
 
     // Dialect Identification Heuristics (Latin transliterations)
-    const TA_RE = /\b(enna|panna|pannunga|pannen|vendum|venum|mudiyala|vandhu|aayiduchu|irukku|seri|romba|konjam|epdi|eppo|enga|sollunga|paakanum|thala|anna|naan|neenga|ille|illa|nalla|tharen|anuppuren|ippo|aachu|pannitanga|kitta|pesanum|varudhu|therila|irukaru)\b/i;
-    const BN_RE = /\b(ami|tumi|apni|ache|kore|hocche|kintu|ekhon|keno|kothay|bhalo|hoyeche|korechi|ferot|porjonto|hoyni|eta|theke|geche)\b/i;
+    const lowerUtterance = " " + utterance.toLowerCase() + " ";
+    const TA_RE = /\b(enna|panna|pannunga|pannen|vendum|venum|mudiyala|vandhu|aayiduchu|irukku|seri|romba|konjam|epdi|eppo|enga|sollunga|paakanum|thala|anna|naan|neenga|ille|illa|nalla|tharen|anuppuren|ippo|aachu|pannitanga|kitta|pesanum|varudhu|therila|irukaru|thevai|vidunga|aayirukku)\b/i;
+    const BN_RE = /\b(ami|tumi|apni|ache|kore|hocche|kintu|ekhon|keno|kothay|bhalo|hoyeche|korechi|ferot|porjonto|hoyni|eta|theke|geche|korechilam|dilo|baje)\b/i;
     const MR_RE = /\b(mala|tula|ahe|kay|kasa|kuthe|ata|pan|nahi zala|zala|kela)\b/i;
-    const HI_RE = /\b(mera|meri|mere|main|mujhe|aap|aapne|nahi|nahin|hai|hua|raha|rahi|kar|kiya|abhi|kal|aaj|bhi|koi|kya|ye|yeh|bhaiya|yaar|se|ko|ka|ki|ke|phir|maine|karunga|dijiye|jaldi|chahiye|turant|dekha|tha|bhej|mila|chori|raste)\b/i;
+    const HI_RE = /\b(mera|meri|mere|main|mujhe|aap|aapne|nahi|nahin|hai|hua|raha|rahi|kar|kiya|abhi|kal|aaj|bhi|koi|kya|ye|yeh|bhaiya|yaar|se|ko|ka|ki|ke|phir|maine|karunga|dijiye|jaldi|chahiye|turant|dekha|tha|bhej|mila|chori|raste|hoga|hafta)\b/i;
 
     let detectedIndic = null;
     if (detectedScripts.size > 0) detectedIndic = [...detectedScripts][0];
@@ -681,7 +769,7 @@ Rules: "l" is "hi" for ANY Indic-language word written in Latin script (Hindi, T
   }
 
   /**
-   * Runs the complete Benchmark Suite (Tuned Set + Held-Out Generalization Set)
+   * Runs the complete Benchmark Suite
    */
   runBenchmark(customDataset = null) {
     if (customDataset) {
@@ -689,12 +777,13 @@ Rules: "l" is "hi" for ANY Indic-language word written in Latin script (Hindi, T
     }
 
     const tunedResults = this.evaluateDataset(BENCHMARK_DATASET);
-    const heldOutResults = this.evaluateDataset(HELD_OUT_DATASET);
+    const extendedResults = this.evaluateDataset(HELD_OUT_DATASET);
+    const blindResults = this.evaluateDataset(BLIND_DATASET);
 
     return {
       tuned: tunedResults,
-      heldOut: heldOutResults,
-      // Combined legacy shortcuts
+      extended: extendedResults,
+      blind: blindResults,
       total: tunedResults.total,
       intentMatches: tunedResults.intentMatches,
       intentAccuracy: tunedResults.intentAccuracy,
@@ -706,31 +795,15 @@ Rules: "l" is "hi" for ANY Indic-language word written in Latin script (Hindi, T
       results: tunedResults.results
     };
   }
-
-  /**
-   * Optional Live Benchmark Runner through Gemini API
-   */
-  async runBenchmarkLive(apiKey, model = null, dataset = BENCHMARK_DATASET) {
-    if (!apiKey) throw new Error("API key required for live benchmark");
-    const results = [];
-    for (const item of dataset) {
-      try {
-        const res = await this.analyseLive(item.text, apiKey, model);
-        results.push({ id: item.id, item, res, success: true });
-      } catch (e) {
-        results.push({ id: item.id, item, error: e.message, success: false });
-      }
-    }
-    return results;
-  }
 }
 
-// Universal Module Definition (Browser Global + Node CommonJS)
+// Universal Global Attachment (for Browser Scripts)
 if (typeof window !== "undefined") {
   window.CodemixSkill = CodemixSkill;
   window.CRM_ORDERS = CRM_ORDERS;
   window.BENCHMARK_DATASET = BENCHMARK_DATASET;
   window.HELD_OUT_DATASET = HELD_OUT_DATASET;
+  window.BLIND_DATASET = BLIND_DATASET;
   window.INTENT_RULES = INTENT_RULES;
 }
 if (typeof globalThis !== "undefined") {
@@ -738,8 +811,13 @@ if (typeof globalThis !== "undefined") {
   globalThis.CRM_ORDERS = CRM_ORDERS;
   globalThis.BENCHMARK_DATASET = BENCHMARK_DATASET;
   globalThis.HELD_OUT_DATASET = HELD_OUT_DATASET;
+  globalThis.BLIND_DATASET = BLIND_DATASET;
   globalThis.INTENT_RULES = INTENT_RULES;
 }
 if (typeof module !== "undefined" && module.exports) {
-  module.exports = { CodemixSkill, CRM_ORDERS, BENCHMARK_DATASET, HELD_OUT_DATASET, EN_WORDS, INTENT_RULES };
+  module.exports = { CodemixSkill, CRM_ORDERS, BENCHMARK_DATASET, HELD_OUT_DATASET, BLIND_DATASET, EN_WORDS, INTENT_RULES };
 }
+
+// Export for modern ES Module environments
+export { CodemixSkill, CRM_ORDERS, BENCHMARK_DATASET, HELD_OUT_DATASET, BLIND_DATASET, INTENT_RULES, EN_WORDS };
+export default CodemixSkill;

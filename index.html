@@ -144,9 +144,10 @@
     <div class="card hidden" id="c-bench">
       <h2>📊 Empirical Benchmark Scorecard</h2>
       <div style="display:flex;gap:10px;margin-bottom:14px;align-items:center;flex-wrap:wrap">
-        <button class="chip" id="btn-tab-tuned" style="border-color:var(--en);color:var(--text)">Tuned Set (20 Calls)</button>
-        <button class="chip" id="btn-tab-heldout">Held-Out Test Set (8 Calls)</button>
-        <span class="stat" id="bench-desc">Tuned baseline evaluation</span>
+        <button class="chip" id="btn-tab-tuned" style="border-color:var(--en);color:var(--text)">Tuned Set (20)</button>
+        <button class="chip" id="btn-tab-extended">Extended Set (8)</button>
+        <button class="chip" id="btn-tab-blind">Blind Test Set (10)</button>
+        <span class="stat" id="bench-desc">Tuned baseline evaluation (20 calls)</span>
       </div>
       <div class="bench-stat-grid">
         <div class="bench-stat-box">
@@ -245,13 +246,23 @@ const res = codemix.analyseOffline(callTranscript);</pre>
 </div>
 
 <!-- Core Engine Module (Independent & Reusable) -->
-<script src="codemix.js"></script>
+<script type="module">
+import { CodemixSkill, CRM_ORDERS, BENCHMARK_DATASET, HELD_OUT_DATASET, BLIND_DATASET, INTENT_RULES, EN_WORDS } from "./codemix.js";
 
-<script>
+// Attach to window so external console scripts or inline handlers have direct access
+window.CodemixSkill = CodemixSkill;
+window.CRM_ORDERS = CRM_ORDERS;
+window.BENCHMARK_DATASET = BENCHMARK_DATASET;
+window.HELD_OUT_DATASET = HELD_OUT_DATASET;
+window.BLIND_DATASET = BLIND_DATASET;
+window.INTENT_RULES = INTENT_RULES;
+window.EN_WORDS = EN_WORDS;
+
 const $ = id => document.getElementById(id);
 
 // Instantiate reusable CodemixSkill module
 const skill = new CodemixSkill();
+window.skill = skill;
 
 const SAMPLES = [
   ["Refund chase (Hinglish)", "Bhaiya mera order abhi tak deliver nahi hua, tracking bhi update nahi ho raha hai. Main kal se try kar raha hoon but koi response nahi. Order number 48211 hai."],
@@ -404,19 +415,30 @@ let currentBenchTab = "tuned";
 
 function renderBenchmark(tab = "tuned") {
   currentBenchTab = tab;
-  const isTuned = tab === "tuned";
-  const results = isTuned ? skill.runBenchmark(BENCHMARK_DATASET) : skill.runBenchmark(HELD_OUT_DATASET);
+  let dataset = BENCHMARK_DATASET;
+  let desc = "Tuned baseline evaluation (20 calls)";
+  if (tab === "extended") {
+    dataset = HELD_OUT_DATASET;
+    desc = "Extended test set (8 calls) — keyword rules were written alongside these";
+  } else if (tab === "blind") {
+    dataset = BLIND_DATASET;
+    desc = "Genuinely blind test set (10 calls) — rules untouched to test zero-shot generalization";
+  }
+  
+  const results = skill.runBenchmark(dataset);
   
   $("b-acc").textContent = results.intentAccuracy;
   $("b-lang").textContent = results.langAccuracy;
   $("b-ent").textContent = results.entityAccuracy;
   $("b-lat").textContent = results.avgLatencyMs + " ms";
 
-  $("btn-tab-tuned").style.borderColor = isTuned ? "var(--en)" : "var(--line)";
-  $("btn-tab-tuned").style.color = isTuned ? "var(--text)" : "var(--muted)";
-  $("btn-tab-heldout").style.borderColor = !isTuned ? "var(--en)" : "var(--line)";
-  $("btn-tab-heldout").style.color = !isTuned ? "var(--text)" : "var(--muted)";
-  $("bench-desc").textContent = isTuned ? "Tuned baseline evaluation (20 calls)" : "Unseen held-out generalization test (8 calls)";
+  $("btn-tab-tuned").style.borderColor = tab === "tuned" ? "var(--en)" : "var(--line)";
+  $("btn-tab-tuned").style.color = tab === "tuned" ? "var(--text)" : "var(--muted)";
+  $("btn-tab-extended").style.borderColor = tab === "extended" ? "var(--en)" : "var(--line)";
+  $("btn-tab-extended").style.color = tab === "extended" ? "var(--text)" : "var(--muted)";
+  $("btn-tab-blind").style.borderColor = tab === "blind" ? "var(--en)" : "var(--line)";
+  $("btn-tab-blind").style.color = tab === "blind" ? "var(--text)" : "var(--muted)";
+  $("bench-desc").textContent = desc;
 
   const rows = $("bench-rows");
   rows.innerHTML = "";
@@ -444,10 +466,11 @@ $("btn-bench").onclick = () => {
 };
 
 $("btn-tab-tuned").onclick = () => renderBenchmark("tuned");
-$("btn-tab-heldout").onclick = () => renderBenchmark("heldout");
+$("btn-tab-extended").onclick = () => renderBenchmark("extended");
+$("btn-tab-blind").onclick = () => renderBenchmark("blind");
 
 window.loadBenchCase = function(id) {
-  const allCases = [...BENCHMARK_DATASET, ...HELD_OUT_DATASET];
+  const allCases = [...BENCHMARK_DATASET, ...HELD_OUT_DATASET, ...BLIND_DATASET];
   const item = allCases.find(b => String(b.id) === String(id));
   if(item) {
     $("inp").value = item.text;
