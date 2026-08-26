@@ -8,11 +8,12 @@
 
 <br>
 
-[![Demo](https://img.shields.io/badge/Open%20demo-index.html-5FD0DE?style=for-the-badge&logo=googlechrome&logoColor=white)](#-running-the-demo)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-codemix--skill.vercel.app-5FD0DE?style=for-the-badge&logo=vercel&logoColor=white)](https://codemix-skill.vercel.app/)
 [![Video](https://img.shields.io/badge/Watch%20Demo-YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/aGfRv_katxU)
 [![Hackathon](https://img.shields.io/badge/The%20Great%20Agent-Hackathon%202026-F0A340?style=for-the-badge)](https://the-great-agent-hackathon.devpost.com/)
 [![Devpost](https://img.shields.io/badge/Devpost-Submission-003E54?style=for-the-badge&logo=devpost&logoColor=white)](https://devpost.com/software/codemix-skill-code-mixed-support-calls-english-tickets)
 
+![Vercel](https://img.shields.io/badge/Hosted%20on-Vercel-000000?style=flat-square&logo=vercel&logoColor=white)
 ![ElevenLabs](https://img.shields.io/badge/ElevenLabs-Scribe%20v2%20%2B%20Multilingual%20v2-000000?style=flat-square&logo=elevenlabs&logoColor=white)
 ![Gemini](https://img.shields.io/badge/Gemini-3.7%20Flash-4285F4?style=flat-square&logo=google&logoColor=white)
 ![Freshworks](https://img.shields.io/badge/Freshworks-Agent%20Studio-12AF97?style=flat-square)
@@ -26,7 +27,7 @@
 <br>
 
 > [!IMPORTANT]
-> **Zero-install demo.** Open `index.html` in Chrome — it works immediately on the built-in engine with no API keys. Add a Gemini key and an ElevenLabs key for the full live version. Keys stay in the browser tab and are never saved.
+> **Zero-install live demo.** Open **[codemix-skill.vercel.app](https://codemix-skill.vercel.app/)** or open `index.html` locally — it works immediately on the built-in engine with no API keys. Add a Gemini key and an ElevenLabs key for the full live version. Keys stay in the browser tab and are never saved.
 
 </div>
 
@@ -143,18 +144,22 @@ graph TD
 
 ## 🚀 Running the demo
 
-### Zero-key mode (works immediately)
+### 1. Live Web Version (Instant)
+
+Open **[https://codemix-skill.vercel.app/](https://codemix-skill.vercel.app/)** in any browser. It runs immediately on the client-side deterministic engine without needing any setup.
+
+### 2. Local Zero-key mode
 
 ```
-1. Clone this repo
-2. Open index.html in Chrome
+1. Clone this repo: git clone https://github.com/ramanathanmani/great-agent-hackathon-2026.git
+2. Open index.html in Chrome or Edge
 3. Click "Handle call" — the built-in engine processes the sample input
 ```
 
-### Full mode (Gemini + ElevenLabs)
+### 3. Full mode (Gemini + ElevenLabs)
 
 ```
-1. Open index.html in Chrome
+1. Open the live link or index.html
 2. Click "Keys"
 3. Add a Gemini API key from https://aistudio.google.com
 4. Add an ElevenLabs API key

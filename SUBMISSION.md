@@ -20,6 +20,10 @@ Track 2 — Platform Agent Skills & Knowledge
 
 [https://youtu.be/aGfRv_katxU](https://youtu.be/aGfRv_katxU)
 
+## Live Demo URL
+
+[https://codemix-skill.vercel.app/](https://codemix-skill.vercel.app/)
+
 ---
 
 ## Problem
