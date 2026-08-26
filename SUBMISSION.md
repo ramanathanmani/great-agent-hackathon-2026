@@ -113,10 +113,6 @@ a demo, and we would rather learn that today than on stage.
 What we have not done: measured accuracy on a labelled set. We would rather tell you that than
 invent a number.
 
-\[Add 1-2 sentences of your own here: what you two have built before, and why this problem
-matters to you personally. If either of you has watched a family member give up on a support
-call because of language, say that — it is the strongest line you can write, and only you
-can write it.]
 
 \---
 
