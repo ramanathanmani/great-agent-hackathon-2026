@@ -725,7 +725,7 @@ Rules: "l" is "hi" for ANY Indic-language word written in Latin script (Hindi, T
   }
 }
 
-// Universal Module Definition (Browser Global + CommonJS + ES Module)
+// Universal Module Definition (Browser Global + Node CommonJS)
 if (typeof window !== "undefined") {
   window.CodemixSkill = CodemixSkill;
   window.CRM_ORDERS = CRM_ORDERS;
@@ -733,9 +733,13 @@ if (typeof window !== "undefined") {
   window.HELD_OUT_DATASET = HELD_OUT_DATASET;
   window.INTENT_RULES = INTENT_RULES;
 }
+if (typeof globalThis !== "undefined") {
+  globalThis.CodemixSkill = CodemixSkill;
+  globalThis.CRM_ORDERS = CRM_ORDERS;
+  globalThis.BENCHMARK_DATASET = BENCHMARK_DATASET;
+  globalThis.HELD_OUT_DATASET = HELD_OUT_DATASET;
+  globalThis.INTENT_RULES = INTENT_RULES;
+}
 if (typeof module !== "undefined" && module.exports) {
   module.exports = { CodemixSkill, CRM_ORDERS, BENCHMARK_DATASET, HELD_OUT_DATASET, EN_WORDS, INTENT_RULES };
 }
-
-// Named ES Module export
-export { CodemixSkill, CRM_ORDERS, BENCHMARK_DATASET, HELD_OUT_DATASET, INTENT_RULES, EN_WORDS };
