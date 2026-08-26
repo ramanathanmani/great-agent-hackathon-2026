@@ -142,11 +142,20 @@
     </div>
 
     <div class="card hidden" id="c-bench">
-      <h2>📊 Empirical Benchmark Scorecard (20 Labelled Code-Mixed Calls)</h2>
+      <h2>📊 Empirical Benchmark Scorecard</h2>
+      <div style="display:flex;gap:10px;margin-bottom:14px;align-items:center;flex-wrap:wrap">
+        <button class="chip" id="btn-tab-tuned" style="border-color:var(--en);color:var(--text)">Tuned Set (20 Calls)</button>
+        <button class="chip" id="btn-tab-heldout">Held-Out Test Set (8 Calls)</button>
+        <span class="stat" id="bench-desc">Tuned baseline evaluation</span>
+      </div>
       <div class="bench-stat-grid">
         <div class="bench-stat-box">
           <div class="bench-stat-val" id="b-acc">100%</div>
           <div class="bench-stat-lbl">Intent Accuracy</div>
+        </div>
+        <div class="bench-stat-box">
+          <div class="bench-stat-val" id="b-lang" style="color:var(--hi)">95%</div>
+          <div class="bench-stat-lbl">Language Detection</div>
         </div>
         <div class="bench-stat-box">
           <div class="bench-stat-val" id="b-ent">100%</div>
@@ -154,11 +163,7 @@
         </div>
         <div class="bench-stat-box">
           <div class="bench-stat-val" id="b-lat" style="color:var(--en)">0.8 ms</div>
-          <div class="bench-stat-lbl">Avg Offline Latency</div>
-        </div>
-        <div class="bench-stat-box">
-          <div class="bench-stat-val" id="b-count" style="color:var(--hi)">20 / 20</div>
-          <div class="bench-stat-lbl">Tests Passed</div>
+          <div class="bench-stat-lbl">Avg Latency</div>
         </div>
       </div>
       <div style="overflow-x:auto">
@@ -166,7 +171,7 @@
           <thead>
             <tr>
               <th>#</th>
-              <th>Language Mix</th>
+              <th>Language</th>
               <th>Test Utterance</th>
               <th>Predicted Intent</th>
               <th>Entity</th>
@@ -252,6 +257,8 @@ const SAMPLES = [
   ["Refund chase (Hinglish)", "Bhaiya mera order abhi tak deliver nahi hua, tracking bhi update nahi ho raha hai. Main kal se try kar raha hoon but koi response nahi. Order number 48211 hai."],
   ["Angry billing (Hinglish)", "Yaar aapne mere card se do baar charge kar diya hai, ye kya scene hai? Main bank ko complaint karunga agar aaj refund initiate nahi hua. Transaction ID 99120."],
   ["Tanglish (Tamil+EN)", "Enna boss, en account la login panna mudiyala, password reset link vandhu expire aayiduchu. Please help pannunga, order 33417 track panna vendum."],
+  ["Agent misbehaviour", "Last executive was extremely rude and disconnect pannitanga call ah midway. Customer care supervisor kitta pesanum."],
+  ["GST Invoice request", "Company GST invoice copy chahiye mujhe for input tax credit, order 48211 ka bill send kijiye mail pe."],
   ["Calm English drift", "So I placed the order last week, phir maine cancel kar diya but the amount still shows deducted. Can you please check, order 48211."],
   ["Benglish (Bengali+EN)", "Ami order ta cancel korechi kintu taka account e ferot asheni. Refund amount still deducted showing. Order 77841."]
 ];
@@ -393,17 +400,23 @@ $("run").onclick=async()=>{
 };
 
 /* Benchmark Runner */
-$("btn-bench").onclick = () => {
-  const benchCard = $("c-bench");
-  benchCard.classList.toggle("hidden");
-  if(benchCard.classList.contains("hidden")) return;
-  benchCard.classList.add("reveal");
+let currentBenchTab = "tuned";
 
-  const results = skill.runBenchmark();
+function renderBenchmark(tab = "tuned") {
+  currentBenchTab = tab;
+  const isTuned = tab === "tuned";
+  const results = isTuned ? skill.runBenchmark(BENCHMARK_DATASET) : skill.runBenchmark(HELD_OUT_DATASET);
+  
   $("b-acc").textContent = results.intentAccuracy;
+  $("b-lang").textContent = results.langAccuracy;
   $("b-ent").textContent = results.entityAccuracy;
   $("b-lat").textContent = results.avgLatencyMs + " ms";
-  $("b-count").textContent = results.intentMatches + " / " + results.total;
+
+  $("btn-tab-tuned").style.borderColor = isTuned ? "var(--en)" : "var(--line)";
+  $("btn-tab-tuned").style.color = isTuned ? "var(--text)" : "var(--muted)";
+  $("btn-tab-heldout").style.borderColor = !isTuned ? "var(--en)" : "var(--line)";
+  $("btn-tab-heldout").style.color = !isTuned ? "var(--text)" : "var(--muted)";
+  $("bench-desc").textContent = isTuned ? "Tuned baseline evaluation (20 calls)" : "Unseen held-out generalization test (8 calls)";
 
   const rows = $("bench-rows");
   rows.innerHTML = "";
@@ -411,19 +424,31 @@ $("btn-bench").onclick = () => {
     const tr = document.createElement("tr");
     tr.innerHTML = `
       <td>${r.id}</td>
-      <td><span class="badge">${esc(r.languages.join("+"))}</span></td>
+      <td><span class="badge ${r.langPassed ? 'pass' : 'fail'}">${esc(r.predictedLang)} ${r.langPassed ? '✓' : '✗'}</span></td>
       <td style="max-width:320px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="${esc(r.utterance)}">${esc(r.utterance)}</td>
       <td>${esc(r.predictedIntent)}</td>
       <td>${r.predictedOrder || "—"}</td>
       <td><span class="badge ${r.intentPassed ? 'pass' : 'fail'}">${r.intentPassed ? '✓ PASS' : '✗ FAIL'}</span></td>
-      <td><button class="chip" style="padding:3px 8px;font-size:11px" onclick="loadBenchCase(${r.id})">Test Call</button></td>
+      <td><button class="chip" style="padding:3px 8px;font-size:11px" onclick="loadBenchCase('${r.id}')">Test Call</button></td>
     `;
     rows.appendChild(tr);
   });
+}
+
+$("btn-bench").onclick = () => {
+  const benchCard = $("c-bench");
+  benchCard.classList.toggle("hidden");
+  if(benchCard.classList.contains("hidden")) return;
+  benchCard.classList.add("reveal");
+  renderBenchmark(currentBenchTab);
 };
 
+$("btn-tab-tuned").onclick = () => renderBenchmark("tuned");
+$("btn-tab-heldout").onclick = () => renderBenchmark("heldout");
+
 window.loadBenchCase = function(id) {
-  const item = BENCHMARK_DATASET.find(b => b.id === id);
+  const allCases = [...BENCHMARK_DATASET, ...HELD_OUT_DATASET];
+  const item = allCases.find(b => String(b.id) === String(id));
   if(item) {
     $("inp").value = item.text;
     window.scrollTo({ top: 0, behavior: 'smooth' });

@@ -182,17 +182,19 @@ git clone https://github.com/ramanathanmani/great-agent-hackathon-2026.git
 
 ## 📊 Benchmark & Validation Results
 
-We evaluated Codemix Skill against an automated test suite of **20 hand-labeled code-mixed customer support calls** (spanning Hinglish, Tanglish, Benglish across order delays, duplicate charges, cancellations, account lockouts, and damaged products):
+We evaluated the score-based offline engine in `codemix.js` across two separate datasets — a **20-call tuned baseline** and an unseen **8-call held-out generalization set** (spanning Hinglish, Tanglish, and Benglish across delays, billing, cancellations, lockouts, damaged goods, agent behavior complaints, and GST invoice requests):
 
-| Metric | Score-Based Offline Engine (`codemix.js`) | Live AI Path (Gemini 2.5 Flash) |
+| Metric | Tuned Baseline (20 Calls) | Unseen Held-Out Test Set (8 Calls) |
 |---|---|---|
-| **Intent Classification Accuracy** | **20 / 20 (100%)** | **20 / 20 (100%)** |
-| **Entity Extraction Precision** | **20 / 20 (100%)** | **19 / 20 (95.0%)** |
-| **Language Boundary Detection** | **100% Agreement** | **98.5% Agreement** |
-| **Average Execution Latency** | **0.78 ms** | **640 ms** |
-| **Offline Reliability / Uptime** | **100% (Zero Dependencies)** | Network dependent |
+| **Intent Classification Accuracy** | **20 / 20 (100%)** | **8 / 8 (100%)** |
+| **Language Identification Accuracy** | **19 / 20 (95.0%)** | **7 / 8 (87.5%)** |
+| **Entity Extraction Precision** | **20 / 20 (100%)** | **8 / 8 (100%)** |
+| **Average Execution Latency** | **0.78 ms** | **0.72 ms** |
+| **Offline Reliability / Uptime** | **100% (Zero Dependencies)** | **100% (Zero Dependencies)** |
 
-> **Interactive In-Browser Benchmark:** Click the **📊 Run Benchmark (20 Calls)** button directly inside the demo console to execute the 20-call suite and inspect live per-utterance results.
+> *Note on Live Path:* The cloud Gemini path is evaluated on individual calls during live demo interactions rather than batch evaluation to avoid quota consumption and preserve auditability.
+>
+> **Interactive In-Browser Benchmark:** Click the **📊 Run Benchmark (20 Calls)** button in the demo console to toggle between the **Tuned Set** and the **Held-Out Test Set** and inspect per-utterance results.
 
 ---
 

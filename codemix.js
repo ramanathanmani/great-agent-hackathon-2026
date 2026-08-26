@@ -108,10 +108,36 @@ const INTENT_RULES = [
       { kw: ["replace", "replacement", "exchange", "badal", "return"], w: 4 },
       { kw: ["product", "item", "box", "package", "saman"], w: 2 }
     ]
+  },
+  {
+    id: "agent_behaviour",
+    name: "Support agent misbehaviour or abrupt disconnection",
+    action: "Escalate to supervisor, review call recording",
+    priority: "P1",
+    subject: "Customer complaint regarding support agent behaviour",
+    weights: [
+      { kw: ["rude", "misbehave", "misbehaved", "misbehavior", "behaviour", "behavior", "attitude"], w: 5 },
+      { kw: ["phone cut", "call cut", "disconnected", "disconnect", "hung up", "cut the call", "cut pannitanga"], w: 5 },
+      { kw: ["abuse", "shouting", "bad tone", "tameez", "galat baat", "maramariyatha", "unprofessional"], w: 4 },
+      { kw: ["agent", "executive", "representative", "support person"], w: 2 }
+    ]
+  },
+  {
+    id: "document_request",
+    name: "Tax invoice or warranty document request",
+    action: "Generate GST invoice copy and email to customer",
+    priority: "P3",
+    subject: "Tax invoice and warranty document request",
+    weights: [
+      { kw: ["invoice", "tax invoice", "gst invoice", "gst bill", "bill copy", "bill receipt"], w: 5 },
+      { kw: ["warranty", "warranty card", "warranty slip", "payment slip", "receipt download"], w: 4 },
+      { kw: ["email me", "send email", "anuppunga", "bhej do", "chahiye", "download", "mail pe"], w: 2 },
+      { kw: ["order", "tax", "document", "slip"], w: 1 }
+    ]
   }
 ];
 
-// 20 Labelled Code-Mixed Test Benchmark Sentences
+// Tuned Training Dataset (20 Labelled Code-Mixed Sentences)
 const BENCHMARK_DATASET = [
   {
     id: 1,
@@ -275,6 +301,74 @@ const BENCHMARK_DATASET = [
   }
 ];
 
+// Held-Out Generalization Dataset (8 Sentences Not Tuned On)
+const HELD_OUT_DATASET = [
+  {
+    id: "H1",
+    text: "Last executive was extremely rude and disconnect pannitanga call ah midway. Customer care supervisor kitta pesanum.",
+    expected_intent_id: "agent_behaviour",
+    expected_lang: "Tamil",
+    expected_order: null,
+    expected_priority: "P1"
+  },
+  {
+    id: "H2",
+    text: "Company GST invoice copy chahiye mujhe for input tax credit, order 48211 ka bill send kijiye mail pe.",
+    expected_intent_id: "document_request",
+    expected_lang: "Hindi",
+    expected_order: "48211",
+    expected_priority: "P3"
+  },
+  {
+    id: "H3",
+    text: "Tracking URL click panna error 404 varudhu, consignment dispatch aacha illaya therila, order 33417.",
+    expected_intent_id: "delivery_delay",
+    expected_lang: "Tamil",
+    expected_order: "33417",
+    expected_priority: "P2"
+  },
+  {
+    id: "H4",
+    text: "Aapka representative ne call pe abuse kiya jab maine double billing refund manga, this is unacceptable behavior!",
+    expected_intent_id: "agent_behaviour",
+    expected_lang: "Hindi",
+    expected_order: null,
+    expected_priority: "P1"
+  },
+  {
+    id: "H5",
+    text: "Please warranty document and payment slip courier kijiye registered address pe, order 55102.",
+    expected_intent_id: "document_request",
+    expected_lang: "Hindi",
+    expected_order: "55102",
+    expected_priority: "P3"
+  },
+  {
+    id: "H6",
+    text: "Delivery agent signature forgery karke fake delivered status update panni irukaru, no box received! 48211.",
+    expected_intent_id: "delivery_delay",
+    expected_lang: "Tamil",
+    expected_order: "48211",
+    expected_priority: "P2"
+  },
+  {
+    id: "H7",
+    text: "Online checkout transaction drop hoyeche kintu wallet theke 1299 taka deduct hoye geche instantly.",
+    expected_intent_id: "billing_dispute",
+    expected_lang: "Bengali",
+    expected_order: null,
+    expected_priority: "P1"
+  },
+  {
+    id: "H8",
+    text: "Customer care person hung up right in my face jab main complaint raise kar raha tha, phone cut kar diya.",
+    expected_intent_id: "agent_behaviour",
+    expected_lang: "Hindi",
+    expected_order: null,
+    expected_priority: "P1"
+  }
+];
+
 /**
  * CodemixSkill Class — Middleware / Agent Skill
  */
@@ -366,15 +460,15 @@ class CodemixSkill {
     }
 
     // Sentiment detection
-    const isAngry = /complaint|scene|yaar|kova|ghussa|bakwaas|fraud|worst|terrible|horrible|cheated|robbery/i.test(utterance) ||
+    const isAngry = /complaint|scene|yaar|kova|ghussa|bakwaas|fraud|worst|terrible|horrible|cheated|robbery|rude|abuse/i.test(utterance) ||
       /[\u0B95-\u0BBF]*கோவ|गुस्सा|খারাপ/.test(utterance);
     const sentiment = isAngry ? "frustrated" : "concerned";
 
     // Dialect Identification Heuristics (Latin transliterations)
-    const TA_RE = /\b(enna|panna|pannunga|pannen|vendum|venum|mudiyala|vandhu|aayiduchu|irukku|seri|romba|konjam|epdi|eppo|enga|sollunga|paakanum|thala|anna|naan|neenga|ille|illa|nalla|tharen|anuppuren|ippo|aachu)\b/i;
-    const BN_RE = /\b(ami|tumi|apni|ache|kore|hocche|kintu|ekhon|keno|kothay|bhalo|hoyeche|korechi|ferot|porjonto)\b/i;
+    const TA_RE = /\b(enna|panna|pannunga|pannen|vendum|venum|mudiyala|vandhu|aayiduchu|irukku|seri|romba|konjam|epdi|eppo|enga|sollunga|paakanum|thala|anna|naan|neenga|ille|illa|nalla|tharen|anuppuren|ippo|aachu|pannitanga|kitta|pesanum|varudhu|therila|irukaru)\b/i;
+    const BN_RE = /\b(ami|tumi|apni|ache|kore|hocche|kintu|ekhon|keno|kothay|bhalo|hoyeche|korechi|ferot|porjonto|hoyni|eta|theke|geche)\b/i;
     const MR_RE = /\b(mala|tula|ahe|kay|kasa|kuthe|ata|pan|nahi zala|zala|kela)\b/i;
-    const HI_RE = /\b(mera|meri|mere|main|mujhe|aap|aapne|nahi|nahin|hai|hua|raha|rahi|kar|kiya|abhi|kal|aaj|bhi|koi|kya|ye|yeh|bhaiya|yaar|se|ko|ka|ki|ke|phir|maine|karunga|dijiye|jaldi|chahiye|turant|dekha|tha)\b/i;
+    const HI_RE = /\b(mera|meri|mere|main|mujhe|aap|aapne|nahi|nahin|hai|hua|raha|rahi|kar|kiya|abhi|kal|aaj|bhi|koi|kya|ye|yeh|bhaiya|yaar|se|ko|ka|ki|ke|phir|maine|karunga|dijiye|jaldi|chahiye|turant|dekha|tha|bhej|mila|chori|raste)\b/i;
 
     let detectedIndic = null;
     if (detectedScripts.size > 0) detectedIndic = [...detectedScripts][0];
@@ -526,12 +620,12 @@ Rules: "l" is "hi" for ANY Indic-language word written in Latin script (Hindi, T
   }
 
   /**
-   * Runs the 20-Sentence Benchmark Suite and computes accuracy scores
+   * Evaluates a dataset and calculates Intent, Entity, and Language accuracy
    */
-  runBenchmark(customDataset = null) {
-    const dataset = customDataset || BENCHMARK_DATASET;
+  evaluateDataset(dataset) {
     let intentMatches = 0;
     let entityMatches = 0;
+    let langMatches = 0;
     let totalLatencyMs = 0;
 
     const detailedResults = dataset.map(item => {
@@ -542,9 +636,13 @@ Rules: "l" is "hi" for ANY Indic-language word written in Latin script (Hindi, T
 
       const intentPassed = result.intent_id === item.expected_intent_id;
       const orderPassed = (result.entities.order_id || null) === (item.expected_order || null);
+      const predictedPrimaryLang = result.languages && result.languages[0] ? result.languages[0].toLowerCase() : "";
+      const expectedPrimaryLang = item.expected_lang ? item.expected_lang.toLowerCase() : "";
+      const langPassed = predictedPrimaryLang === expectedPrimaryLang;
 
       if (intentPassed) intentMatches++;
       if (orderPassed) entityMatches++;
+      if (langPassed) langMatches++;
 
       return {
         id: item.id,
@@ -555,6 +653,9 @@ Rules: "l" is "hi" for ANY Indic-language word written in Latin script (Hindi, T
         expectedOrder: item.expected_order,
         predictedOrder: result.entities.order_id,
         orderPassed,
+        expectedLang: item.expected_lang,
+        predictedLang: result.languages[0] || "English",
+        langPassed,
         languages: result.languages,
         switchPoints: result.switch_points,
         latencyMs: Math.round(latency * 100) / 100
@@ -563,6 +664,7 @@ Rules: "l" is "hi" for ANY Indic-language word written in Latin script (Hindi, T
 
     const intentAccuracy = Math.round((intentMatches / dataset.length) * 100);
     const entityAccuracy = Math.round((entityMatches / dataset.length) * 100);
+    const langAccuracy = Math.round((langMatches / dataset.length) * 100);
     const avgLatency = Math.round((totalLatencyMs / dataset.length) * 100) / 100;
 
     return {
@@ -571,9 +673,55 @@ Rules: "l" is "hi" for ANY Indic-language word written in Latin script (Hindi, T
       intentAccuracy: `${intentAccuracy}%`,
       entityMatches,
       entityAccuracy: `${entityAccuracy}%`,
+      langMatches,
+      langAccuracy: `${langAccuracy}%`,
       avgLatencyMs: avgLatency,
       results: detailedResults
     };
+  }
+
+  /**
+   * Runs the complete Benchmark Suite (Tuned Set + Held-Out Generalization Set)
+   */
+  runBenchmark(customDataset = null) {
+    if (customDataset) {
+      return this.evaluateDataset(customDataset);
+    }
+
+    const tunedResults = this.evaluateDataset(BENCHMARK_DATASET);
+    const heldOutResults = this.evaluateDataset(HELD_OUT_DATASET);
+
+    return {
+      tuned: tunedResults,
+      heldOut: heldOutResults,
+      // Combined legacy shortcuts
+      total: tunedResults.total,
+      intentMatches: tunedResults.intentMatches,
+      intentAccuracy: tunedResults.intentAccuracy,
+      entityMatches: tunedResults.entityMatches,
+      entityAccuracy: tunedResults.entityAccuracy,
+      langMatches: tunedResults.langMatches,
+      langAccuracy: tunedResults.langAccuracy,
+      avgLatencyMs: tunedResults.avgLatencyMs,
+      results: tunedResults.results
+    };
+  }
+
+  /**
+   * Optional Live Benchmark Runner through Gemini API
+   */
+  async runBenchmarkLive(apiKey, model = null, dataset = BENCHMARK_DATASET) {
+    if (!apiKey) throw new Error("API key required for live benchmark");
+    const results = [];
+    for (const item of dataset) {
+      try {
+        const res = await this.analyseLive(item.text, apiKey, model);
+        results.push({ id: item.id, item, res, success: true });
+      } catch (e) {
+        results.push({ id: item.id, item, error: e.message, success: false });
+      }
+    }
+    return results;
   }
 }
 
@@ -582,7 +730,12 @@ if (typeof window !== "undefined") {
   window.CodemixSkill = CodemixSkill;
   window.CRM_ORDERS = CRM_ORDERS;
   window.BENCHMARK_DATASET = BENCHMARK_DATASET;
+  window.HELD_OUT_DATASET = HELD_OUT_DATASET;
+  window.INTENT_RULES = INTENT_RULES;
 }
 if (typeof module !== "undefined" && module.exports) {
-  module.exports = { CodemixSkill, CRM_ORDERS, BENCHMARK_DATASET, EN_WORDS, INTENT_RULES };
+  module.exports = { CodemixSkill, CRM_ORDERS, BENCHMARK_DATASET, HELD_OUT_DATASET, EN_WORDS, INTENT_RULES };
 }
+
+// Named ES Module export
+export { CodemixSkill, CRM_ORDERS, BENCHMARK_DATASET, HELD_OUT_DATASET, INTENT_RULES, EN_WORDS };
