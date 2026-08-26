@@ -9,7 +9,7 @@
 <br>
 
 [![Demo](https://img.shields.io/badge/Open%20demo-index.html-5FD0DE?style=for-the-badge&logo=googlechrome&logoColor=white)](#-running-the-demo)
-[![Video](https://img.shields.io/badge/Watch%20Demo-YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](#-video-demo)
+[![Video](https://img.shields.io/badge/Watch%20Demo-YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/aGfRv_katxU)
 [![Hackathon](https://img.shields.io/badge/The%20Great%20Agent-Hackathon%202026-F0A340?style=for-the-badge)](https://the-great-agent-hackathon.devpost.com/)
 [![Devpost](https://img.shields.io/badge/Devpost-Submission-003E54?style=for-the-badge&logo=devpost&logoColor=white)](https://devpost.com/software/codemix-skill-code-mixed-support-calls-english-tickets)
 
@@ -97,10 +97,10 @@ agent.use("codemix", {
 
 ## 🎥 Video demo
 
-[![Watch Video Demo](https://img.shields.io/badge/▶%20Watch%20Demo%20Video-YouTube-red?style=for-the-badge&logo=youtube)](https://www.youtube.com/watch?v=YOUR_VIDEO_ID)
+[![Watch Video Demo](https://img.shields.io/badge/▶%20Watch%20Demo%20Video-YouTube-red?style=for-the-badge&logo=youtube)](https://youtu.be/aGfRv_katxU)
 
 > [!TIP]
-> **Watch the 2-minute walkthrough:** See live code-mixed audio transcription with ElevenLabs Scribe v2, word-level script tagging, Gemini intent resolution, multilingual voice synthesis, and automatic English ticket generation.
+> **Watch the live walkthrough on YouTube:** [https://youtu.be/aGfRv_katxU](https://youtu.be/aGfRv_katxU) — See live code-mixed audio transcription with ElevenLabs Scribe v2, word-level script tagging, Gemini intent resolution, multilingual voice synthesis, and automatic English ticket generation.
 
 ---
 
