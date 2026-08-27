@@ -183,12 +183,22 @@ const INTENT_RULES = [
 
 ---
 
+## MCP Server
+
+`mcp-server/` exposes the same engine as a standard [MCP](https://modelcontextprotocol.io)
+tool — `analyse_codemixed_call` — callable from Claude Desktop, Claude Code, or any other
+MCP client, independent of the web console. Verified end-to-end with a real MCP client in
+`mcp-server/verify.mjs` (`npm run verify`). See [mcp-server/README.md](mcp-server/README.md).
+
+---
+
 ## File Structure
 
 ```
 .
 ├── index.html                  # Interactive single-page console
 ├── codemix.js                  # Standalone core skill & benchmark engine
+├── mcp-server/                  # MCP server exposing the skill as a tool
 ├── vercel.json                 # Vercel deployment configuration
 ├── README.md                   # Project overview & quickstart
 ├── ARCHITECTURE.md             # System design & algorithms (this file)

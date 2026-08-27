@@ -1,0 +1,18 @@
+{
+  "name": "codemix-skill-mcp",
+  "version": "1.0.0",
+  "description": "MCP server exposing the Codemix Skill (code-mixed Indian call analysis) as a tool for any MCP-compatible agent.",
+  "type": "module",
+  "main": "index.js",
+  "bin": {
+    "codemix-skill-mcp": "index.js"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "verify": "node verify.mjs"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.30.0",
+    "zod": "^4.4.3"
+  }
+}

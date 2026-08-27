@@ -61,8 +61,10 @@ support, sales, HR — and stops breaking when the customer switches language.
 * Gemini 3.6 Flash for the understanding layer — token-level language tagging, intent,
 and the English ticket
 * ElevenLabs Multilingual v2 for the spoken reply
-* Freshworks Agent Studio as the agent surface
 * A standalone score-based offline engine module (codemix.js) running in the browser
+* A real Freshdesk ticket write via the Freshdesk Ticket API (api/create-ticket.js)
+* An MCP server (mcp-server/) exposing the same engine as a tool — analyse_codemixed_call —
+callable from any MCP-compatible agent, not just this console
 
 ## Challenges
 

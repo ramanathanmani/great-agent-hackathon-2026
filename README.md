@@ -16,7 +16,8 @@
 ![Vercel](https://img.shields.io/badge/Hosted%20on-Vercel-000000?style=flat-square&logo=vercel&logoColor=white)
 ![ElevenLabs](https://img.shields.io/badge/ElevenLabs-Scribe%20v2%20%2B%20Multilingual%20v2-000000?style=flat-square&logo=elevenlabs&logoColor=white)
 ![Gemini](https://img.shields.io/badge/Gemini-3.6%20Flash-4285F4?style=flat-square&logo=google&logoColor=white)
-![Freshworks](https://img.shields.io/badge/Freshworks-Agent%20Studio-12AF97?style=flat-square)
+![Freshworks](https://img.shields.io/badge/Freshworks-Ticket%20API-12AF97?style=flat-square)
+![MCP](https://img.shields.io/badge/MCP-Server-000000?style=flat-square)
 ![JavaScript](https://img.shields.io/badge/Vanilla-JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black)
 ![HTML5](https://img.shields.io/badge/HTML5-Single%20Page-E34F26?style=flat-square&logo=html5&logoColor=white)
 
@@ -241,7 +242,8 @@ We added this after hitting a **Gemini 503 mid-build**. A demo that dies on venu
 | **Listening** | ElevenLabs Scribe v2 | Doesn't force a single language up front |
 | **Understanding** | Gemini 3.6 Flash | Token-level language tagging, intent extraction, English ticket — all in one call |
 | **Speaking** | ElevenLabs Multilingual v2 | Holds quality across code-mixed speech |
-| **Agent surface** | Freshworks Agent Studio | Where the skill plugs in for production use |
+| **Ticketing** | Freshdesk Ticket API (`api/create-ticket.js`) | Writes a real Freshdesk ticket from the analysed call |
+| **Agent surface** | MCP server (`mcp-server/`) | Exposes the skill as `analyse_codemixed_call`, callable from any MCP-compatible agent |
 | **Offline engine** | Weighted Score Matching | Deterministic, weighted n-gram scoring resolving intents in <1ms |
 | **Hosting** | Vercel | Global CDN deployment with auto-HTTPS |
 
