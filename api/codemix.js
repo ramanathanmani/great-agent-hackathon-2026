@@ -37,19 +37,19 @@ module.exports = async (req, res) => {
     return res.status(200).json({
       status: "success",
       freshworks_payload: {
-        agent_reply: result.reply,
+        agent_reply: result.reply_mixed,
         detected_intent: result.intent,
         intent_confidence: result.confidence,
         ticket: {
-          subject: result.subject || `Support Request: ${result.intent}`,
-          priority: result.priority || "P2",
-          body: result.ticket_body,
-          tags: ["codemix-skill", "indic-voice", result.primaryLocale || "hi-IN"],
-          detected_order_id: result.orderId || null
+          subject: result.ticket_en.subject || `Support Request: ${result.intent}`,
+          priority: result.ticket_en.priority || "P2",
+          body: result.ticket_en.summary,
+          tags: ["codemix-skill", "indic-voice", ...(result.languages || [])],
+          detected_order_id: result.entities.order_id || null
         },
         language_metrics: {
-          switch_points: result.switches,
-          indic_ratio: result.indicRatio,
+          switch_points: result.switch_points,
+          languages: result.languages,
           token_tags: result.tokens
         }
       },
