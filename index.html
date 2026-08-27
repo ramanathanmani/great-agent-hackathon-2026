@@ -552,28 +552,5 @@ $("mic").onclick=async()=>{
 };
 </script>
 
-<!-- Freshworks / Freshdesk Freddy AI Agent Web Chat Widget SDK -->
-<script>
-function initFreshdesk() {
-  if (window.fdWidget) {
-    window.fdWidget.init({
-      token: "01M11TAMV1BZYKTYDNB7N9HHG3",
-      host: "https://citchennai-assist.freshdesk.com",
-      widgetId: "01M11TAQDD2PSN3YV4BW388N6S"
-    });
-  }
-}
-
-function initialize(i,t){
-  var e;
-  i.getElementById(t)?initFreshdesk():((e=i.createElement("script")).id=t,e.async=!0,e.src="https://citchennai-assist.freshdesk.com/webchat/js/widget.js",e.onload=initFreshdesk,i.head.appendChild(e));
-}
-
-function initiateCall(){
-  initialize(document,"Freshdesk-js-sdk");
-}
-
-window.addEventListener?window.addEventListener("load",initiateCall,!1):window.attachEvent("load",initiateCall,!1);
-</script>
 </body>
 </html>
