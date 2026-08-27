@@ -183,12 +183,21 @@ const INTENT_RULES = [
 
 ---
 
+## Freshworks Agent Studio AI Action
+
+`freshworks-app/` is a Platform 3.0 custom app that exposes the same engine as an
+**AI Action** (`analyseCodemixedCall`) inside Freddy AI Agent Studio — so an agent
+flow can call the skill directly mid-conversation instead of only rendering it in
+this demo console. See [freshworks-app/README.md](freshworks-app/README.md) for the
+install walkthrough.
+
 ## File Structure
 
 ```
 .
 ├── index.html                  # Interactive single-page console
 ├── codemix.js                  # Standalone core skill & benchmark engine
+├── freshworks-app/             # Agent Studio AI Action (custom app, FDK)
 ├── vercel.json                 # Vercel deployment configuration
 ├── README.md                   # Project overview & quickstart
 ├── ARCHITECTURE.md             # System design & algorithms (this file)

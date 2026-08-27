@@ -14,7 +14,7 @@ The caller switches language mid-sentence. The ticket stays in English.
 
 ## Track
 
-Track 2 — Platform Agent Skills & Knowledge
+Track 1 — Customer & Employee Experience
 
 ## Video Demo Link
 
