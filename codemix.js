@@ -463,7 +463,7 @@ class CodemixSkill {
     this.tts = config.tts || "elevenlabs/eleven_multilingual_v2";
     this.reply_in = config.reply_in || "caller_mix";
     this.record_in = config.record_in || "en";
-    this.defaultModel = config.defaultModel || "gemini-2.5-flash";
+    this.defaultModel = config.defaultModel || "gemini-3.6-flash";
     this.orders = Object.assign({}, CRM_ORDERS, config.orders || {});
   }
 

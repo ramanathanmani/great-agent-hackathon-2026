@@ -24,7 +24,7 @@ graph TD
     subgraph Process ["🧠 Processing Layer (codemix.js)"]
         E --> F["skill.analyseOffline(utt)<br/>Score-based weighted matching"]
         E --> G{"Gemini key present?"}
-        G -->|Yes| H["skill.analyseLive(utt)<br/>Gemini 2.5 Flash"]
+        G -->|Yes| H["skill.analyseLive(utt)<br/>Gemini 3.6 Flash"]
         G -->|No| I["Skip — use offline only"]
         H -->|"503/429"| J["Retry ×2<br/>1.2s, 4.8s backoff"]
         J -->|Fail| I

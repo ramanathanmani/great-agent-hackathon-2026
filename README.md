@@ -15,7 +15,7 @@
 
 ![Vercel](https://img.shields.io/badge/Hosted%20on-Vercel-000000?style=flat-square&logo=vercel&logoColor=white)
 ![ElevenLabs](https://img.shields.io/badge/ElevenLabs-Scribe%20v2%20%2B%20Multilingual%20v2-000000?style=flat-square&logo=elevenlabs&logoColor=white)
-![Gemini](https://img.shields.io/badge/Gemini-2.5%20Flash-4285F4?style=flat-square&logo=google&logoColor=white)
+![Gemini](https://img.shields.io/badge/Gemini-3.6%20Flash-4285F4?style=flat-square&logo=google&logoColor=white)
 ![Freshworks](https://img.shields.io/badge/Freshworks-Agent%20Studio-12AF97?style=flat-square)
 ![JavaScript](https://img.shields.io/badge/Vanilla-JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black)
 ![HTML5](https://img.shields.io/badge/HTML5-Single%20Page-E34F26?style=flat-square&logo=html5&logoColor=white)
@@ -121,7 +121,7 @@ graph TD
     C --> E["Transcript"]
     D --> E
     E --> F{"Gemini key?"}
-    F -->|Yes| G["Gemini 2.5 Flash<br/>(token tagging + intent)"]
+    F -->|Yes| G["Gemini 3.6 Flash<br/>(token tagging + intent)"]
     F -->|No| H["Score-Based Offline Engine<br/>(codemix.js)"]
     G -->|"503 / 429"| I["Retry ×2<br/>(exponential backoff)"]
     I -->|Fail| H
@@ -222,7 +222,7 @@ Every step degrades instead of failing:
 | Layer | Primary | Fallback | Trigger |
 |-|-|-|-|
 | **Listening** | ElevenLabs Scribe v2 | Browser SpeechRecognition | No ElevenLabs key |
-| **Understanding** | Gemini 2.5 Flash | Score-Based Offline Engine | No key, 503, 429, or bad JSON |
+| **Understanding** | Gemini 3.6 Flash | Score-Based Offline Engine | No key, 503, 429, or bad JSON |
 | **Speaking** | ElevenLabs Multilingual v2 | Browser speechSynthesis | No key or TTS error |
 | **Data completeness** | Live model response | `merge(live, base)` fills gaps | Partial model output |
 
@@ -239,7 +239,7 @@ We added this after hitting a **Gemini 503 mid-build**. A demo that dies on venu
 |-|-|-|
 | **Skill Module** | `codemix.js` | Reusable ES/CommonJS/Browser module implementing the skill contract |
 | **Listening** | ElevenLabs Scribe v2 | Doesn't force a single language up front |
-| **Understanding** | Gemini 2.5 Flash | Token-level language tagging, intent extraction, English ticket — all in one call |
+| **Understanding** | Gemini 3.6 Flash | Token-level language tagging, intent extraction, English ticket — all in one call |
 | **Speaking** | ElevenLabs Multilingual v2 | Holds quality across code-mixed speech |
 | **Agent surface** | Freshworks Agent Studio | Where the skill plugs in for production use |
 | **Offline engine** | Weighted Score Matching | Deterministic, weighted n-gram scoring resolving intents in <1ms |

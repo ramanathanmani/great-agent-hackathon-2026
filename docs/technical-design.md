@@ -80,7 +80,7 @@ utt.match(/[\p{L}\p{M}\p{N}']+|[^\s\p{L}\p{M}\p{N}]/gu)
 | Layer | Primary | Fallback | Trigger |
 |---|---|---|---|
 | **STT** | ElevenLabs Scribe v2 | Browser SpeechRecognition API | No key, network error, or unsupported format |
-| **Understanding** | Gemini 2.5 Flash API | Score-Based Offline Engine (`codemix.js`) | No key, 503/429 errors after 2 retries, invalid JSON |
+| **Understanding** | Gemini 3.6 Flash API | Score-Based Offline Engine (`codemix.js`) | No key, 503/429 errors after 2 retries, invalid JSON |
 | **TTS** | ElevenLabs Multilingual v2 | Browser SpeechSynthesis API | No key, TTS quota exceeded, or browser autoplay blocked |
 
 ### Merge Architecture
