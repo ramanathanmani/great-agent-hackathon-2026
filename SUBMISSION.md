@@ -1,10 +1,10 @@
-# Devpost Submission — Codemix Skill
+# Devpost Submission — FreshVoice by Freshworks
 
 ---
 
 ## Project Name
 
-Codemix Skill
+FreshVoice
 
 ## Tagline
 
@@ -34,7 +34,7 @@ This hits Indian SMBs and CX teams hardest: their callers are the most likely to
 
 ## Solution
 
-We built **Codemix Skill** — a reusable middleware engine for customer support agents that sits between speech recognition and intent execution:
+We built **FreshVoice** — an autonomous voice AI engine for Freshworks customer support that sits between speech recognition and intent execution:
 
 * **Listens Naturally:** The caller speaks freely, code-mixing English with regional languages (Hinglish, Tanglish, Benglish, etc.).
 * **Intra-Sentential Tagging:** Detects language switch points *inside* individual sentences, not just a broad call-level language tag.
@@ -92,7 +92,7 @@ RESULTS: tuned 20/20 (100%) | extended 7/8 (87.5%) | blind 50/52 (96.2%) | entit
 
 ## Freshworks Alignment
 
-Codemix Skill was engineered specifically for Freshworks Platform 3.0 ecosystems:
+FreshVoice was engineered specifically for Freshworks Platform 3.0 ecosystems:
 * **Freshdesk Ticket API (`api/create-ticket.js`):** Instantly creates structured support tickets directly in Freshdesk. Formats priority (Urgent/High/Medium), maps caller emotions into sentiment tags, attaches the English ticket summary for auditability, and preserves the raw code-mixed transcript.
 * **Freddy AI & Agent Studio Ready (`api/codemix.js`):** Provides a clean JSON REST endpoint compatible with Freshworks Agent Studio AI Actions, emitting structured `freshworks_payload` with agent replies, token tags, and switch points.
 * **Open MCP Interoperability (`mcp-server/`):** Exposes `analyse_codemixed_call` as a Model Context Protocol tool for integration into modern enterprise multi-agent workflows.

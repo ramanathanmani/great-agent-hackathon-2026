@@ -1,10 +1,12 @@
 <div align="center">
 
-# Codemix Skill
+<img src="assets/freshvoice-logo.png" alt="FreshVoice by Freshworks" width="360" />
+
+# FreshVoice by Freshworks
 
 ### **The caller switches language mid-sentence. The ticket stays in English.**
 
-#### A reusable agent skill for code-mixed Indian support calls — built for **The Great Agent Hackathon 2026** by Team **Ramanathan & Sadhana**.
+#### Autonomous Multilingual Voice AI for Freshworks — built for **The Great Agent Hackathon 2026 (Track 1: Customer & Employee Experience)** by Team **Ramanathan & Sadhana**.
 
 <br>
 
@@ -69,7 +71,7 @@ Before writing code, we checked whether someone had already solved this. We foun
 
 ## 💡 The solution
 
-**Codemix Skill** sits between speech and intent:
+**FreshVoice** sits between speech and intent:
 
 | Step | What happens |
 |---|---|

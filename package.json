@@ -1,7 +1,7 @@
 {
-  "name": "codemix-skill",
+  "name": "freshvoice",
   "version": "1.0.0",
-  "description": "A reusable agent skill for code-mixed Indian support calls (Hinglish, Tanglish, Benglish, etc.)",
+  "description": "FreshVoice by Freshworks — Autonomous Multilingual Voice AI Agent for Customer Support (Freshdesk & Freshchat)",
   "type": "module",
   "main": "codemix.js",
   "exports": {

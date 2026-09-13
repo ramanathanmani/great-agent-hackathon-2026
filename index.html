@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Codemix Skill — support agent console</title>
+<title>FreshVoice by Freshworks — Autonomous Voice Support Agent</title>
+<link rel="icon" type="image/png" href="assets/freshvoice-app-tile.png">
 <style>
   :root{
     --ink:#0D1420; --panel:#141E2E; --line:#25334A; --line2:#1C2739;
@@ -92,11 +93,20 @@
 <body>
 
 <header>
-  <div class="eyebrow">Freshworks agent skill · track 1</div>
+  <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px;">
+    <img src="assets/freshvoice-app-tile.png" alt="FreshVoice Logo" style="width:46px;height:46px;border-radius:12px;box-shadow:0 4px 14px rgba(0,0,0,0.4);vertical-align:middle;">
+    <div>
+      <div class="eyebrow" style="margin:0;letter-spacing:.14em;color:var(--en);">Freshworks Product Suite · Track 1</div>
+      <div style="font-size:22px;font-weight:700;letter-spacing:-.02em;color:#FFF;display:flex;align-items:baseline;gap:8px;">
+        FreshVoice
+        <span style="font-size:13px;font-weight:400;color:var(--muted);letter-spacing:0;">by Freshworks</span>
+      </div>
+    </div>
+  </div>
   <h1>The caller switches language mid-sentence. The ticket stays in English.</h1>
   <p class="sub">Voice agents advertise 70+ languages, but they expect one language per call. Indian callers
-    switch inside a single sentence. This skill reads the mix, pulls one intent out of it, acts, replies in the
-    caller's own mix, and writes the record in English so the support team can audit it.</p>
+    switch inside a single sentence. FreshVoice understands the mix, extracts customer intent, acts on it, replies in the
+    caller's own natural mix, and logs the structured ticket in English for Freshdesk.</p>
   <div class="legend">
     <span><i class="dot" style="background:var(--hi)"></i>Indic</span>
     <span><i class="dot" style="background:var(--en)"></i>English</span>

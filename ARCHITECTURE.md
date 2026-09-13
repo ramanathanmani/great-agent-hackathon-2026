@@ -1,8 +1,8 @@
-# Architecture — Codemix Skill
+# Architecture — FreshVoice by Freshworks
 
 ## Overview
 
-Codemix Skill processes code-mixed Indian speech (Hinglish, Tanglish, Benglish) through a 6-stage pipeline: **listen → tag → understand → act → reply → record**.
+FreshVoice processes code-mixed Indian speech (Hinglish, Tanglish, Benglish) through a 6-stage pipeline: **listen → tag → understand → act → reply → record**.
 
 The engine is encapsulated in a standalone, reusable module (`codemix.js`) that powers both the interactive web console (`index.html`) and downstream agent integrations.
 
