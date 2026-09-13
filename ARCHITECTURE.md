@@ -1,4 +1,4 @@
-# Architecture — FreshVoice by Freshworks
+# Architecture — FreshVoice
 
 ## Overview
 

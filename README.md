@@ -1,12 +1,12 @@
 <div align="center">
 
-<img src="assets/freshvoice-logo.png" alt="FreshVoice by Freshworks" width="360" />
+<img src="assets/freshvoice-logo.png" alt="FreshVoice" width="360" />
 
-# FreshVoice by Freshworks
+# FreshVoice
 
 ### **The caller switches language mid-sentence. The ticket stays in English.**
 
-#### Autonomous Multilingual Voice AI for Freshworks — built for **The Great Agent Hackathon 2026 (Track 1: Customer & Employee Experience)** by Team **Ramanathan & Sadhana**.
+#### Autonomous Multilingual Voice AI — built for **The Great Agent Hackathon 2026 (Track 1: Customer & Employee Experience)** by Team **Ramanathan & Sadhana**.
 
 <br>
 

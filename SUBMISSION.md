@@ -1,4 +1,4 @@
-# Devpost Submission — FreshVoice by Freshworks
+# Devpost Submission — FreshVoice
 
 ---
 
