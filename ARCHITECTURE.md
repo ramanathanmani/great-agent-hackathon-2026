@@ -15,7 +15,7 @@ graph TD
     subgraph Input ["🎤 Input Layer"]
         A["Caller speaks or types"]
         A --> B{"ElevenLabs key present?"}
-        B -->|Yes| C["ElevenLabs Scribe v2<br/>POST /v1/speech-to-text<br/>model: scribe_v2"]
+        B -->|Yes| C["ElevenLabs Scribe v1<br/>POST /v1/speech-to-text<br/>model: scribe_v1"]
         B -->|No| D["Browser SpeechRecognition<br/>lang: hi-IN, continuous"]
         C --> E["Raw transcript"]
         D --> E
@@ -55,7 +55,7 @@ import { CodemixSkill } from "./codemix.js";
 
 const skill = new CodemixSkill({
   locales: ["hi-IN", "ta-IN", "bn-IN", "en-IN"],
-  stt: "elevenlabs/scribe_v2",
+  stt: "elevenlabs/scribe_v1",
   tts: "elevenlabs/eleven_multilingual_v2",
   reply_in: "caller_mix",
   record_in: "en"
@@ -174,21 +174,37 @@ const INTENT_RULES = [
 
 ---
 
-## Dual Benchmark Suite (Tuned vs Held-Out Generalization)
+## Multi-Dataset Benchmark Suite (Tuned, Extended & Blind Generalization)
 
-`codemix.js` includes `skill.runBenchmark()`, which evaluates both a **20-call tuned baseline** and an unseen **8-call held-out generalization dataset** across Hindi, Tamil, and Bengali:
+`codemix.js` includes `skill.runBenchmark()`, which evaluates across three comprehensive datasets:
 
-- **Tuned Baseline (20 Calls):** 20/20 Intent (100%), 19/20 Language (95%), 20/20 Entity (100%), 0.78ms avg latency
-- **Held-Out Generalization Set (8 Calls):** 8/8 Intent (100%), 7/8 Language (87.5%), 8/8 Entity (100%), 0.72ms avg latency
+- **Tuned Baseline (20 Calls):** 20/20 Intent (100%), 19/20 Language (95.0%), 20/20 Entity (100%), 0.34ms median latency
+- **Extended Test Set (8 Calls):** 7/8 Intent (87.5%), 7/8 Language (87.5%), 8/8 Entity (100%), 0.16ms median latency
+- **Blind Generalization Set (52 Calls):** 50/52 Intent (96.2%), 48/52 Language (92.3%), 52/52 Entity (100%), 0.29ms median latency
+
+---
+
+## Module Strategy (Single Source of Truth)
+
+- **`codemix.js` (Single Source of Truth):** Houses the complete Unicode tokenizer, weighted n-gram scoring rules, benchmark datasets, and Gemini integration. All feature updates and rule tuning are made exclusively in this file.
+- **`codemix.mjs`:** 4-line ESM entry re-exporting `codemix.js` for explicit `.mjs` import targets.
+- **`codemix.cjs`:** Pure CommonJS artifact generated automatically from `codemix.js` via `scripts/build-cjs.js`. Carries a `// GENERATED` header and LF line endings. Never hand-edited; protected by CI drift check (`git diff --exit-code codemix.cjs`).
+- **`mcp-server/index.js`:** Directly imports `../codemix.js` to expose `analyse_codemixed_call` over stdio without duplicating engine code.
+
+---
+
+## Resilience, Fallback & Error Handling
+
+1. **Speech-to-Text (STT):** ElevenLabs Scribe v1 is the primary transcriber. If no ElevenLabs key is supplied, falls back seamlessly to the browser's Web Speech API (`SpeechRecognition`).
+2. **Understanding Layer:** Gemini 3.6 Flash retries up to 2 times with exponential backoff on HTTP 503 (Overloaded) and HTTP 429 (Rate Limit). If the model is not found (HTTP 404), a clear diagnostic message is raised. On network errors, key absence, or malformed JSON, execution automatically degrades to the offline score-based engine.
+3. **Data Completeness:** `CodemixSkill.merge(live, base)` performs a resilient overlay, filling any missing token tags, sentiment, or ticket properties from base offline extractions.
+4. **Voice Synthesis (TTS):** ElevenLabs Multilingual v2 falls back to browser `window.speechSynthesis`.
 
 ---
 
 ## MCP Server
 
-`mcp-server/` exposes the same engine as a standard [MCP](https://modelcontextprotocol.io)
-tool — `analyse_codemixed_call` — callable from Claude Desktop, Claude Code, or any other
-MCP client, independent of the web console. Verified end-to-end with a real MCP client in
-`mcp-server/verify.mjs` (`npm run verify`). See [mcp-server/README.md](mcp-server/README.md).
+`mcp-server/` exposes the single source-of-truth engine as a standard [MCP](https://modelcontextprotocol.io) tool — `analyse_codemixed_call` — callable from Claude Desktop, Claude Code, Cursor, or any other MCP client, independent of the web console. Verified end-to-end with a real MCP client in `mcp-server/verify.mjs` (`npm run verify:mcp`). See [mcp-server/README.md](mcp-server/README.md).
 
 ---
 
@@ -196,15 +212,36 @@ MCP client, independent of the web console. Verified end-to-end with a real MCP 
 
 ```
 .
-├── index.html                  # Interactive single-page console
-├── codemix.js                  # Standalone core skill & benchmark engine
-├── mcp-server/                  # MCP server exposing the skill as a tool
-├── vercel.json                 # Vercel deployment configuration
-├── README.md                   # Project overview & quickstart
+├── .github/
+│   └── workflows/
+│       └── ci.yml              # GitHub Actions CI matrix (Node 20/22, tests, MCP, CJS drift check)
+├── .env.example                # Example environment variables template
+├── .gitattributes              # LF line-ending normalization
+├── .gitignore                  # Git ignore rules
+├── package.json                # Root package manifest (ESM type: module, scripts, engines)
+├── vercel.json                 # Vercel deployment configuration (CORS headers, cache control)
+├── index.html                  # Interactive single-page support agent console
+├── codemix.js                  # Standalone core skill & benchmark engine (Single Source of Truth)
+├── codemix.cjs                 # Pure CommonJS entry point (GENERATED by scripts/build-cjs.js)
+├── codemix.mjs                 # Modern ES Module re-export shim
+├── scripts/
+│   └── build-cjs.js            # Automated sync script: compiles codemix.cjs from codemix.js
+├── api/
+│   ├── codemix.js              # Freshworks Freddy AI integration endpoint
+│   └── create-ticket.js        # Freshdesk ticket creation endpoint
+├── test/
+│   └── benchmark.test.mjs      # Automated benchmark suite and regression tests
+├── mcp-server/
+│   ├── index.js                # MCP Server (imports ../codemix.js)
+│   ├── verify.mjs              # MCP Client verification runner (timeout, path.resolve)
+│   ├── package.json            # MCP server package manifest
+│   ├── package-lock.json       # MCP server dependency lockfile
+│   └── README.md               # MCP server documentation & Claude/Cursor configuration
+├── README.md                   # Project overview, judge quickstart & benchmarks
 ├── ARCHITECTURE.md             # System design & algorithms (this file)
 ├── ROADMAP.md                  # Milestone planning
 ├── LICENSE                     # MIT License
-├── SUBMISSION.md               # Devpost submission details
+├── SUBMISSION.md               # Devpost submission details (Track 1)
 └── docs/
     ├── demo-walkthrough.gif    # 30-second live animated demo
     ├── demo-screenshot.png     # Full-page screenshot
