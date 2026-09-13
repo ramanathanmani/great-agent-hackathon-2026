@@ -1,0 +1,38 @@
+name: CI & Benchmark Verification
+
+on:
+  push:
+    branches: [main, master, polish/submission]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  test-and-benchmark:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [20.x, 22.x]
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install MCP server dependencies
+        run: npm run setup
+
+      - name: Build and Sync CommonJS Artifact
+        run: npm run build
+
+      - name: CommonJS Drift Check (Enforce SSOT)
+        run: git diff --exit-code codemix.cjs
+
+      - name: Run Automated Benchmark Suite (Tuned 20, Extended 8, Blind 52)
+        run: npm test
+
+      - name: Verify MCP Server Interoperability
+        run: npm run verify:mcp
