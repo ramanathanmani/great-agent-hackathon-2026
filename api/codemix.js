@@ -1,4 +1,4 @@
-const { CodemixSkill } = require("../codemix.js");
+import { CodemixSkill } from "../codemix.js";
 
 const skill = new CodemixSkill({
   locales: ["hi-IN", "ta-IN", "bn-IN", "en-IN"],
@@ -6,11 +6,14 @@ const skill = new CodemixSkill({
   record_in: "en"
 });
 
-module.exports = async (req, res) => {
-  // Enable CORS for Freshworks Agent Studio & external requests
-  res.setHeader("Access-Control-Allow-Credentials", true);
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "GET,OPTIONS,PATCH,DELETE,POST,PUT");
+export default async function handler(req, res) {
+  const allowedOrigin = process.env.ALLOWED_ORIGIN || 
+    (process.env.NODE_ENV === "production" ? "https://codemix-skill.vercel.app" : "*");
+
+  // Enable CORS for Freshworks Agent Studio, Web Console, and Allowed Origins
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+  res.setHeader("Access-Control-Allow-Origin", allowedOrigin);
+  res.setHeader("Access-Control-Allow-Methods", "POST,OPTIONS");
   res.setHeader(
     "Access-Control-Allow-Headers",
     "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization"
@@ -21,16 +24,41 @@ module.exports = async (req, res) => {
     return;
   }
 
-  if (req.method !== "POST" && req.method !== "GET") {
-    return res.status(405).json({ error: "Method Not Allowed" });
+  // Method guard: POST only
+  if (req.method !== "POST") {
+    return res.status(405).json({
+      error: {
+        code: "METHOD_NOT_ALLOWED",
+        message: "Only POST requests are supported."
+      }
+    });
+  }
+
+  // Payload validation
+  const body = req.body;
+  if (!body || typeof body !== "object") {
+    return res.status(400).json({
+      error: {
+        code: "INVALID_PAYLOAD",
+        message: "Request body must be a valid JSON object."
+      }
+    });
+  }
+
+  const utterance = (typeof body.utterance === "string" ? body.utterance :
+                     typeof body.text === "string" ? body.text :
+                     typeof body.message === "string" ? body.message : "").trim();
+
+  if (!utterance) {
+    return res.status(400).json({
+      error: {
+        code: "MISSING_UTTERANCE",
+        message: "The 'utterance' field is required and cannot be empty."
+      }
+    });
   }
 
   try {
-    const utterance = (req.body && (req.body.utterance || req.body.text || req.body.message)) ||
-                      (req.query && (req.query.utterance || req.query.text || req.query.message)) ||
-                      "Bhaiya mera order abhi tak deliver nahi hua, tracking update nahi ho raha";
-
-    // Run Codemix Skill Analysis
     const result = skill.analyseOffline(utterance);
 
     // Format output specifically tailored for Freshworks Freddy AI Agent & Freshdesk Tickets
@@ -55,10 +83,12 @@ module.exports = async (req, res) => {
       },
       raw: result
     });
-  } catch (error) {
+  } catch (err) {
     return res.status(500).json({
-      status: "error",
-      message: error.message || "Failed to process code-mixed utterance"
+      error: {
+        code: "ANALYSIS_FAILED",
+        message: "Failed to process code-mixed utterance."
+      }
     });
   }
-};
+}

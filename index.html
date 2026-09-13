@@ -323,7 +323,7 @@ async function elevenTranscribe(blob){
   const k=$("ekey").value.trim(); if(!k) throw new Error("no key");
   const fd=new FormData();
   fd.append("file", blob, "call.webm");
-  fd.append("model_id","scribe_v2");
+  fd.append("model_id","scribe_v1");
   const r=await fetch("https://api.elevenlabs.io/v1/speech-to-text",{
     method:"POST", headers:{"xi-api-key":k}, body:fd});
   if(!r.ok) throw new Error("stt "+r.status);
@@ -440,7 +440,7 @@ function renderBenchmark(tab = "tuned") {
     desc = "Extended test set (8 calls) — keyword rules were written alongside these";
   } else if (tab === "blind") {
     dataset = BLIND_DATASET;
-    desc = "Genuinely blind test set (10 calls) — rules untouched to test zero-shot generalization";
+    desc = "Genuinely blind test set (52 calls) — rules untouched to test zero-shot generalization";
   }
   
   const results = skill.runBenchmark(dataset);
