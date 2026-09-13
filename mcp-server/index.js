@@ -2,7 +2,7 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
-import { CodemixSkill } from "./codemix.js";
+import { CodemixSkill } from "../codemix.js";
 
 const skill = new CodemixSkill({
   locales: ["hi-IN", "ta-IN", "bn-IN", "en-IN"],
