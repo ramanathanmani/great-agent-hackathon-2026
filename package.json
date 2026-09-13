@@ -1,0 +1,37 @@
+{
+  "name": "codemix-skill",
+  "version": "1.0.0",
+  "description": "A reusable agent skill for code-mixed Indian support calls (Hinglish, Tanglish, Benglish, etc.)",
+  "type": "module",
+  "main": "codemix.js",
+  "exports": {
+    "import": "./codemix.js",
+    "require": "./codemix.cjs"
+  },
+  "scripts": {
+    "pretest": "node scripts/build-cjs.js",
+    "test": "node test/benchmark.test.mjs",
+    "benchmark": "node test/benchmark.test.mjs",
+    "build": "node scripts/build-cjs.js",
+    "verify:mcp": "node mcp-server/verify.mjs",
+    "setup": "npm --prefix mcp-server install"
+  },
+  "keywords": [
+    "codemix",
+    "indic",
+    "hinglish",
+    "tanglish",
+    "benglish",
+    "speech",
+    "customer-support",
+    "freshworks",
+    "gemini",
+    "elevenlabs",
+    "mcp"
+  ],
+  "author": "Ramanathan Manikandan & Sadhana Shanmugam",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
