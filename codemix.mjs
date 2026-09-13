@@ -1,9 +1,5 @@
 /**
- * Codemix Skill — ES Module Wrapper
+ * Codemix Skill — ES Module Entry Point
  */
-import { createRequire } from "module";
-const require = createRequire(import.meta.url);
-const { CodemixSkill, CRM_ORDERS, BENCHMARK_DATASET, HELD_OUT_DATASET, INTENT_RULES, EN_WORDS } = require("./codemix.js");
-
-export { CodemixSkill, CRM_ORDERS, BENCHMARK_DATASET, HELD_OUT_DATASET, INTENT_RULES, EN_WORDS };
-export default CodemixSkill;
+export * from "./codemix.js";
+export { default } from "./codemix.js";
