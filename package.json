@@ -14,6 +14,7 @@
     "benchmark": "node test/benchmark.test.mjs",
     "build": "node scripts/build-cjs.js",
     "verify:mcp": "node mcp-server/verify.mjs",
+    "check:specs": "node scripts/check-specs.mjs",
     "setup": "npm --prefix mcp-server install"
   },
   "keywords": [
