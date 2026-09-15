@@ -44,6 +44,21 @@ function familyOf(strategyId) {
   return STRATEGY_FAMILIES[strategyId] || strategyId;
 }
 
+// Candidate strategy pools per intent (Section 9's "moves tried" vocabulary).
+// Single source of truth — shared by simulate.mjs (synthetic harness) and
+// any production endpoint (e.g. api/decision-policy.js), so the two never
+// drift apart.
+export const STRATEGY_POOLS = {
+  delivery_delay: ["empathy_phrase", "technician_promise", "refund_offer", "escalate_supervisor"],
+  billing_dispute: ["apology", "verify_transaction", "refund_offer", "escalate_supervisor"],
+  cancellation_refund: ["apology", "verify_transaction", "refund_offer", "escalate_supervisor"],
+  account_access: ["apology", "technician_promise", "human_handoff", "escalate_supervisor"],
+  damaged_item: ["apology", "replacement_offer", "refund_offer", "escalate_supervisor"],
+  agent_behaviour: ["apology", "human_handoff", "escalate_supervisor"],
+  document_request: ["technician_promise", "human_handoff", "escalate_supervisor"],
+  general_support: ["empathy_phrase", "technician_promise", "escalate_supervisor"]
+};
+
 export class StrategyStateStore {
   constructor() {
     /** @type {Map<string, Array<{strategyId:string, family:string, turnIndex:number, outcome:'resolved'|'failed', ts:number}>>} */
@@ -69,6 +84,27 @@ export class StrategyStateStore {
   vectorFor(ticketId) {
     // The persisted "strategy-state vector" referenced by Claim 5.1/5.4 —
     // returned as a plain object so identity can be compared across tiers.
+    return this.byTicket.get(ticketId) || [];
+  }
+
+  // --- Rehydration across stateless invocations -----------------------
+  //
+  // In-process this store is just a Map, which is fine for a single
+  // long-running harness (simulate.mjs). A serverless endpoint (Vercel
+  // function) is invoked fresh per HTTP request and has no memory between
+  // turns of the same call, so the caller (Freshworks Agent Studio) must
+  // hold the serialized vector in its own conversation-context variable
+  // and pass it back in on the next turn. loadState/serialize are the pair
+  // that makes that pass-through honest: same suppression semantics, just
+  // rehydrated instead of accumulated in-process. This is NOT a database —
+  // it holds no state between the export and the next loadState call.
+  loadState(ticketId, entries) {
+    if (Array.isArray(entries) && entries.length) {
+      this.byTicket.set(ticketId, entries.slice());
+    }
+  }
+
+  serialize(ticketId) {
     return this.byTicket.get(ticketId) || [];
   }
 }

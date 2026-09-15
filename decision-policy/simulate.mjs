@@ -23,7 +23,8 @@ import {
   escalateAtomic,
   selectTier,
   ContinuityDegradationController,
-  NaiveDegradationController
+  NaiveDegradationController,
+  STRATEGY_POOLS
 } from "./engine.mjs";
 import fs from "node:fs";
 import path from "node:path";
@@ -35,19 +36,8 @@ const rng = mulberry32(SEED);
 
 const skill = new CodemixSkill();
 
-// ---------------------------------------------------------------------------
-// Candidate strategy pools per intent (Section 9's "moves tried" vocabulary)
-// ---------------------------------------------------------------------------
-const STRATEGY_POOLS = {
-  delivery_delay: ["empathy_phrase", "technician_promise", "refund_offer", "escalate_supervisor"],
-  billing_dispute: ["apology", "verify_transaction", "refund_offer", "escalate_supervisor"],
-  cancellation_refund: ["apology", "verify_transaction", "refund_offer", "escalate_supervisor"],
-  account_access: ["apology", "technician_promise", "human_handoff", "escalate_supervisor"],
-  damaged_item: ["apology", "replacement_offer", "refund_offer", "escalate_supervisor"],
-  agent_behaviour: ["apology", "human_handoff", "escalate_supervisor"],
-  document_request: ["technician_promise", "human_handoff", "escalate_supervisor"],
-  general_support: ["empathy_phrase", "technician_promise", "escalate_supervisor"]
-};
+// STRATEGY_POOLS (candidate strategies per intent) now lives in engine.mjs
+// as the single source of truth shared with api/decision-policy.js.
 
 // ---------------------------------------------------------------------------
 // Build synthetic multi-turn tickets from the project's own datasets.
