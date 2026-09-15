@@ -43,7 +43,7 @@ specs/
 | Acceptance criteria | bullet list under the requirement, EARS style (`WHEN … THE SYSTEM SHALL …`) |
 | Priority (optional) | `Priority: Must` \| `Should` \| `Could` |
 | Current state (optional, for retro-specs) | `Current: Met` \| `Partial` \| `Unmet` — assessment of the code today |
-| Verification | `Verify: \`path/to/test.mjs\`` (file must exist), `Verify: pending (T-###)`, or both: `` Verify: `test/a.mjs`; pending (T-009) `` |
+| Verification | `Verify: \`path/to/test.mjs\`` (file must exist), `Verify: pending (T-###)` or `pending (T-###, T-###)`, or both: `` Verify: `test/a.mjs`; pending (T-009) `` |
 | Task line | `- [ ] T-###: description (REQ-DP-001, REQ-DP-002)` |
 | Coverage | every REQ covered by ≥ 1 task, unless `Current: Met` with no pending verification; every task references an existing REQ |
 | Implemented specs | no `pending` verifications, no unchecked tasks, no `Partial`/`Unmet` requirements |

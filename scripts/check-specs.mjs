@@ -85,7 +85,9 @@ for (const spec of specDirs) {
     // A Verify line may combine existing evidence and pending work:
     //   Verify: `test/benchmark.test.mjs`; pending (T-009)
     const paths = [...verify[1].matchAll(/`([^`]+)`/g)].map(m => m[1]);
-    const pendings = [...verify[1].matchAll(/pending\s*\((T-\d{3})\)/g)].map(m => m[1]);
+    // pending (T-001) or pending (T-010, T-027)
+    const pendings = [...verify[1].matchAll(/pending\s*\(([^)]*)\)/g)]
+      .flatMap(m => m[1].match(/T-\d{3}/g) || []);
     if (paths.length === 0 && pendings.length === 0) {
       fail(spec, `${id} Verify: must list \`path\` and/or pending (T-###)`);
     }
