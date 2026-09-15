@@ -1,0 +1,44 @@
+{
+  "meta": {
+    "seed": 20260915,
+    "generatedAt": "2026-09-15T04:59:32.794Z",
+    "totalTickets": 80,
+    "totalTurns": 239,
+    "note": "Synthetic multi-turn call harness built from the project's own BENCHMARK_DATASET/HELD_OUT_DATASET/BLIND_DATASET utterances plus scripted repeat/escalation turns. Not live customer traffic."
+  },
+  "experiment_5_1_strategy_suppression": {
+    "totalTickets": 80,
+    "totalTurns": 239,
+    "baselineInvocations": 894,
+    "treatmentInvocations": 614,
+    "suppressionEvents": 159,
+    "pctReduction": 31.32
+  },
+  "experiment_5_2_register_conditioning": {
+    "utterancesTested": 239,
+    "repsPerTurn": 300,
+    "totalComparisons": 71700,
+    "byproductAvgNsPerCall": 545.6,
+    "separateLidAvgNsPerCall": 5242.7,
+    "pctFaster": 89.59,
+    "metricDisagreements": 0,
+    "metricDisagreementRatePct": 0
+  },
+  "experiment_5_3_atomic_escalation": {
+    "trials": 2000,
+    "failureRate": 0.12,
+    "naiveOrphanCount": 205,
+    "naiveOrphanRatePct": 10.25,
+    "atomicOrphanCount": 0,
+    "atomicOrphanRatePct": 0,
+    "naiveOkCount": 1563,
+    "atomicOkCount": 1563
+  },
+  "experiment_5_4_degradation_continuity": {
+    "ticketsWithTransition": 80,
+    "continuityDivergences": 0,
+    "naiveDivergences": 80,
+    "continuityDivergenceRatePct": 0,
+    "naiveDivergenceRatePct": 100
+  }
+}
