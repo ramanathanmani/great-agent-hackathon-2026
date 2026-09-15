@@ -41,10 +41,12 @@ specs/
 | Status line in `requirements.md` | `Status: Draft` \| `Approved` \| `Implemented` |
 | Requirement heading | `### REQ-<AREA>-<NNN>: Title` e.g. `### REQ-DP-001: ...` |
 | Acceptance criteria | bullet list under the requirement, EARS style (`WHEN … THE SYSTEM SHALL …`) |
-| Verification | `Verify: \`path/to/test.mjs\`` (file must exist) or `Verify: pending (T-###)` |
+| Priority (optional) | `Priority: Must` \| `Should` \| `Could` |
+| Current state (optional, for retro-specs) | `Current: Met` \| `Partial` \| `Unmet` — assessment of the code today |
+| Verification | `Verify: \`path/to/test.mjs\`` (file must exist), `Verify: pending (T-###)`, or both: `` Verify: `test/a.mjs`; pending (T-009) `` |
 | Task line | `- [ ] T-###: description (REQ-DP-001, REQ-DP-002)` |
-| Coverage | every REQ covered by ≥ 1 task; every task references an existing REQ |
-| Implemented specs | no `pending` verifications and no unchecked tasks |
+| Coverage | every REQ covered by ≥ 1 task, unless `Current: Met` with no pending verification; every task references an existing REQ |
+| Implemented specs | no `pending` verifications, no unchecked tasks, no `Partial`/`Unmet` requirements |
 
 ## Working with Claude Code
 

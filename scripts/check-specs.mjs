@@ -11,6 +11,8 @@ const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..")
 const specsDir = path.join(rootDir, "specs");
 const REQUIRED_FILES = ["requirements.md", "design.md", "tasks.md"];
 const STATUSES = ["Draft", "Approved", "Implemented"];
+const PRIORITIES = ["Must", "Should", "Could"];
+const CURRENT = ["Met", "Partial", "Unmet"];
 
 const errors = [];
 const fail = (spec, msg) => errors.push(`[${spec}] ${msg}`);
@@ -52,6 +54,8 @@ for (const spec of specDirs) {
 
   const reqIds = new Set();
   const pendingTaskRefs = [];
+  const currentCounts = { Met: 0, Partial: 0, Unmet: 0 };
+  const metAndVerified = new Set();
   for (const [, id, body] of reqBlocks) {
     if (reqIds.has(id)) fail(spec, `${id} is defined more than once`);
     reqIds.add(id);
@@ -60,22 +64,38 @@ for (const spec of specDirs) {
       fail(spec, `${id} has no acceptance criteria bullets`);
     }
 
+    // Optional metadata lines — validated when present
+    const priority = body.match(/^Priority:\s*(\w+)\s*$/m);
+    if (priority && !PRIORITIES.includes(priority[1])) {
+      fail(spec, `${id} Priority must be one of ${PRIORITIES.join(" | ")}`);
+    }
+    const current = body.match(/^Current:\s*(\w+)/m);
+    if (current) {
+      if (!CURRENT.includes(current[1])) fail(spec, `${id} Current must be one of ${CURRENT.join(" | ")}`);
+      else currentCounts[current[1]]++;
+      if (current[1] === "Met") metAndVerified.add(id);
+      if (status === "Implemented" && current[1] !== "Met") fail(spec, `${id} is ${current[1]} but spec is Implemented`);
+    }
+
     const verify = body.match(/^Verify:\s*(.+)$/m);
     if (!verify) {
       fail(spec, `${id} has no "Verify:" line`);
       continue;
     }
-    const pending = verify[1].match(/^pending\s*\((T-\d{3})\)/);
-    if (pending) {
-      pendingTaskRefs.push([id, pending[1]]);
-      if (status === "Implemented") fail(spec, `${id} is still pending but spec is Implemented`);
-    } else {
-      const paths = [...verify[1].matchAll(/`([^`]+)`/g)].map(m => m[1]);
-      if (paths.length === 0) fail(spec, `${id} Verify: must be \`path\` or pending (T-###)`);
-      for (const p of paths) {
-        const filePart = p.split(/\s+/)[0];
-        if (!fs.existsSync(path.join(rootDir, filePart))) fail(spec, `${id} verifies with missing file ${filePart}`);
-      }
+    // A Verify line may combine existing evidence and pending work:
+    //   Verify: `test/benchmark.test.mjs`; pending (T-009)
+    const paths = [...verify[1].matchAll(/`([^`]+)`/g)].map(m => m[1]);
+    const pendings = [...verify[1].matchAll(/pending\s*\((T-\d{3})\)/g)].map(m => m[1]);
+    if (paths.length === 0 && pendings.length === 0) {
+      fail(spec, `${id} Verify: must list \`path\` and/or pending (T-###)`);
+    }
+    for (const p of paths) {
+      const filePart = p.split(/\s+/)[0];
+      if (!fs.existsSync(path.join(rootDir, filePart))) fail(spec, `${id} verifies with missing file ${filePart}`);
+    }
+    for (const t of pendings) {
+      pendingTaskRefs.push([id, t]);
+      if (status === "Implemented") fail(spec, `${id} is still pending on ${t} but spec is Implemented`);
     }
   }
 
@@ -98,14 +118,18 @@ for (const spec of specDirs) {
     if (status === "Implemented" && done !== "x") fail(spec, `${taskId} is unchecked but spec is Implemented`);
   }
 
+  // A requirement needs a task unless it is already Met with no pending verification
   for (const id of reqIds) {
-    if (!coveredReqs.has(id)) fail(spec, `${id} is not covered by any task`);
+    const done = metAndVerified.has(id) && !pendingTaskRefs.some(([r]) => r === id);
+    if (!coveredReqs.has(id) && !done) fail(spec, `${id} is not covered by any task`);
   }
   for (const [id, taskId] of pendingTaskRefs) {
     if (!taskIds.has(taskId)) fail(spec, `${id} is pending on unknown task ${taskId}`);
   }
 
-  console.log(`[check:specs] ${spec}: ${status}, ${reqIds.size} requirements, ${taskIds.size} tasks, ${pendingTaskRefs.length} pending verifications`);
+  const tracked = currentCounts.Met + currentCounts.Partial + currentCounts.Unmet;
+  const currentSummary = tracked ? `, current: ${currentCounts.Met} met / ${currentCounts.Partial} partial / ${currentCounts.Unmet} unmet` : "";
+  console.log(`[check:specs] ${spec}: ${status}, ${reqIds.size} requirements, ${taskIds.size} tasks, ${pendingTaskRefs.length} pending verifications${currentSummary}`);
 }
 
 if (errors.length) {
