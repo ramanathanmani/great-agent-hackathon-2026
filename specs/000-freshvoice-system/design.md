@@ -1,6 +1,6 @@
 # 000 — FreshVoice System: Software Design Description
 
-Version: 1.1 (baseline `main` @ 14df722; decisions D-1…D-3) · Implements: [`requirements.md`](requirements.md) · Plan: [`tasks.md`](tasks.md)
+Version: 1.2 (baseline `main` @ 14df722; decisions D-1…D-5; hackathon scope) · Implements: [`requirements.md`](requirements.md) · Plan: [`tasks.md`](tasks.md)
 
 > Sections marked **Target** describe the design after the tasks in `tasks.md`
 > land. Where today's code differs, the difference is stated.
@@ -283,7 +283,7 @@ interface GeminiBenchmark {
 ### 5.4 State & persistence
 - The engine is stateless.
 - Browser: page memory holds the current result and recorder state; there are no keys.
-- Server, per instance and in memory (Target):
+- Server, per instance and in memory (Target; no external store for the hackathon, D-4):
   - rate-limit counters,
   - result cache by SHA-256(utterance) with a 10-minute TTL,
   - voices list with a 10-minute TTL.
@@ -420,6 +420,7 @@ stateDiagram-v2
 | Intent accuracy | Backup | = 100% | ≥ 85% | ≥ 90% | CI |
 | Entity precision | Backup | = 100% | = 100% | = 100% | CI (Target for ext/blind) |
 | Primary-language accuracy | Backup | ≥ 95% | ≥ 85% | ≥ 90% | CI (Target) |
+| Primary-language accuracy, Hindi items and Tamil items separately (D-5) | Backup | | | ≥ 90% each | CI (Target) |
 | Latency, all 80 | Backup | median ≤ 2 ms · p95 ≤ 10 ms | | | CI (Target) |
 | Intent accuracy | Gemini | recorded | recorded | recorded, headline | Published from results file |
 | Invalid-output rate | Gemini | recorded | recorded | recorded | Published |
@@ -492,6 +493,8 @@ Status lives in `requirements.md` and on the spec page; this table maps each req
 | 5 | Closed English lexicon, open Indic default (backup) | Indic word lists; ML LID | Support English is small, Indic inflection is unbounded | Rare English words mis-tagged until the lexicon grows |
 | 6 | One module + generated CJS | Hand-maintained dual builds | No drift; CI parity | Source avoids top-level imports |
 | 7 | Plain-Markdown specs + zero-dep checker | Spec Kit / OpenSpec | No tooling lock-in; CI-enforced | Conventions enforced by regex |
+| 8 | **In-memory, per-instance rate limits for the hackathon** (D-4) | Upstash Redis / Vercel KV | Free, no new service or dependency, enough for a judged demo | Limits are approximate across instances and reset on cold start; shared store after the hackathon |
+| 9 | **Hindi and Tamil as guaranteed backup languages** (D-5) | All Indic languages now | Matches the demo's callers; each language needs word lists and test data | Other languages fall back to best-effort or "English" in the backup; Gemini still covers them |
 
 ---
 
@@ -503,5 +506,6 @@ Status lives in `requirements.md` and on the spec page; this table maps each req
 | Gemini latency makes calls feel slow | Medium | Medium | 10 s deadline, progress UI, backup |
 | Gemini model retired or behaviour shifts | Medium | High | Configurable `GEMINI_MODEL`; re-run BEN-007 on change; backup keeps working |
 | Blind numbers inflated by prompt or rule tuning | Medium | High | Prompt included in fingerprint (T-014) |
-| Per-instance rate limit bypassed across instances | Medium | Medium | Token for integrators; Q-2 shared store |
+| Per-instance rate limit bypassed across instances | Medium | Medium | Accepted for the hackathon (D-4); integrator token; shared store after the hackathon |
+| Backup mislabels a non-Hindi/Tamil caller | Medium | Low | Gemini is primary; source label shows when the backup answered; add languages after the hackathon (D-5) |
 | Docs drift from measured numbers | Medium | Medium | T-015 docs check |

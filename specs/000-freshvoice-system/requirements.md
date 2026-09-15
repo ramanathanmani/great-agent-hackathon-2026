@@ -2,7 +2,7 @@
 
 Status: Draft
 Owner: Ramanathan Manikandan & Sadhana Shanmugam
-Version: 1.1 (baseline of `main` @ 14df722; team decisions D-1…D-3 applied)
+Version: 1.2 (baseline of `main` @ 14df722; team decisions D-1…D-5 applied; scoped to the hackathon demo)
 Constitution principles touched: all (1–7)
 Companion documents: [`design.md`](design.md) (Software Design Description) · [`tasks.md`](tasks.md) (implementation plan) · [`../001-decision-policy-layer/`](../001-decision-policy-layer/requirements.md)
 
@@ -115,7 +115,7 @@ Static copy (no server) ─▶ backup engine in the browser + browser voice
 - **A-2:** Order and transaction IDs are 5 digits in the demo CRM fixture.
 - **A-3:** Gemini honours `responseMimeType: application/json` most of the time, but not always, so every response is validated.
 - **A-4:** Freshdesk API v2 ticket semantics (priority 1–4, status 2 = Open, source 3 = Phone) stay stable.
-- **A-5:** Vercel may run several instances of a function; in-memory state is per instance (see Q-2).
+- **A-5:** Vercel may run several instances of a function; in-memory state is per instance, which is accepted for the hackathon (D-4).
 
 ---
 
@@ -206,10 +206,12 @@ Current: Met
 **User story:** As an analyst, I want the named Indic language, so that I can report which communities are calling.
 
 **Acceptance criteria**
+- THE SYSTEM SHALL support **Hindi and Tamil** (native script and romanized) as the guaranteed backup languages for the hackathon (D-5).
 - WHEN native-script tokens are present THE SYSTEM SHALL name the first detected script's language.
-- OTHERWISE THE SYSTEM SHALL test the romanized marker-word lists in the order Tamil → Bengali → Marathi → Hindi and name the first match.
+- OTHERWISE THE SYSTEM SHALL test the romanized marker-word lists in the order Tamil → Bengali → Marathi → Hindi and name the first match; the existing Bengali and Marathi lists stay as best-effort and are not gated or extended.
 - THE SYSTEM SHALL return `languages = [<Indic>, "English"]`, or `["English"]` when no Indic language is found.
-- THE SYSTEM SHALL reach ≥ 95% primary-language accuracy on the tuned set and ≥ 90% on the blind set (see REQ-BEN-003).
+- THE SYSTEM SHALL reach ≥ 95% primary-language accuracy on the tuned set and ≥ 90% on the blind set overall, and ≥ 90% on the blind set's Hindi and Tamil items separately (see REQ-BEN-003).
+- WHEN a new language is added later THE SYSTEM SHALL require a marker-word list, benchmark sentences in all three datasets, and an update to this requirement.
 
 Verify: pending (T-009)
 
@@ -600,6 +602,7 @@ Current: Unmet
 
 **Acceptance criteria**
 - THE SYSTEM SHALL fail `npm test` if backup primary-language accuracy is < 95% on tuned, < 85% on extended, or < 90% on blind. *(Gap: printed but not asserted.)*
+- THE SYSTEM SHALL also fail `npm test` if blind-set accuracy for Hindi items or for Tamil items, measured separately, is < 90%.
 
 Verify: pending (T-009)
 
@@ -655,10 +658,11 @@ Current: Unmet
 **User story:** As an account owner, I want our Gemini, ElevenLabs and Freshdesk quotas protected now that our server holds the keys.
 
 **Acceptance criteria**
+- THE SYSTEM SHALL keep rate-limit counters in each server instance's memory for the hackathon demo, with no external store (D-4).
 - THE SYSTEM SHALL apply per-client-IP limits: `/api/codemix` 20/min, `/api/stt` 10/min, `/api/tts` 20/min, `/api/voices` 10/min, `/api/create-ticket` 5/min, returning 429 `RATE_LIMITED` with `Retry-After`.
 - WHEN a request's `Origin` is in `ALLOWED_ORIGIN` THE SYSTEM SHALL treat it as the demo UI; OTHERWISE it SHALL require `X-FreshVoice-Token` equal to `FRESHVOICE_API_TOKEN` (constant-time compare), else 401 `UNAUTHORIZED`.
 - THE SYSTEM SHALL cap utterances at 2,000 characters, audio at 10 MB and TTS text at 500 characters, returning 413 `PAYLOAD_TOO_LARGE`.
-- THE SYSTEM SHALL document that `Origin` can be forged outside browsers, so rate limits are the backstop (see Q-2).
+- THE SYSTEM SHALL document that `Origin` can be forged outside browsers and that per-instance counters can be exceeded across instances; a shared store (e.g. Upstash Redis) is the upgrade path after the hackathon.
 
 Verify: pending (T-002)
 
@@ -810,9 +814,14 @@ Verify: pending (T-027)
 | D-1 | **Gemini is the primary understanding; the offline engine is the backup.** | 2026-09-15 | All surfaces use `analyse()` (LIVE-004, LIVE-007); Gemini must be benchmarked (BEN-007); ticket fields are made injection-safe (LIVE-006) |
 | D-2 | **All third-party keys move to the server now.** Visitors never enter keys. | 2026-09-15 | Keys panel removed (UI-003); voice proxies (API-006); secrets rule tightened (SEC-003); endpoint protection covers every proxy (SEC-001) |
 | D-3 | Backup confidence thresholds are chosen on the tuned set only. | 2026-09-15 | Keeps blind-set numbers honest (ENG-008, BEN-004) |
+| D-4 | **Rate-limit counters stay in each server instance's memory for the hackathon demo.** No Upstash or other shared store yet. | 2026-09-15 | No new service or dependency (SEC-001); limits are approximate across Vercel instances; revisit after the hackathon |
+| D-5 | **Hindi and Tamil are the supported backup languages for the hackathon.** Bengali and Marathi lists stay as best-effort; other languages are added later. | 2026-09-15 | Language gates cover Hindi and Tamil separately (ENG-007, BEN-003); Gemini still understands any language |
 
 ## 6. Open questions
-| ID | Question | Affects |
+None. All questions raised in v1.0 and v1.1 are resolved by D-1…D-5.
+
+## 7. After the hackathon
+| Item | Trigger | Affects |
 |---|---|---|
-| Q-2 | Rate limits: per-instance memory (free, no new dependency, but each Vercel copy counts separately and resets on restart) or a shared store such as Upstash Redis (accurate, but adds a service and a dependency)? | REQ-SEC-001 |
-| Q-5 | Which languages get romanized marker-word lists and benchmark sentences next: Telugu, Kannada, Malayalam, Gujarati, Punjabi, Odia? | REQ-ENG-007, REQ-BEN-007 |
+| Move rate-limit counters to a shared store (e.g. Upstash Redis) | Public launch or quota abuse seen | REQ-SEC-001 |
+| Add Telugu, Kannada, Malayalam, Gujarati, Punjabi or Odia word lists and benchmark sentences | Callers in those languages | REQ-ENG-007, REQ-BEN-003, REQ-BEN-007 |
