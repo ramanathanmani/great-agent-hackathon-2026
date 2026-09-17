@@ -20,5 +20,7 @@ yarn-error.log*
 Thumbs.db
 
 # Hackathon working files (review in progress)
-.hackathon/
+# STATE.md is tracked so a fresh clone can resume the pipeline.
+.hackathon/*
+!.hackathon/STATE.md
 decision-policy/results/
