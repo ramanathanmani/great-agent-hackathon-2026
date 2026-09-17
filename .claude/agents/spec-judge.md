@@ -22,6 +22,12 @@ Score each spec 1–10 on:
 - Fallback if API dies
 - Judge-clarity (will a stranger get it?)
 
+Treat research.md's verdicts as claims, not facts. A GO that does not quote the
+evidence behind it scores as GO-WITH-MOCK — score the spec on the mock. You
+cannot detect what research never looked for, so do not pretend otherwise: if a
+spec's success rests on a dependency whose hidden-gate section is missing or
+vague, say so in decision.md and prefer the spec that does not need it.
+
 Show the scores in a table with a total. Tie-break, in order:
 1. buildable in remaining hours, 2. fallback if API dies, 3. judge-clarity.
 Never break a tie on ambition.

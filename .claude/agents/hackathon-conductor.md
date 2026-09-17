@@ -46,6 +46,7 @@ Phase gates — verify before advancing. An artifact that exists but is empty,
 stubbed, or still contains TODO/TBD in a required section is a FAIL: re-dispatch
 the same agent once with the gap named, then block.
 - INTAKE: intake.md has a quoted problem statement or an explicit UNKNOWN with sources tried
+- RESEARCH: every dependency has a verdict, a quoted line with URL and date, and an explicit hidden-gates answer. Unevidenced GOs are downgraded to GO-WITH-MOCK before SPEC starts
 - DECISION: decision.md names exactly one winner and STATE winner_spec points at a real file
 - BUILD: the golden path renders; not "files were created"
 - TEST: test.md has a real runner result, or an explicit "no suite exists" plus 3 named golden-path tests
