@@ -1,0 +1,157 @@
+{
+  "meta": {
+    "seed": 20260915,
+    "generatedAt": "2026-09-17T11:18:24.762Z",
+    "totalTickets": 80,
+    "totalTurns": 239,
+    "note": "Synthetic multi-turn call harness built from the project's own BENCHMARK_DATASET/HELD_OUT_DATASET/BLIND_DATASET utterances plus scripted repeat/escalation turns. Not live customer traffic."
+  },
+  "experiment_5_1_strategy_suppression": {
+    "totalTickets": 80,
+    "totalTurns": 239,
+    "baselineInvocations": 894,
+    "treatmentInvocations": 614,
+    "suppressionEvents": 159,
+    "pctReduction": 31.32,
+    "sampleLog": [
+      {
+        "ticketId": "ticket-1-0",
+        "turnIndex": 0,
+        "intent": "delivery_delay",
+        "baselineSelected": "empathy_phrase",
+        "treatmentSelected": "empathy_phrase",
+        "suppressed": [],
+        "outcome": "failed"
+      },
+      {
+        "ticketId": "ticket-1-0",
+        "turnIndex": 1,
+        "intent": "delivery_delay",
+        "baselineSelected": "empathy_phrase",
+        "treatmentSelected": "technician_promise",
+        "suppressed": [
+          "empathy_phrase"
+        ],
+        "outcome": "resolved"
+      },
+      {
+        "ticketId": "ticket-2-1",
+        "turnIndex": 0,
+        "intent": "billing_dispute",
+        "baselineSelected": "apology",
+        "treatmentSelected": "apology",
+        "suppressed": [],
+        "outcome": "failed"
+      },
+      {
+        "ticketId": "ticket-2-1",
+        "turnIndex": 1,
+        "intent": "billing_dispute",
+        "baselineSelected": "apology",
+        "treatmentSelected": "verify_transaction",
+        "suppressed": [
+          "apology"
+        ],
+        "outcome": "failed"
+      },
+      {
+        "ticketId": "ticket-2-1",
+        "turnIndex": 2,
+        "intent": "billing_dispute",
+        "baselineSelected": "apology",
+        "treatmentSelected": "escalate_supervisor",
+        "suppressed": [
+          "apology",
+          "verify_transaction",
+          "refund_offer"
+        ],
+        "outcome": "resolved"
+      },
+      {
+        "ticketId": "ticket-3-2",
+        "turnIndex": 0,
+        "intent": "account_access",
+        "baselineSelected": "apology",
+        "treatmentSelected": "apology",
+        "suppressed": [],
+        "outcome": "failed"
+      }
+    ]
+  },
+  "experiment_5_2_register_conditioning": {
+    "utterancesTested": 239,
+    "repsPerTurn": 300,
+    "totalComparisons": 71700,
+    "byproductAvgNsPerCall": 296.2,
+    "separateLidAvgNsPerCall": 3617,
+    "pctFaster": 91.81,
+    "metricDisagreements": 0,
+    "metricDisagreementRatePct": 0
+  },
+  "experiment_5_3_atomic_escalation": {
+    "trials": 2000,
+    "failureRate": 0.12,
+    "naiveOrphanCount": 205,
+    "naiveOrphanRatePct": 10.25,
+    "atomicOrphanCount": 0,
+    "atomicOrphanRatePct": 0,
+    "naiveOkCount": 1563,
+    "atomicOkCount": 1563,
+    "outcomeBreakdown": {
+      "naive": {
+        "ok": 1563,
+        "no-ticket-no-context": 232,
+        "ticket-without-context": 205
+      },
+      "atomic": {
+        "ok": 1563,
+        "rolled-back": 437
+      }
+    }
+  },
+  "experiment_5_4_degradation_continuity": {
+    "ticketsWithTransition": 80,
+    "continuityDivergences": 0,
+    "naiveDivergences": 80,
+    "continuityDivergenceRatePct": 0,
+    "naiveDivergenceRatePct": 100,
+    "sampleEvents": [
+      {
+        "ticketId": "ticket-1-0",
+        "newTier": "offline",
+        "continuityKnows": true,
+        "naiveKnows": false
+      },
+      {
+        "ticketId": "ticket-2-1",
+        "newTier": "reduced",
+        "continuityKnows": true,
+        "naiveKnows": false
+      },
+      {
+        "ticketId": "ticket-3-2",
+        "newTier": "offline",
+        "continuityKnows": true,
+        "naiveKnows": false
+      },
+      {
+        "ticketId": "ticket-4-3",
+        "newTier": "reduced",
+        "continuityKnows": true,
+        "naiveKnows": false
+      },
+      {
+        "ticketId": "ticket-5-4",
+        "newTier": "offline",
+        "continuityKnows": true,
+        "naiveKnows": false
+      },
+      {
+        "ticketId": "ticket-6-5",
+        "newTier": "reduced",
+        "continuityKnows": true,
+        "naiveKnows": false
+      }
+    ]
+  }
+}
