@@ -24,7 +24,7 @@ Never invoke spec-author, builders, git-pusher, or devops-deploy until `hackatho
 
 .claude/CLAUDE.md
 .claude/agents/*.md
-.claude/scripts/secret-scan.sh   (deterministic pre-commit secret gate)
+.claude/scripts/secret-scan.sh   (deterministic secret gate; --staged/--all/--history/--gitignore)
 .hackathon/STATE.md      (tracked; canonical schema lives in the file)
 .hackathon/*.md          (working artifacts, gitignored)
 Create .hackathon/ if missing. Do not commit .env or secrets.

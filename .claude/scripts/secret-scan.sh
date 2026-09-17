@@ -8,6 +8,8 @@
 #   ./secret-scan.sh              scan files staged for commit (default)
 #   ./secret-scan.sh --files A B  scan the named files (testing, pre-push hooks)
 #   ./secret-scan.sh --all        scan every tracked file
+#   ./secret-scan.sh --history    scan every commit reachable from any branch
+#   ./secret-scan.sh --gitignore  check the required ignore entries are present
 #
 # exit 0  clean
 # exit 1  findings — DO NOT COMMIT
@@ -27,6 +29,8 @@ while [ $# -gt 0 ]; do
   case "$1" in
     --files) MODE=files; shift; FILES="$*"; break ;;
     --all)   MODE=all; shift ;;
+    --history) MODE=history; shift ;;
+    --gitignore) MODE=gitignore; shift ;;
     -h|--help) sed -n '2,20p' "$0"; exit 0 ;;
     *) echo "secret-scan: unknown argument: $1" >&2; exit 2 ;;
   esac
@@ -35,10 +39,45 @@ done
 git rev-parse --is-inside-work-tree >/dev/null 2>&1 || {
   echo "secret-scan: not a git repository" >&2; exit 2; }
 
+# ---------------------------------------------------------------- gitignore mode
+if [ "$MODE" = gitignore ]; then
+  # Ask git, do not reimplement gitignore semantics: `.env.*` already covers
+  # `.env.local`, and a literal grep would report a false positive. A gate that
+  # cries wolf gets ignored, which is worse than no gate.
+  MISSING=0
+  check() {  # check <path-to-test> <reason>
+    if ! git check-ignore -q "$1" 2>/dev/null; then
+      echo "NOT IGNORED   $1   ($2)"
+      MISSING=$((MISSING + 1))
+    fi
+  }
+
+  # Always relevant, whatever the stack.
+  check .env "local secrets"
+  check .env.local "local secrets"
+
+  # Build output: only flag a directory that actually exists on disk. Inferring
+  # it from a "build" script guesses wrong (a build may emit a single file), and
+  # a directory that does not exist cannot be committed by accident yet.
+  for d in node_modules dist build .next out target __pycache__ .venv venv coverage; do
+    [ -d "$d" ] && check "$d/x" "generated, should never be committed"
+  done
+  true
+
+  if [ "$MISSING" -gt 0 ]; then
+    echo ""
+    echo "secret-scan: $MISSING path(s) not ignored that should be."
+    exit 1
+  fi
+  echo "secret-scan: .gitignore covers everything relevant to this stack"
+  exit 0
+fi
+
 case "$MODE" in
-  staged) LIST=$(git diff --cached --name-only --diff-filter=ACM) ;;
-  all)    LIST=$(git ls-files) ;;
-  files)  LIST=$FILES ;;
+  staged)  LIST=$(git diff --cached --name-only --diff-filter=ACM) ;;
+  all)     LIST=$(git ls-files) ;;
+  files)   LIST=$FILES ;;
+  history) LIST=$(git log --all --pretty=format: --name-only --diff-filter=A | sort -u) ;;
 esac
 
 FINDINGS=0
@@ -83,6 +122,46 @@ PAT
 # a false positive costs a pause, a false negative costs a rotation.
 PLACEHOLDER='YOUR_|your_|<[^>]*>|\$\{|process\.env|os\.environ|import\.meta\.env|xxxx|XXXX|CHANGEME|changeme|placeholder|PLACEHOLDER|example|EXAMPLE|dummy|DUMMY|fake|FAKE|redacted|REDACTED|\.\.\.|\*\*\*\*'
 
+# ---------------------------------------------------------------- history mode
+# A secret deleted in a later commit is still in the history and still leaked.
+# Scans every added line reachable from any branch and attributes it to a commit.
+if [ "$MODE" = history ]; then
+  NCOMMITS=$(git rev-list --all --count 2>/dev/null || echo 0)
+  echo "secret-scan: scanning $NCOMMITS commit(s) of history"
+  PATFILE=$(mktemp); printf '%s\n' "$PATTERNS" > "$PATFILE"
+  HITS=$(git log --all -p --unified=0 --no-color --format='commit %H' 2>/dev/null |
+    awk -v patfile="$PATFILE" -v ph="$PLACEHOLDER" '
+      BEGIN {
+        n = 0
+        while ((getline ln < patfile) > 0) {
+          if (ln == "") continue
+          split(ln, a, "\t")
+          n++; sev[n] = a[1]; flg[n] = a[2]; rule[n] = a[3]; re[n] = a[4]
+        }
+      }
+      /^commit [0-9a-f]+$/ { sha = substr($2, 1, 8); next }
+      /^\+\+\+ b\// { file = substr($0, 7); next }
+      /^\+/ && !/^\+\+\+/ {
+        line = substr($0, 2)
+        if (line ~ ph) next
+        for (i = 1; i <= n; i++) {
+          probe = (flg[i] == "i") ? tolower(line) : line
+          if (match(probe, re[i])) {
+            head = substr(line, RSTART, 4)
+            printf "%s  %s  commit %s  %s  %s…(%d chars, redacted)\n",
+                   sev[i], rule[i], sha, file, head, RLENGTH
+            next
+          }
+        }
+      }
+    ' | sort -u)
+  rm -f "$PATFILE"
+  if [ -n "$HITS" ]; then
+    echo "$HITS"
+    FINDINGS=$((FINDINGS + $(printf '%s\n' "$HITS" | wc -l | tr -d ' ')))
+  fi
+fi
+
 skip_file() {
   case "$1" in
     *.env.example|*.env.sample|*.env.template) return 0 ;;
@@ -94,6 +173,7 @@ skip_file() {
 }
 
 for f in $LIST; do
+  [ "$MODE" = history ] && break
   [ -f "$f" ] || continue
   skip_file "$f" && continue
   grep -Iq . "$f" 2>/dev/null || continue   # skip binaries
