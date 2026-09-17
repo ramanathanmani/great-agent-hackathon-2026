@@ -24,6 +24,7 @@ Never invoke spec-author, builders, git-pusher, or devops-deploy until `hackatho
 
 .claude/CLAUDE.md
 .claude/agents/*.md
+.claude/scripts/secret-scan.sh   (deterministic pre-commit secret gate)
 .hackathon/STATE.md      (tracked; canonical schema lives in the file)
 .hackathon/*.md          (working artifacts, gitignored)
 Create .hackathon/ if missing. Do not commit .env or secrets.
@@ -143,7 +144,18 @@ Required:
 GIT phase — first push after HARDEN
 SUBMIT phase — second push so README/submit kit are on the remote
 
-Never run git-pusher in parallel with any code writer. Never force-push main/master.
+Never run git-pusher in parallel with any code writer.
+
+**Secrets are gated by a script, not by judgement.** git-pusher runs
+`.claude/scripts/secret-scan.sh` before every commit and obeys the exit code:
+0 continues, anything else stops the commit. No agent decides on its own whether
+a string is a real credential, and no agent overrules a finding — that call is
+the human's. The scan redacts every value it prints, so its output is safe to
+paste.
+
+**No agent force-pushes, ever.** Not `--force`, not `--force-with-lease`, not on
+any branch, whoever asks. A non-fast-forward rejection is a blocker for the
+human, not a problem to push through.
 
 DEPLOY runs after GIT so the host can pull repo_url.
 
