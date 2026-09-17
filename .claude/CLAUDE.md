@@ -25,6 +25,7 @@ Never invoke spec-author, builders, git-pusher, or devops-deploy until `hackatho
 .claude/CLAUDE.md
 .claude/agents/*.md
 .claude/scripts/secret-scan.sh   (deterministic secret gate; --staged/--all/--history/--gitignore)
+.claude/scripts/contract-check.sh (verifies the running app against contract.json)
 .hackathon/STATE.md      (tracked; canonical schema lives in the file)
 .hackathon/*.md          (working artifacts, gitignored)
 Create .hackathon/ if missing. Do not commit .env or secrets.
@@ -88,6 +89,7 @@ keys into STATE.md. A specialist that cannot produce its artifact sets
 | .hackathon/decision.md | spec-judge |
 | .hackathon/decisions.md | scribe |
 | .hackathon/architecture.md | architect |
+| .hackathon/contract.json | architect |
 | .hackathon/plan.md | planner |
 | .hackathon/status.md | pm-timebox |
 | .hackathon/brand.md | brand-namer |
@@ -110,7 +112,28 @@ keys into STATE.md. A specialist that cannot produce its artifact sets
 
 Code paths are owned by `architecture.md`. Shared root config
 (package.json, lockfiles, tsconfig, Dockerfile, CI) belongs to
-**integration-agent**; builders request changes instead of editing them.
+**integration-agent**; builders never edit them.
+
+## The seams are a contract, not an archaeology problem
+
+`contract.json` is written by architect BEFORE the builders start, and declares
+every endpoint, env var, the CORS policy, the mock ledger and the complete
+dependency list. Both builders code against it in parallel without seeing each
+other's work; `.claude/scripts/contract-check.sh` decides whether they did.
+
+This exists because integration is where hackathons actually die, and it dies
+silently: a 200 response with a renamed key, a missing CORS header, an env var
+that was never added to `.env.example`, a mock nobody deleted, a seed orphaned
+by a schema change. Every one of those survives unit tests and surfaces in front
+of a judge. Without a declared contract, integration-agent has to reconstruct
+what each builder assumed — the hardest job in the pipeline, handed to the agent
+with the vaguest mandate. With one, its job is checkable.
+
+Rules that follow from it:
+- **Mocks carry `MOCK:` in a comment, in both frontend and backend code, and an entry in contract.json's `mocks` array.** One grep finds every mock in the repo. A grep hit with no ledger entry, or a ledger entry with no hit, is a bug to reconcile before INTEGRATE ends.
+- **Only architect declares dependencies.** Builders may not add packages; one that needs an undeclared package hands back blocked, the conductor decides, and integration-agent installs it and commits the lockfile. Nothing may leave a builder waiting on a request nobody services.
+- **CORS is declared up front and implemented by backend-builder**, verified by contract-check. security-linter is a backstop, not the owner — finding it in HARDEN is finding it too late.
+- **integration-agent re-runs the seed** against the schema as it stands at INTEGRATE. Drift goes back to data-seeder; integration never hand-patches fixtures.
 
 ## Acceptance criteria are IDs
 

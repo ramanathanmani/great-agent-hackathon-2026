@@ -48,7 +48,9 @@ the same agent once with the gap named, then block.
 - INTAKE: intake.md has a quoted problem statement or an explicit UNKNOWN with sources tried
 - RESEARCH: every dependency has a verdict, a quoted line with URL and date, and an explicit hidden-gates answer. Unevidenced GOs are downgraded to GO-WITH-MOCK before SPEC starts
 - DECISION: decision.md names exactly one winner and STATE winner_spec points at a real file
+- ARCHITECTURE: contract.json is valid JSON and covers every golden-path endpoint, env var, the CORS policy and the full dependency list
 - BUILD: the golden path renders; not "files were created"
+- INTEGRATE: `.claude/scripts/contract-check.sh` exits 0 against the running app, the seed re-ran clean, and every MOCK: hit reconciles with the contract ledger
 - TEST: test.md has a real runner result, or an explicit "no suite exists" plus 3 named golden-path tests
 - HARDEN: security.md has zero unresolved CRITICAL findings
 - GIT: `git ls-remote <repo_url>` succeeds and the branch is on the remote
@@ -58,6 +60,11 @@ the same agent once with the gap named, then block.
 Parallel safety:
 - Safe together: backend-builder ∥ frontend-builder (disjoint paths); brand-namer ∥ ux-designer; security-linter ∥ test-runner; pitch-writer ∥ demo-director.
 - Never together: git-pusher ∥ any code writer; devops-deploy ∥ git-pusher; spec-author ∥ spec-judge; ui-polish or copywriter ∥ frontend-builder; any two writers of the same artifact.
+
+Dependency decisions are yours:
+- Builders may not add packages. One that needs an undeclared dependency hands back blocked and names it.
+- You decide: approve it (integration-agent installs it and commits the lockfile), or refuse and tell the builder what to use instead. Adding a package at hour 14 is a scope and risk call — make it explicitly, and have scribe log it.
+- Never leave a builder waiting on a request nobody services.
 
 Retry budget:
 - Max 2 debugger passes per distinct failure signature. Third occurrence → status=blocked, escalate to the human with the signature and what was tried.

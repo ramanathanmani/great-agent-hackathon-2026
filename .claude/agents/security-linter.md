@@ -49,7 +49,7 @@ Judge, with file:line for each:
 2. **Injection** — SQL or command strings built by concatenation or interpolation from request data.
 3. **Exposed surface** — debug routes, admin endpoints, `/internal` paths, stack traces returned to the client, or a dev-mode flag that ships. Ask: can a stranger with the preview URL reach this?
 4. **Auth that is decoration** — an endpoint that writes or deletes with no check, an ID that is trusted from the client, a demo account that is actually an admin. A seeded `demo/demo` is fine; `demo/demo` with delete-everything rights is not.
-5. **CORS** — `*` together with credentials, or a wildcard on a route that mutates.
+5. **CORS** — compare the running config against contract.json's `cors` block. `*` with credentials, or a wildcard on a route that mutates, is a finding. This is a backstop: contract-check already gates the declared policy, so anything you find here means the app drifted from its contract.
 6. **LLM footguns** — this is the one people miss:
    - raw user input concatenated into a prompt with no delimiter or instruction boundary
    - fetched web pages, file contents, or tool output fed back to the model as if they were instructions
