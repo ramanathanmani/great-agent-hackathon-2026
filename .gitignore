@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Dependencies
 node_modules/
 
@@ -18,3 +19,11 @@ yarn-error.log*
 # OS Junk
 .DS_Store
 Thumbs.db
+=======
+.env
+.env.*
+!.env.example
+node_modules/
+.hackathon/STATE.md
+
+>>>>>>> a46ad4f (feat: add hackathon agent fleet)
