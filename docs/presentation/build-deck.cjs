@@ -1,11 +1,11 @@
-// Builds the ActionGuard business-case deck (TGAH Round 2 presentation format).
+// Builds the Codemix Skill business-case deck (TGAH Round 2 presentation format).
 const pptxgen = require("pptxgenjs");
 const React = require("react");
 const ReactDOMServer = require("react-dom/server");
 const sharp = require("sharp");
 const fa = require("react-icons/fa6");
 
-const OUT = process.argv[2] || "ActionGuard-Business-Case.pptx";
+const OUT = process.argv[2] || "CodemixSkill-Business-Case.pptx";
 
 const C = {
   navy: "14213D", navy2: "1F3057", ink: "1F2937", muted: "5B6475", ice: "CADCFC",
@@ -26,7 +26,7 @@ async function icon(name, color, size = 256) {
 
 const pres = new pptxgen();
 pres.layout = "LAYOUT_WIDE";
-pres.title = "FreshVoice ActionGuard — Business Case";
+pres.title = "Codemix Skill — Business Case";
 pres.author = "Team Ramanathan & Sadhana";
 
 // ---------- helpers ----------
@@ -69,7 +69,7 @@ function iconCircle(s, data, x, y, d, fill) {
   s.addImage({ data, x: x + p, y: y + p, w: d - 2 * p, h: d - 2 * p });
 }
 function footer(s, dark = false) {
-  s.addText("FreshVoice ActionGuard · The Great Agent Hackathon 2026", { x: 0.6, y: 7.02, w: 8, h: 0.3, fontFace: BF, fontSize: 9, color: dark ? "8FA0BF" : "8A93A3", margin: 0, isTextBox: true });
+  s.addText("Codemix Skill · The Great Agent Hackathon 2026", { x: 0.6, y: 7.02, w: 8, h: 0.3, fontFace: BF, fontSize: 9, color: dark ? "8FA0BF" : "8A93A3", margin: 0, isTextBox: true });
 }
 function bullets(s, items, x, y, w, h, size = 14, color = C.ink) {
   s.addText(items.map((t, i) => {
@@ -90,7 +90,7 @@ function bullets(s, items, x, y, w, h, size = 14, color = C.ink) {
   // ===== 1. Title =====
   let s = pres.addSlide(); s.background = { color: C.navy };
   s.addText("THE GREAT AGENT HACKATHON 2026  ·  ROUND 2 BUSINESS CASE", { x: 0.8, y: 1.0, w: 11, h: 0.4, fontFace: BF, fontSize: 13, bold: true, color: C.amber, charSpacing: 2, margin: 0, isTextBox: true });
-  s.addText("FreshVoice ActionGuard", { x: 0.8, y: 1.5, w: 11.5, h: 1.1, fontFace: HF, fontSize: 54, bold: true, color: C.white, margin: 0, isTextBox: true });
+  s.addText("Codemix Skill", { x: 0.8, y: 1.5, w: 11.5, h: 1.1, fontFace: HF, fontSize: 54, bold: true, color: C.white, margin: 0, isTextBox: true });
   s.addText("A plug-in between your AI agent and your action APIs", { x: 0.8, y: 2.6, w: 11.5, h: 0.6, fontFace: BF, fontSize: 24, color: C.ice, margin: 0, isTextBox: true });
   [["ALLOW", C.green], ["CONFIRM", C.amber], ["BLOCK", C.red]].forEach(([t, c], i) => {
     s.addShape(pres.shapes.OVAL, { x: 0.8 + i * 2.3, y: 3.75, w: 0.42, h: 0.42, fill: { color: c }, line: { color: c } });
@@ -109,8 +109,8 @@ function bullets(s, items, x, y, w, h, size = 14, color = C.ink) {
   header(s, "01", "Initiative Overview");
   const ov = [
     ["Initiative", "A plug-in between a company's AI agent and its action APIs. It understands mixed-language callers and runs the right API safely."],
-    ["Owner", "Team Ramanathan & Sadhana, builders of FreshVoice (Round 1)"],
-    ["Builds on", "FreshVoice code-mix engine + MCP server, live at codemix-skill.vercel.app"],
+    ["Owner", "Team Ramanathan & Sadhana, builders of Codemix Skill"],
+    ["Builds on", "Round-1 code-mix engine + MCP server, live at codemix-skill.vercel.app"],
   ];
   ov.forEach(([k, v], i) => {
     card(s, 0.6, 1.6 + i * 1.6, 5.6, 1.35);
@@ -121,7 +121,7 @@ function bullets(s, items, x, y, w, h, size = 14, color = C.ink) {
   s.addText("How it works", { x: 6.9, y: 1.6, w: 5.8, h: 0.4, fontFace: HF, fontSize: 20, bold: true, color: C.navy, margin: 0, isTextBox: true });
   box(s, 6.9, 2.25, 2.3, 1.0, "Company AI agent wants to call an API\ncancel_order(48211)", { fill: C.slate, size: 12 });
   arrow(s, 9.2, 2.75, 9.75, 2.75);
-  box(s, 9.75, 2.1, 2.9, 1.3, "ActionGuard plug-in\nunderstands, decides,\nconfirms, audits", { fill: C.navy, color: C.white, size: 13, bold: true });
+  box(s, 9.75, 2.1, 2.9, 1.3, "Codemix Skill plug-in\nunderstands, decides,\nconfirms, audits", { fill: C.navy, color: C.white, size: 13, bold: true });
   const outs = [["ALLOW", "Execute and log", C.green, C.greenLt], ["CONFIRM", "Read back in caller's language", C.amber, C.amberLt], ["BLOCK", "Stop and re-route / hand off", C.red, C.redLt]];
   outs.forEach(([t, d, c, lt], i) => {
     const x = 6.9 + i * 2.0;
@@ -192,7 +192,7 @@ function bullets(s, items, x, y, w, h, size = 14, color = C.ink) {
   card(s, 0.65, 5.95, 12.05, 0.8, C.navy);
   s.addText([
     { text: "Measured, not hypothetical:  ", options: { bold: true, color: C.amber } },
-    { text: "our own Round-1 FreshVoice engine classifies “Order cancel mat karo, bas address change karna hai” as cancellation_refund.", options: { color: C.white } },
+    { text: "our own Round-1 Codemix Skill engine classifies “Order cancel mat karo, bas address change karna hai” as cancellation_refund.", options: { color: C.white } },
   ], { x: 0.9, y: 5.95, w: 11.6, h: 0.8, fontFace: BF, fontSize: 14, valign: "middle", margin: 0, isTextBox: true });
   footer(s);
   s.addNotes("Path B is reproducible today: run analyseOffline() on the Hindi sentence in codemix.js and it returns cancellation_refund. The Tamil sentence comes back as damaged_item, which also ignores 'vendam'.");
@@ -202,7 +202,7 @@ function bullets(s, items, x, y, w, h, size = 14, color = C.ink) {
   header(s, "03", "Why Now");
   const why = [
     [I.bolt, "Agents now have write access", "AI agents, tool calling and MCP let a bot cancel, refund or re-address an order directly. A misunderstanding used to produce a bad answer. Now it produces a bad transaction."],
-    [I.lang, "Code-mixed voice is normal in India", "Hinglish and Tanglish callers switch language inside a sentence. FreshVoice already handles the switching, and negation is the gap we measured in our own engine."],
+    [I.lang, "Code-mixed voice is normal in India", "Hinglish and Tanglish callers switch language inside a sentence. Codemix Skill already handles the switching, and negation is the gap we measured in our own engine."],
     [I.wave, "The signals are finally cheap", "Speech-to-text now returns word-level confidence (ElevenLabs Scribe), and fast LLMs (Gemini Flash) can check one action inside a live call. Checking every action is now affordable."],
   ];
   why.forEach(([ic, h, b], i) => {
@@ -228,13 +228,13 @@ function bullets(s, items, x, y, w, h, size = 14, color = C.ink) {
   // correct the rotated label position: rotation is about center; place center at x = qx-0.3
   const pts = [
     ["Do nothing", 0.12, 0.12, C.muted], ["Confirm-everything IVR", 0.14, 0.53, C.blue], ["Generic LLM guardrails", 0.28, 0.7, C.blue],
-    ["Indic voice bots", 0.78, 0.2, C.blue], ["ActionGuard", 0.8, 0.84, C.amber],
+    ["Indic voice bots", 0.78, 0.2, C.blue], ["Codemix Skill", 0.8, 0.84, C.amber],
   ];
   pts.forEach(([n, px, py, c]) => {
-    const cx = qx + px * qs, cy = qy + (1 - py) * qs, d = n === "ActionGuard" ? 0.34 : 0.24;
+    const cx = qx + px * qs, cy = qy + (1 - py) * qs, d = n === "Codemix Skill" ? 0.34 : 0.24;
     s.addShape(pres.shapes.OVAL, { x: cx - d / 2, y: cy - d / 2, w: d, h: d, fill: { color: c }, line: { color: c === C.amber ? C.navy : c, width: c === C.amber ? 2 : 1 } });
     const lx = px > 0.6 ? cx - 1.9 - d / 2 : cx + d / 2 + 0.08;
-    s.addText(n, { x: lx, y: cy - 0.16, w: 1.85, h: 0.32, fontFace: BF, fontSize: n === "ActionGuard" ? 13 : 11, bold: n === "ActionGuard", color: C.ink, align: px > 0.6 ? "right" : "left", margin: 0, isTextBox: true });
+    s.addText(n, { x: lx, y: cy - 0.16, w: 1.85, h: 0.32, fontFace: BF, fontSize: n === "Codemix Skill" ? 13 : 11, bold: n === "Codemix Skill", color: C.ink, align: px > 0.6 ? "right" : "left", margin: 0, isTextBox: true });
   });
   // table
   const comp = [
@@ -268,7 +268,7 @@ function bullets(s, items, x, y, w, h, size = 14, color = C.ink) {
   box(s, 2.9, 1.9, 2.0, 2.55, "Company AI agent\n\nFreddy AI Agent or any LLM agent\n\nplans what to do", { fill: C.blueLt, color: C.blue, bold: true, size: 12 });
   arrow(s, 4.9, 3.175, 5.3, 3.175, C.navy, 2.5);
   s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x: 5.3, y: 1.7, w: 4.3, h: 3.0, rectRadius: 0.1, fill: { color: C.navy }, line: { color: C.amber, width: 2.5 }, shadow: shadow() });
-  s.addText("ActionGuard plug-in", { x: 5.3, y: 1.78, w: 4.3, h: 0.4, fontFace: HF, fontSize: 17, bold: true, color: C.white, align: "center", margin: 0, isTextBox: true });
+  s.addText("Codemix Skill plug-in", { x: 5.3, y: 1.78, w: 4.3, h: 0.4, fontFace: HF, fontSize: 17, bold: true, color: C.white, align: "center", margin: 0, isTextBox: true });
   const mods = [
     ["UNDERSTAND", "mixed language · intent · negation"], ["DECIDE", "decision layer · transparent confirm · sentiment"],
     ["CONVERSE", "low latency · DTMF / IVR · interrupts"], ["AUDIT", "SOP checks · stored transcripts"],
@@ -531,8 +531,8 @@ function bullets(s, items, x, y, w, h, size = 14, color = C.ink) {
     bullets(s, items, x + 0.2, 2.8, 3.6, 1.7, 13);
   });
   const lower = [
-    [I.shieldW, "AI & agentic design", "The company's agent plans the tool calls. ActionGuard is a second, independent agent that checks each one. Fast rule-based checks for each language run first; an LLM is used only for unclear cases, and rules alone still work offline."],
-    [I.code, "Already built (Round 1)", "Code-mix tagging engine, intent scoring, MCP server, Freshdesk ticket API, and a live demo on Vercel. ActionGuard adds the checks and the gate on top."],
+    [I.shieldW, "AI & agentic design", "The company's agent plans the tool calls. Codemix Skill is a second, independent agent that checks each one. Fast rule-based checks for each language run first; an LLM is used only for unclear cases, and rules alone still work offline."],
+    [I.code, "Already built (Round 1)", "Code-mix tagging engine, intent scoring, MCP server, Freshdesk ticket API, and a live demo on Vercel. Round 2 adds the checks and the gate on top."],
   ];
   lower.forEach(([ic, h, b], i) => {
     const x = 0.6 + i * 6.2;
@@ -573,12 +573,12 @@ function bullets(s, items, x, y, w, h, size = 14, color = C.ink) {
   card(s, 0.6, 1.55, 12.15, 1.25, C.navy);
   s.addText("Plug it in once, and your AI agent can act for mixed-language callers: it gets the intent right, confirms when unsure, hands angry callers to a person and audits every action.",
     { x: 0.9, y: 1.55, w: 11.6, h: 1.25, fontFace: HF, fontSize: 20, color: C.white, valign: "middle", margin: 0, isTextBox: true });
-  const cols = [["Without ActionGuard", I.xmark, C.red, C.redLt, [
+  const cols = [["Without Codemix Skill", I.xmark, C.red, C.redLt, [
     "Agent acts on its first guess at the intent",
     "One dropped “mat” leads to a cancelled order",
     "Angry callers stay stuck talking to a bot",
     "No transcript or SOP check to prove what happened",
-  ]], ["With ActionGuard", I.check, C.green, C.greenLt, [
+  ]], ["With Codemix Skill", I.check, C.green, C.greenLt, [
     "Understands mixed-language callers and runs the right API",
     "Checks negation and confidence before any irreversible call",
     "Says what it's unsure of; caller confirms by voice or keypad",
@@ -598,7 +598,7 @@ function bullets(s, items, x, y, w, h, size = 14, color = C.ink) {
   header(s, "08", "Pricing & Packaging", "Proposed. We only charge for the actions we actually guard.");
   const tiers = [
     ["Included", "Free", "for every Freddy AI Agent customer", ["Monitor mode: flags risky actions, never blocks", "Hindi + English", "Weekly wrong-action report"], C.slate, C.navy, false],
-    ["ActionGuard Add-on", "$5", "per 1,000 guarded actions", ["Full plug-in: decision layer, DTMF confirm, interrupts", "Sentiment handoff + SOP audit", "All MVP languages", "First 30 days free"], C.navy, C.white, true],
+    ["Codemix Skill Add-on", "$5", "per 1,000 guarded actions", ["Full plug-in: decision layer, DTMF confirm, interrupts", "Sentiment handoff + SOP audit", "All MVP languages", "First 30 days free"], C.navy, C.white, true],
     ["Enterprise", "Custom", "annual contract", ["Custom SOP rule packs", "Transcript retention + data residency in India", "SLA"], C.slate, C.navy, false],
   ];
   tiers.forEach(([n, p, u, items, f, c, hi], i) => {
@@ -731,7 +731,7 @@ function bullets(s, items, x, y, w, h, size = 14, color = C.ink) {
   iconCircle(s, I.shieldW, 0.8, 1.0, 1.1, C.navy2);
   s.addText("“Don't cancel” should mean don't cancel.", { x: 0.8, y: 2.35, w: 11.8, h: 0.9, fontFace: HF, fontSize: 36, bold: true, color: C.white, margin: 0, isTextBox: true });
   s.addText("One plug-in between your AI agent and your APIs. It understands mixed-language callers, confirms when unsure, and audits every action.", { x: 0.8, y: 3.4, w: 11.5, h: 0.9, fontFace: BF, fontSize: 20, color: C.ice, margin: 0, isTextBox: true });
-  const ask = [["Our ask", "A Freshworks sandbox with Freddy AI Agent + Freshcaller for a 3-brand pilot"], ["Live today", "codemix-skill.vercel.app: the Round-1 engine that ActionGuard builds on"]];
+  const ask = [["Our ask", "A Freshworks sandbox with Freddy AI Agent + Freshcaller for a 3-brand pilot"], ["Live today", "codemix-skill.vercel.app: the Round-1 engine this builds on"]];
   ask.forEach(([h, b], i) => {
     const x = 0.8 + i * 6.0;
     s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x, y: 4.65, w: 5.6, h: 1.4, rectRadius: 0.1, fill: { color: C.navy2 }, line: { color: C.navy2 } });
