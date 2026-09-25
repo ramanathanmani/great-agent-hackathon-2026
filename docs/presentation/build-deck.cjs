@@ -91,7 +91,7 @@ function bullets(s, items, x, y, w, h, size = 14, color = C.ink) {
   let s = pres.addSlide(); s.background = { color: C.navy };
   s.addText("THE GREAT AGENT HACKATHON 2026  ·  ROUND 2 BUSINESS CASE", { x: 0.8, y: 1.0, w: 11, h: 0.4, fontFace: BF, fontSize: 13, bold: true, color: C.amber, charSpacing: 2, margin: 0, isTextBox: true });
   s.addText("FreshVoice ActionGuard", { x: 0.8, y: 1.5, w: 11.5, h: 1.1, fontFace: HF, fontSize: 54, bold: true, color: C.white, margin: 0, isTextBox: true });
-  s.addText("A negation-aware safety gate for AI agents that take real actions", { x: 0.8, y: 2.6, w: 11.5, h: 0.6, fontFace: BF, fontSize: 24, color: C.ice, margin: 0, isTextBox: true });
+  s.addText("A plug-in between your AI agent and your action APIs", { x: 0.8, y: 2.6, w: 11.5, h: 0.6, fontFace: BF, fontSize: 24, color: C.ice, margin: 0, isTextBox: true });
   [["ALLOW", C.green], ["CONFIRM", C.amber], ["BLOCK", C.red]].forEach(([t, c], i) => {
     s.addShape(pres.shapes.OVAL, { x: 0.8 + i * 2.3, y: 3.75, w: 0.42, h: 0.42, fill: { color: c }, line: { color: c } });
     s.addText(t, { x: 1.32 + i * 2.3, y: 3.75, w: 1.7, h: 0.42, fontFace: BF, fontSize: 16, bold: true, color: C.white, valign: "middle", margin: 0, isTextBox: true });
@@ -100,7 +100,7 @@ function bullets(s, items, x, y, w, h, size = 14, color = C.ink) {
     { text: "“Order cancel ", options: { color: C.ice } }, { text: "mat", options: { color: C.amber, bold: true } },
     { text: " karo, bas address change karna hai.”", options: { color: C.ice } },
   ], { x: 0.8, y: 4.75, w: 11.5, h: 0.5, fontFace: HF, fontSize: 22, italic: true, margin: 0, isTextBox: true });
-  s.addText("One small word. One irreversible action. We check it before the agent acts.", { x: 0.8, y: 5.25, w: 11.5, h: 0.4, fontFace: BF, fontSize: 16, color: "8FA0BF", margin: 0, isTextBox: true });
+  s.addText("It understands mixed-language callers, confirms when unsure, and audits every action.", { x: 0.8, y: 5.25, w: 11.5, h: 0.4, fontFace: BF, fontSize: 16, color: "8FA0BF", margin: 0, isTextBox: true });
   s.addText("Team Ramanathan & Sadhana  ·  Track 1: Customer & Employee Experience", { x: 0.8, y: 6.5, w: 11.5, h: 0.4, fontFace: BF, fontSize: 14, color: C.white, margin: 0, isTextBox: true });
   s.addNotes("Open with the sentence. It means 'don't cancel the order, just change the address'. Today an AI agent can hear 'cancel' and do it.");
 
@@ -108,7 +108,7 @@ function bullets(s, items, x, y, w, h, size = 14, color = C.ink) {
   s = pres.addSlide(); s.background = { color: C.white };
   header(s, "01", "Initiative Overview");
   const ov = [
-    ["Initiative", "FreshVoice ActionGuard: a safety gate that sits between an AI support agent and its irreversible tools."],
+    ["Initiative", "A plug-in between a company's AI agent and its action APIs. It understands mixed-language callers and runs the right API safely."],
     ["Owner", "Team Ramanathan & Sadhana, builders of FreshVoice (Round 1)"],
     ["Builds on", "FreshVoice code-mix engine + MCP server, live at codemix-skill.vercel.app"],
   ];
@@ -119,9 +119,9 @@ function bullets(s, items, x, y, w, h, size = 14, color = C.ink) {
   });
   // mini flow
   s.addText("How it works", { x: 6.9, y: 1.6, w: 5.8, h: 0.4, fontFace: HF, fontSize: 20, bold: true, color: C.navy, margin: 0, isTextBox: true });
-  box(s, 6.9, 2.25, 2.3, 1.0, "AI agent wants to call a tool\ncancel_order(48211)", { fill: C.slate, size: 12 });
+  box(s, 6.9, 2.25, 2.3, 1.0, "Company AI agent wants to call an API\ncancel_order(48211)", { fill: C.slate, size: 12 });
   arrow(s, 9.2, 2.75, 9.75, 2.75);
-  box(s, 9.75, 2.1, 2.9, 1.3, "ActionGuard\nchecks negation, confidence\nand action risk", { fill: C.navy, color: C.white, size: 13, bold: true });
+  box(s, 9.75, 2.1, 2.9, 1.3, "ActionGuard plug-in\nunderstands, decides,\nconfirms, audits", { fill: C.navy, color: C.white, size: 13, bold: true });
   const outs = [["ALLOW", "Execute and log", C.green, C.greenLt], ["CONFIRM", "Read back in caller's language", C.amber, C.amberLt], ["BLOCK", "Stop and re-route / hand off", C.red, C.redLt]];
   outs.forEach(([t, d, c, lt], i) => {
     const x = 6.9 + i * 2.0;
@@ -255,45 +255,113 @@ function bullets(s, items, x, y, w, h, size = 14, color = C.ink) {
     s.addText(g, { x: tx + 4.15, y, w: 2.2, h: 0.83, fontFace: BF, fontSize: 11, color: C.ink, valign: "middle", margin: 0, isTextBox: true });
   });
   card(s, tx - 0.1, 5.8, 6.45, 0.85, C.navy);
-  s.addText([{ text: "Our edge  ", options: { bold: true, color: C.amber } }, { text: "We understand negation in each language, and only irreversible, uncertain actions get a question. It runs natively in Freshworks' own agent tool path.", options: { color: C.white } }],
+  s.addText([{ text: "Our edge  ", options: { bold: true, color: C.amber } }, { text: "One plug-in between any AI agent and its APIs: mixed-language understanding, negation, a decision layer and SOP audit, with no rebuild of the agent.", options: { color: C.white } }],
     { x: tx + 0.1, y: 5.8, w: 6.1, h: 0.85, fontFace: BF, fontSize: 12.5, valign: "middle", margin: 0, isTextBox: true });
   footer(s);
 
-  // ===== 7. Proposed solution: pipeline =====
+  // ===== 7a. Where the plug-in sits =====
   s = pres.addSlide(); s.background = { color: C.white };
-  header(s, "05", "Proposed Solution: the ActionGuard Pipeline", "Before an agent does something it can't undo, we double-check what the caller said");
-  const pw = 3.6, ph = 1.35;
-  const pipe = [
-    ["1  LISTEN", "Speech-to-text returns the transcript with a confidence score for each word"],
-    ["2  TAG", "FreshVoice labels each word's language and finds where the caller switches"],
-    ["3  FIND POLARITY", "Spots negation words for each language and which verb each one applies to"],
-    ["6  ACT & LOG", "Runs the Freshdesk tool call and writes an English audit note on the ticket"],
-    ["5  GATE", "Decides ALLOW, CONFIRM or BLOCK. Blocked requests go to the intent the caller actually stated"],
-    ["4  SCORE RISK", "Irreversible? Moves money? Low confidence on the negation word?"],
+  header(s, "05", "Proposed Solution: a Plug-in Layer", "The company's AI agent calls our plug-in instead of calling its action APIs directly");
+  box(s, 0.5, 1.9, 2.0, 1.15, "Phone / IVR\nvoice + DTMF keypad", { fill: C.slate, bold: true, size: 12, color: C.navy });
+  box(s, 0.5, 3.3, 2.0, 1.15, "App & web\nvoice or chat", { fill: C.slate, bold: true, size: 12, color: C.navy });
+  arrow(s, 2.5, 2.475, 2.9, 2.9); arrow(s, 2.5, 3.875, 2.9, 3.4);
+  box(s, 2.9, 1.9, 2.0, 2.55, "Company AI agent\n\nFreddy AI Agent or any LLM agent\n\nplans what to do", { fill: C.blueLt, color: C.blue, bold: true, size: 12 });
+  arrow(s, 4.9, 3.175, 5.3, 3.175, C.navy, 2.5);
+  s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x: 5.3, y: 1.7, w: 4.3, h: 3.0, rectRadius: 0.1, fill: { color: C.navy }, line: { color: C.amber, width: 2.5 }, shadow: shadow() });
+  s.addText("ActionGuard plug-in", { x: 5.3, y: 1.78, w: 4.3, h: 0.4, fontFace: HF, fontSize: 17, bold: true, color: C.white, align: "center", margin: 0, isTextBox: true });
+  const mods = [
+    ["UNDERSTAND", "mixed language · intent · negation"], ["DECIDE", "decision layer · transparent confirm · sentiment"],
+    ["CONVERSE", "low latency · DTMF / IVR · interrupts"], ["AUDIT", "SOP checks · stored transcripts"],
   ];
-  const pos = [[0.6, 1.9], [4.85, 1.9], [9.1, 1.9], [0.6, 4.0], [4.85, 4.0], [9.1, 4.0]];
-  pipe.forEach(([h, b], i) => {
-    const [x, y] = pos[i];
-    const gate = h.includes("GATE");
-    card(s, x, y, pw, ph, gate ? C.navy : C.white);
-    s.addText(h, { x: x + 0.25, y: y + 0.12, w: pw - 0.5, h: 0.35, fontFace: BF, fontSize: 13, bold: true, color: gate ? C.amber : C.navy, charSpacing: 1, margin: 0, isTextBox: true });
-    s.addText(b, { x: x + 0.25, y: y + 0.48, w: pw - 0.5, h: 0.8, fontFace: BF, fontSize: 12.5, color: gate ? C.white : C.ink, valign: "top", margin: 0, isTextBox: true });
+  mods.forEach(([h, b], i) => {
+    const x = 5.5 + (i % 2) * 2.0, y = 2.3 + Math.floor(i / 2) * 1.2;
+    s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x, y, w: 1.9, h: 1.08, rectRadius: 0.08, fill: { color: C.navy2 }, line: { color: C.navy2 } });
+    s.addText([{ text: h, options: { bold: true, color: C.amber, fontSize: 11, breakLine: true } }, { text: b, options: { color: C.white, fontSize: 10.5 } }],
+      { x: x + 0.05, y, w: 1.8, h: 1.08, fontFace: BF, align: "center", valign: "middle", margin: 2, isTextBox: true });
   });
-  arrow(s, 4.2, 2.575, 4.85, 2.575, C.amber, 2.5);
-  arrow(s, 8.45, 2.575, 9.1, 2.575, C.amber, 2.5);
-  arrow(s, 10.9, 3.25, 10.9, 4.0, C.amber, 2.5);
-  arrow(s, 9.1, 4.675, 8.45, 4.675, C.amber, 2.5);
-  arrow(s, 4.85, 4.675, 4.2, 4.675, C.amber, 2.5);
-  s.addText("NEGATION LEXICON (MVP → PHASE 2)", { x: 0.6, y: 5.65, w: 6, h: 0.3, fontFace: BF, fontSize: 11, bold: true, color: C.muted, charSpacing: 1, margin: 0, isTextBox: true });
-  const lex = [["Hindi", "mat · nahi · na"], ["Tamil", "vendam · venaam · illa"], ["Telugu", "vaddu · ledu"], ["Kannada", "beda · illa"], ["Bengali", "na · korben na"], ["Marathi", "nako · nahi"]];
-  lex.forEach(([l, w], i) => {
-    const x = 0.6 + i * 2.05;
-    box(s, x, 6.0, 1.9, 0.7, "", { fill: i < 2 ? C.amberLt : C.slate, line: i < 2 ? C.amber : C.slate });
-    s.addText([{ text: l, options: { bold: true, color: C.navy, breakLine: true } }, { text: w, options: { color: C.ink, fontSize: 10.5 } }],
-      { x, y: 6.0, w: 1.9, h: 0.7, fontFace: BF, fontSize: 12, align: "center", valign: "middle", margin: 2, isTextBox: true });
+  arrow(s, 9.6, 3.175, 10.0, 3.175, C.green, 2.5); label(s, 9.55, 2.8, 0.5, "safe", C.green, 10);
+  box(s, 10.0, 1.9, 2.8, 2.55, "Company action APIs\n\ncancel · refund · address\n\nFreshdesk · orders · payments", { fill: C.greenLt, color: C.green, bold: true, size: 12, line: C.green });
+  arrow(s, 6.4, 4.7, 6.4, 5.15, C.red); arrow(s, 8.5, 4.7, 8.5, 5.15, C.muted);
+  box(s, 5.3, 5.15, 2.05, 1.5, "Human agent\nangry caller or low\nconfidence → handoff", { fill: C.redLt, line: C.red, color: C.red, bold: true, size: 11.5 });
+  box(s, 7.55, 5.15, 2.05, 1.5, "Audit store\ntranscripts, decisions,\nSOP results", { fill: C.slate, color: C.navy, bold: true, size: 11.5 });
+  card(s, 0.5, 5.15, 4.4, 1.5, "F4F6F9");
+  s.addText([
+    { text: "Plugs in three ways", options: { bold: true, color: C.navy, breakLine: true } },
+    { text: "MCP tool server  ·  REST proxy / SDK  ·  Freshworks Marketplace app. The agent itself doesn't need to be rebuilt.", options: { color: C.ink } },
+  ], { x: 0.7, y: 5.15, w: 4.05, h: 1.5, fontFace: BF, fontSize: 12.5, valign: "middle", margin: 0, isTextBox: true });
+  card(s, 10.0, 5.15, 2.8, 1.5, C.amberLt);
+  s.addText("The agent never calls an irreversible API directly. Every action goes through the plug-in.", { x: 10.15, y: 5.15, w: 2.5, h: 1.5, fontFace: BF, fontSize: 12, bold: true, color: "7A5000", valign: "middle", margin: 0, isTextBox: true });
+  footer(s);
+  s.addNotes("Positioning: we are not another AI agent. We are the layer between any company's agent and the APIs that change orders, money and addresses.");
+
+  // ===== 7b. Feature set =====
+  s = pres.addSlide(); s.background = { color: C.white };
+  header(s, "05", "What the Plug-in Does", "Eleven features in four groups");
+  const groups = [
+    ["UNDERSTAND", I.lang, C.slate, [
+      ["Mixed languages", "Hinglish, Tanglish and more, even when the caller switches mid-sentence"],
+      ["Intent detection", "Works out what the caller wants and maps it to the right API tool"],
+      ["Negation handling", "Catches mat, nahi, vendam, vaddu that flip the meaning"]]],
+    ["DECIDE", I.shield, C.amberLt, [
+      ["Decision layer", "ALLOW, CONFIRM or BLOCK for every API action"],
+      ["Transparent uncertainty", "Tells the caller what it's unsure of and confirms before acting"],
+      ["Sentiment → human", "Angry or distressed callers go straight to a person"]]],
+    ["CONVERSE", I.wave, C.blueLt, [
+      ["Low latency", "Fast offline checks; the LLM runs only when a case is unclear"],
+      ["DTMF & IVR", "“Press 1 to confirm” works on any phone line and IVR menu"],
+      ["Interrupt handling", "The caller can cut in while the agent speaks, and the agent listens"]]],
+    ["AUDIT", I.bolt, C.greenLt, [
+      ["SOP-based auditing", "Checks every call against the company's own SOP rules"],
+      ["Full audit trail", "Stores the transcript, each decision and each API call"]]],
+  ];
+  groups.forEach(([g, ic, f, feats], i) => {
+    const x = 0.6 + i * 3.1;
+    card(s, x, 1.65, 2.9, 5.1, f);
+    iconCircle(s, ic, x + 0.2, 1.8, 0.6, C.white);
+    s.addText(g, { x: x + 0.95, y: 1.8, w: 1.8, h: 0.6, fontFace: BF, fontSize: 15, bold: true, color: C.navy, charSpacing: 1, valign: "middle", margin: 0, isTextBox: true });
+    feats.forEach(([h, b], j) => {
+      const y = 2.6 + j * 1.35;
+      s.addText(h, { x: x + 0.2, y, w: 2.55, h: 0.35, fontFace: BF, fontSize: 13, bold: true, color: C.navy, margin: 0, isTextBox: true });
+      s.addText(b, { x: x + 0.2, y: y + 0.36, w: 2.55, h: 0.9, fontFace: BF, fontSize: 11.5, color: C.ink, valign: "top", margin: 0, isTextBox: true });
+    });
   });
   footer(s);
-  s.addNotes("Steps 1-2 already exist in FreshVoice Round 1. Steps 3-6 are new. Highlighted lexicon chips (Hindi, Tamil) are MVP scope.");
+
+  // ===== 7c. Call lifecycle =====
+  s = pres.addSlide(); s.background = { color: C.white };
+  header(s, "05", "One Call, End to End", "Where each feature acts during a single call");
+  const G = { conv: [C.blueLt, C.blue], und: [C.slate, C.navy], dec: [C.amberLt, "7A5000"], act: [C.navy, C.white], aud: [C.greenLt, C.green] };
+  const life = [
+    ["1  Caller speaks", "Phone, IVR or app. If the caller cuts in, the agent stops talking", "conv"],
+    ["2  Speech-to-text", "Streaming transcript with a confidence score for each word", "conv"],
+    ["3  Language + intent", "Tags each word's language and finds the intent", "und"],
+    ["4  Negation check", "Does “mat” or “vendam” flip the action?", "und"],
+    ["5  Sentiment check", "Angry or distressed? Hand to a human agent", "dec"],
+    ["6  Decision layer", "ALLOW, CONFIRM or BLOCK the API action", "dec"],
+    ["7  Transparent confirm", "Says what it's unsure of. Answer by voice or keypad", "dec"],
+    ["8  API tool call", "Runs the company's API: cancel, refund, address", "act"],
+    ["9  SOP audit", "Checks the call against the company's SOP rules", "aud"],
+    ["10  Transcript stored", "Words, decisions and API calls kept for audit", "aud"],
+  ];
+  const lw = 2.1, lg = 0.4, lh = 1.3;
+  life.forEach(([h, b, g], i) => {
+    const row = i < 5 ? 0 : 1, col = row ? 9 - i : i;
+    const x = 0.6 + col * (lw + lg), y = row ? 3.9 : 1.85;
+    const [f, c] = G[g];
+    s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x, y, w: lw, h: lh, rectRadius: 0.08, fill: { color: f }, line: { color: f }, shadow: shadow() });
+    s.addText([{ text: h, options: { bold: true, color: c, fontSize: 12.5, breakLine: true } }, { text: b, options: { color: g === "act" ? C.white : C.ink, fontSize: 11 } }],
+      { x: x + 0.12, y, w: lw - 0.24, h: lh, fontFace: BF, valign: "middle", margin: 0, isTextBox: true });
+    if (i < 4) arrow(s, x + lw, y + lh / 2, x + lw + lg, y + lh / 2, C.amber, 2.5);
+    if (i === 4) arrow(s, x + lw / 2, y + lh, x + lw / 2, 3.9, C.amber, 2.5);
+    if (i > 4 && i < 9) arrow(s, x, y + lh / 2, x - lg, y + lh / 2, C.amber, 2.5);
+  });
+  [["Converse", "conv"], ["Understand", "und"], ["Decide", "dec"], ["Act", "act"], ["Audit", "aud"]].forEach(([n, g], i) => {
+    const x = 0.6 + i * 1.8;
+    s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x, y: 5.75, w: 0.35, h: 0.35, rectRadius: 0.05, fill: { color: G[g][0] }, line: { color: G[g][1], width: 1 } });
+    s.addText(n, { x: x + 0.45, y: 5.75, w: 1.3, h: 0.35, fontFace: BF, fontSize: 12, bold: true, color: C.ink, valign: "middle", margin: 0, isTextBox: true });
+  });
+  s.addText("Most calls go 1 → 2 → 3 → 4 → 6 → 8 with no question asked. Steps 5 and 7 only kick in when needed.", { x: 0.6, y: 6.25, w: 12.1, h: 0.4, fontFace: BF, fontSize: 13, italic: true, color: C.muted, margin: 0, isTextBox: true });
+  footer(s);
 
   // ===== 8. Decision gate flowchart =====
   s = pres.addSlide(); s.background = { color: C.white };
@@ -315,10 +383,10 @@ function bullets(s, items, x, y, w, h, size = 14, color = C.ink) {
   arrow(s, 7.3, cy + 0.8, 7.3, oy); label(s, 7.35, cy + 0.95, 0.5, "Yes", C.navy);
   box(s, 6.05, oy, 2.5, oh, "BLOCK\ndon't run it; switch to\nupdate_address", { fill: C.redLt, line: C.red, size: 12, color: C.red, bold: true });
   arrow(s, 10.25, cy + 0.8, 10.25, oy); label(s, 10.3, cy + 0.95, 0.5, "No", C.navy);
-  box(s, 9.0, oy, 2.5, oh, "CONFIRM\nread it back in the\ncaller's language", { fill: C.amberLt, line: C.amber, size: 12, color: "9A6400", bold: true });
+  box(s, 9.0, oy, 2.5, oh, "CONFIRM\nsay what's uncertain,\nvoice or keypad reply", { fill: C.amberLt, line: C.amber, size: 12, color: "9A6400", bold: true });
   arrow(s, 9.8, oy + oh, 9.3, 5.65); arrow(s, 10.7, oy + oh, 11.3, 5.65);
-  box(s, 8.35, 5.65, 1.9, 0.95, "“Haan” / “Aamaa”\n→ run it", { fill: C.greenLt, line: C.green, size: 11.5, color: C.green, bold: true });
-  box(s, 10.4, 5.65, 2.45, 0.95, "“Nahi” / silence\n→ hand to a person with\na Freshdesk note", { fill: C.slate, size: 11, color: C.ink, bold: true });
+  box(s, 8.35, 5.65, 1.9, 0.95, "“Haan” / press 1\n→ run it", { fill: C.greenLt, line: C.green, size: 11.5, color: C.green, bold: true });
+  box(s, 10.4, 5.65, 2.45, 0.95, "“Nahi” / press 2 / silence\n→ human agent\n+ Freshdesk note", { fill: C.slate, size: 11, color: C.ink, bold: true });
   card(s, 0.5, 5.45, 5.1, 1.2, C.navy);
   s.addText([
     { text: "Read-back example (Hindi)", options: { bold: true, color: C.amber, breakLine: true } },
@@ -326,6 +394,38 @@ function bullets(s, items, x, y, w, h, size = 14, color = C.ink) {
   ], { x: 0.75, y: 5.45, w: 4.7, h: 1.2, fontFace: BF, fontSize: 13, valign: "middle", margin: 0, isTextBox: true });
   footer(s);
   s.addNotes("Three checks, in order: how risky the action is, whether the caller negated it, and how confident we are in the transcript. Only the last branch adds a question.");
+
+  // ===== 8b. Confirming before acting =====
+  s = pres.addSlide(); s.background = { color: C.white };
+  header(s, "05", "Confirming Before Acting", "The agent says what it's unsure of. The caller answers by voice or keypad, and can interrupt at any time");
+  card(s, 0.6, 1.7, 6.3, 5.0, "F4F6F9");
+  const chat = [
+    ["CALLER", "“Refund vendam, replacement anuppunga.”", "R", C.slate, C.ink],
+    ["AGENT · spoken in Tamil", "“You don't want a refund, you want a replacement for order 48211. I'm not fully sure I heard ‘vendam’ on this line. Say ‘aamaa’ or press 1 to confirm. Press 2 to talk to a person.”", "L", C.navy, C.white],
+    ["CALLER · keypad", "presses 1", "R", C.amberLt, "7A5000"],
+    ["AGENT", "“Replacement booked. Reference R-2291.”", "L", C.navy, C.white],
+  ];
+  let yy = 1.9;
+  chat.forEach(([who, t, side, f, c]) => {
+    const h = t.length > 80 ? 1.3 : 0.6, w = t.length > 80 ? 5.0 : 4.2;
+    const x = side === "L" ? 0.85 : 6.65 - w;
+    s.addText(who, { x, y: yy, w, h: 0.25, fontFace: BF, fontSize: 9.5, bold: true, color: C.muted, align: side === "L" ? "left" : "right", margin: 0, isTextBox: true });
+    box(s, x, yy + 0.27, w, h, t, { fill: f, color: c, size: 12.5, align: "left", margin: 8, r: 0.12 });
+    yy += h + 0.42;
+  });
+  const cf = [
+    [C.amber, "Transparent uncertainty", "Names the exact word or detail it isn't sure of, and how sure it is. No silent guessing on actions that can't be undone."],
+    [C.blue, "DTMF & IVR fallback", "The keypad works when speech is noisy. It plugs into the company's existing IVR menus: press 1 to confirm, 2 for a person."],
+    [C.green, "Interrupt handling", "If the caller cuts in while the agent is talking, the agent stops speaking and treats the new words as the answer."],
+  ];
+  cf.forEach(([c, h, b], i) => {
+    const y = 1.7 + i * 1.72;
+    card(s, 7.25, y, 5.5, 1.52);
+    s.addShape(pres.shapes.OVAL, { x: 7.5, y: y + 0.22, w: 0.32, h: 0.32, fill: { color: c }, line: { color: c } });
+    s.addText(h, { x: 7.95, y: y + 0.15, w: 4.6, h: 0.45, fontFace: HF, fontSize: 16, bold: true, color: C.navy, valign: "middle", margin: 0, isTextBox: true });
+    s.addText(b, { x: 7.5, y: y + 0.65, w: 5.05, h: 0.8, fontFace: BF, fontSize: 12, color: C.ink, valign: "top", margin: 0, isTextBox: true });
+  });
+  footer(s);
 
   // ===== 9. Worked examples =====
   s = pres.addSlide(); s.background = { color: C.white };
@@ -364,13 +464,65 @@ function bullets(s, items, x, y, w, h, size = 14, color = C.ink) {
   footer(s);
   s.addNotes("Chip colors: blue = English, grey = Hindi or Tamil, red = negation. The Tamil example shows the confidence branch: the word is probably 'vendam', but it's too low-confidence to issue money without asking.");
 
+  // ===== 9b. Latency budget =====
+  s = pres.addSlide(); s.background = { color: C.white };
+  header(s, "05", "Low Latency by Design", "Target time budget from the caller's last word to the agent's reply (proposed targets, in ms)");
+  card(s, 0.6, 1.7, 7.6, 5.0);
+  s.addChart(pres.charts.BAR, [{ name: "Target ms", labels: ["Speech-to-text (final)", "Language + intent (offline)", "Negation + decision layer", "Sentiment check", "LLM fallback (unclear only)", "Speech out (first audio)"], values: [250, 5, 10, 15, 250, 200] }], {
+    x: 0.75, y: 1.8, w: 7.3, h: 4.8, barDir: "bar", chartColors: [C.navy],
+    showValue: true, dataLabelPosition: "outEnd", dataLabelColor: C.ink, dataLabelFontSize: 11, dataLabelFontFace: BF,
+    catAxisLabelColor: C.ink, catAxisLabelFontSize: 11, catAxisLabelFontFace: BF, catAxisOrientation: "maxMin",
+    valAxisHidden: true, valGridLine: { style: "none" }, catGridLine: { style: "none" }, showLegend: false,
+    showTitle: true, title: "Target budget per stage (ms)", titleFontFace: BF, titleFontSize: 13, titleColor: C.navy, valAxisMaxVal: 320,
+  });
+  const lat = [["~480 ms", "fast path: most calls, no LLM step", C.green], ["< 800 ms", "worst case, with the LLM fallback", C.amber], ["< 5 ms", "offline tagging + intent runs in-process", C.navy]];
+  lat.forEach(([n, d, c], i) => {
+    const y = 1.7 + i * 1.72;
+    card(s, 8.6, y, 4.15, 1.52);
+    s.addText(n, { x: 8.85, y: y + 0.12, w: 3.7, h: 0.75, fontFace: HF, fontSize: 34, bold: true, color: c, margin: 0, isTextBox: true });
+    s.addText(d, { x: 8.85, y: y + 0.88, w: 3.7, h: 0.5, fontFace: BF, fontSize: 12.5, color: C.ink, margin: 0, isTextBox: true });
+  });
+  footer(s);
+  s.addNotes("These are design targets, not measurements. The offline engine already runs in microseconds (register metrics measured at ~546 ns per call in decision-policy/), so the plug-in's own checks are a small part of the budget.");
+
+  // ===== 9c. SOP audit & trail =====
+  s = pres.addSlide(); s.background = { color: C.white };
+  header(s, "05", "SOP Auditing & Full Audit Trail", "Every call is checked against the company's SOP, and the complete record is stored");
+  const ins = [["Transcript", "every word, both sides, timestamps"], ["Decisions", "verdict, confidence, reason"], ["API calls", "request and response"]];
+  ins.forEach(([h, b], i) => {
+    const y = 1.75 + i * 1.0;
+    box(s, 0.6, y, 3.0, 0.85, "", { fill: C.slate });
+    s.addText([{ text: h, options: { bold: true, color: C.navy, breakLine: true } }, { text: b, options: { color: C.muted, fontSize: 11 } }],
+      { x: 0.75, y, w: 2.8, h: 0.85, fontFace: BF, fontSize: 13, valign: "middle", margin: 0, isTextBox: true });
+    arrow(s, 3.6, y + 0.425, 4.25, 2.675, C.muted, 1.5);
+  });
+  box(s, 4.25, 2.0, 2.6, 1.35, "SOP rule checker\nruns after every call", { fill: C.navy, color: C.white, bold: true, size: 14 });
+  arrow(s, 6.85, 2.45, 7.4, 2.05, C.green); arrow(s, 6.85, 2.9, 7.4, 3.3, C.red);
+  box(s, 7.4, 1.6, 2.6, 0.9, "PASS\nlogged on the ticket", { fill: C.greenLt, line: C.green, color: C.green, bold: true, size: 12 });
+  box(s, 7.4, 2.85, 2.6, 0.9, "VIOLATION\nflagged for a supervisor", { fill: C.redLt, line: C.red, color: C.red, bold: true, size: 12 });
+  card(s, 10.35, 1.6, 2.4, 2.15, C.amberLt);
+  s.addText([{ text: "Stored for", options: { bold: true, color: "7A5000", breakLine: true } }, { text: "disputes & chargebacks", options: { bullet: true, breakLine: true } }, { text: "QA & compliance review", options: { bullet: true, breakLine: true } }, { text: "retraining data", options: { bullet: true } }],
+    { x: 10.5, y: 1.7, w: 2.15, h: 1.95, fontFace: BF, fontSize: 12, color: C.ink, valign: "middle", margin: 0, isTextBox: true });
+  card(s, 0.6, 4.95, 6.25, 1.75, "F4F6F9");
+  s.addText("EXAMPLE SOP RULES", { x: 0.85, y: 5.05, w: 5, h: 0.3, fontFace: BF, fontSize: 11, bold: true, color: C.amber, charSpacing: 1, margin: 0, isTextBox: true });
+  bullets(s, ["Read back the order ID before any cancellation", "Refunds above ₹5,000 need an OTP", "Offer a replacement before a refund for damaged items", "Angry caller → human agent within 2 turns"], 0.85, 5.35, 5.85, 1.3, 12);
+  card(s, 7.15, 4.95, 5.6, 1.75, C.navy);
+  s.addText([
+    { text: "call C-7781 · order 48211", options: { color: C.amber, breakLine: true } },
+    { text: "said:     “Refund vendam, replacement anuppunga”", options: { breakLine: true } },
+    { text: "verdict:  BLOCK issue_refund · CONFIRM replacement", options: { breakLine: true } },
+    { text: "unsure:   “vendam” 0.58 → caller pressed 1", options: { breakLine: true } },
+    { text: "SOP:      read-back ✓   OTP n/a   handoff n/a" },
+  ], { x: 7.35, y: 4.95, w: 5.3, h: 1.75, fontFace: "Courier New", fontSize: 11, color: C.white, valign: "middle", margin: 0, isTextBox: true });
+  footer(s);
+
   // ===== 10. MVP vs later + AI =====
   s = pres.addSlide(); s.background = { color: C.white };
   header(s, "05", "Scope: MVP vs Later Phases");
   const phases = [
-    ["PHASE 1 · MVP", "Months 0–3", ["Hindi + Tamil + English", "3 guarded actions: cancel, refund, address change", "ALLOW / CONFIRM / BLOCK + re-route", "English audit note on every ticket"], C.navy, C.white],
-    ["PHASE 2", "Months 4–6", ["Adds Telugu, Kannada, Bengali, Marathi", "Uses the speech-to-text engine's alternative transcripts, not just its top guess", "Learns from human agents' overrides"], C.slate, C.navy],
-    ["PHASE 3", "Months 7–12", ["Admin policy editor for each action", "Chat and WhatsApp channels", "Wrong-action analytics dashboard"], C.slate, C.navy],
+    ["PHASE 1 · MVP", "Months 0–3", ["Plug-in as MCP tool + REST proxy", "Hindi + Tamil + English: intent + negation", "Decision layer + transparent confirm (voice + DTMF)", "Full transcript audit store"], C.navy, C.white],
+    ["PHASE 2", "Months 4–6", ["Sentiment-based handoff to human agents", "Interrupt handling tuned for phone lines", "SOP rule editor + audit reports", "Adds Telugu, Kannada, Bengali, Marathi"], C.slate, C.navy],
+    ["PHASE 3", "Months 7–12", ["One-click Freshworks Marketplace app", "Chat and WhatsApp channels", "Analytics + learning from human overrides"], C.slate, C.navy],
   ];
   phases.forEach(([h, t, items, f, c], i) => {
     const x = 0.6 + i * 4.1;
@@ -379,7 +531,7 @@ function bullets(s, items, x, y, w, h, size = 14, color = C.ink) {
     bullets(s, items, x + 0.2, 2.8, 3.6, 1.7, 13);
   });
   const lower = [
-    [I.shieldW, "AI & agentic design", "An AI agent plans the tool calls. ActionGuard is a second, independent agent that checks each irreversible call. It combines rule-based checks per language with an LLM that works out what a negation applies to, and falls back to rules alone when offline."],
+    [I.shieldW, "AI & agentic design", "The company's agent plans the tool calls. ActionGuard is a second, independent agent that checks each one. Fast rule-based checks for each language run first; an LLM is used only for unclear cases, and rules alone still work offline."],
     [I.code, "Already built (Round 1)", "Code-mix tagging engine, intent scoring, MCP server, Freshdesk ticket API, and a live demo on Vercel. ActionGuard adds the checks and the gate on top."],
   ];
   lower.forEach(([ic, h, b], i) => {
@@ -389,37 +541,6 @@ function bullets(s, items, x, y, w, h, size = 14, color = C.ink) {
     s.addText(h, { x: x + 1.1, y: 4.95, w: 4.6, h: 0.4, fontFace: HF, fontSize: 16, bold: true, color: C.navy, margin: 0, isTextBox: true });
     s.addText(b, { x: x + 1.1, y: 5.35, w: 4.65, h: 1.25, fontFace: BF, fontSize: 12, color: C.ink, valign: "top", margin: 0, isTextBox: true });
   });
-  footer(s);
-
-  // ===== 11. Freshworks integration =====
-  s = pres.addSlide(); s.background = { color: C.white };
-  header(s, "05", "How It Fits Into Freshworks", "Built as a tool gate inside the Freddy AI Agent → Freshdesk action path");
-  const my = 1.95, mh = 1.25;
-  const main = [
-    [0.5, 1.55, "Caller\nphone / app", C.slate, C.ink],
-    [2.45, 1.75, "Freshcaller\nvoice channel", C.slate, C.ink],
-    [4.6, 1.75, "Speech-to-text\nwith word confidence", C.slate, C.ink],
-    [6.75, 1.75, "Freddy AI Agent\nplans tool call", C.blueLt, C.blue],
-    [8.9, 1.85, "ActionGuard\nguard_action()", C.navy, C.white],
-    [11.15, 1.7, "Order APIs\ncancel · refund\naddress", C.greenLt, C.green],
-  ];
-  main.forEach(([x, w, t, f, c], i) => {
-    box(s, x, my, w, mh, t, { fill: f, color: c, bold: true, size: 12.5, line: i === 4 ? C.amber : f, lw: i === 4 ? 2.5 : 1 });
-    if (i < main.length - 1) arrow(s, x + w, my + mh / 2, main[i + 1][0], my + mh / 2);
-  });
-  label(s, 10.6, my + mh / 2 - 0.36, 0.7, "allow", C.green, 10);
-  // branches below ActionGuard
-  const by = 4.0;
-  arrow(s, 9.4, my + mh, 7.6, by, C.amber); arrow(s, 10.4, my + mh, 12.0, by, C.red);
-  box(s, 6.6, by, 2.5, 1.1, "CONFIRM\nFreddy reads it back\nin the caller's language", { fill: C.amberLt, line: C.amber, color: "9A6400", bold: true, size: 11.5 });
-  box(s, 10.95, by, 1.9, 1.1, "BLOCK / ESCALATE\nhuman agent in\nFreshdesk Omni", { fill: C.redLt, line: C.red, color: C.red, bold: true, size: 11.5 });
-  arrow(s, 7.85, by, 7.85, my + mh, C.amber); label(s, 7.9, 3.35, 0.9, "answer", "9A6400", 10);
-  card(s, 0.5, 5.6, 12.35, 1.05, C.navy);
-  s.addText([
-    { text: "Every decision is logged  ", options: { bold: true, color: C.amber } },
-    { text: "as an English private note on the Freshdesk ticket, with the utterance, language tags, negation, confidence, verdict and reason. Supervisors can audit it and it can be used for retraining.", options: { color: C.white } },
-  ], { x: 0.75, y: 5.6, w: 11.9, h: 1.05, fontFace: BF, fontSize: 13.5, valign: "middle", margin: 0, isTextBox: true });
-  s.addText("Delivered as a Freshworks Marketplace app plus an MCP tool (guard_action) that any agent can call before it acts.", { x: 0.5, y: 4.1, w: 5.9, h: 1.0, fontFace: BF, fontSize: 13, italic: true, color: C.muted, valign: "middle", margin: 0, isTextBox: true });
   footer(s);
 
   // ===== 12. Target customers =====
@@ -450,18 +571,18 @@ function bullets(s, items, x, y, w, h, size = 14, color = C.ink) {
   s = pres.addSlide(); s.background = { color: C.white };
   header(s, "07", "Value Proposition");
   card(s, 0.6, 1.55, 12.15, 1.25, C.navy);
-  s.addText("Let your AI agent take real actions for Indian callers without cancelling or refunding when the caller said “don't”. Only the calls that need it get a question.",
+  s.addText("Plug it in once, and your AI agent can act for mixed-language callers: it gets the intent right, confirms when unsure, hands angry callers to a person and audits every action.",
     { x: 0.9, y: 1.55, w: 11.6, h: 1.25, fontFace: HF, fontSize: 20, color: C.white, valign: "middle", margin: 0, isTextBox: true });
   const cols = [["Without ActionGuard", I.xmark, C.red, C.redLt, [
     "Agent acts on its first guess at the intent",
     "One dropped “mat” leads to a cancelled order",
-    "The only safe fallback is confirming every action, so callers get annoyed",
-    "No record of why the bot acted",
+    "Angry callers stay stuck talking to a bot",
+    "No transcript or SOP check to prove what happened",
   ]], ["With ActionGuard", I.check, C.green, C.greenLt, [
-    "Checks negation in every language before any irreversible action",
-    "Blocked requests go to the action the caller actually asked for",
-    "Questions only when the action is risky and we're unsure",
-    "English audit note on every Freshdesk ticket",
+    "Understands mixed-language callers and runs the right API",
+    "Checks negation and confidence before any irreversible call",
+    "Says what it's unsure of; caller confirms by voice or keypad",
+    "Angry callers reach a person; every call is SOP-audited",
   ]]];
   cols.forEach(([h, ic, c, lt, items], i) => {
     const x = 0.6 + i * 6.2;
@@ -477,8 +598,8 @@ function bullets(s, items, x, y, w, h, size = 14, color = C.ink) {
   header(s, "08", "Pricing & Packaging", "Proposed. We only charge for the actions we actually guard.");
   const tiers = [
     ["Included", "Free", "for every Freddy AI Agent customer", ["Monitor mode: flags risky actions, never blocks", "Hindi + English", "Weekly wrong-action report"], C.slate, C.navy, false],
-    ["ActionGuard Add-on", "$5", "per 1,000 guarded actions", ["Full ALLOW / CONFIRM / BLOCK gate", "All MVP languages + re-route", "Audit notes on every ticket", "First 30 days free"], C.navy, C.white, true],
-    ["Enterprise", "Custom", "annual contract", ["Custom policies for each action", "Dedicated language packs", "SLA + data residency in India"], C.slate, C.navy, false],
+    ["ActionGuard Add-on", "$5", "per 1,000 guarded actions", ["Full plug-in: decision layer, DTMF confirm, interrupts", "Sentiment handoff + SOP audit", "All MVP languages", "First 30 days free"], C.navy, C.white, true],
+    ["Enterprise", "Custom", "annual contract", ["Custom SOP rule packs", "Transcript retention + data residency in India", "SLA"], C.slate, C.navy, false],
   ];
   tiers.forEach(([n, p, u, items, f, c, hi], i) => {
     const x = 0.9 + i * 4.0, y = hi ? 1.7 : 1.95, h = hi ? 4.85 : 4.4;
@@ -516,7 +637,7 @@ function bullets(s, items, x, y, w, h, size = 14, color = C.ink) {
   // ===== 16. Costs & resources =====
   s = pres.addSlide(); s.background = { color: C.white };
   header(s, "10", "Costs & Resources Needed");
-  const team = [[I.code, "2 engineers", "gate engine + Freshworks app"], [I.lang, "1 linguist / data annotator", "Hindi + Tamil negation set"], [I.user, "Part-time PM", "pilots + pricing"]];
+  const team = [[I.code, "3 engineers", "plug-in core, voice / IVR, Freshworks app"], [I.lang, "1 linguist / data annotator", "Hindi + Tamil negation set"], [I.user, "Part-time PM", "pilots + pricing"]];
   team.forEach(([ic, h, b], i) => {
     const y = 1.6 + i * 1.05;
     iconCircle(s, ic === I.lang ? I.mic : ic, 0.6, y, 0.75, C.navy);
@@ -525,14 +646,14 @@ function bullets(s, items, x, y, w, h, size = 14, color = C.ink) {
   });
   // stat
   card(s, 0.6, 5.05, 4.5, 1.65, C.navy);
-  s.addText("~$70K", { x: 0.85, y: 5.1, w: 4.0, h: 0.75, fontFace: HF, fontSize: 40, bold: true, color: C.amber, margin: 0, isTextBox: true });
+  s.addText("~$90K", { x: 0.85, y: 5.1, w: 4.0, h: 0.75, fontFace: HF, fontSize: 40, bold: true, color: C.amber, margin: 0, isTextBox: true });
   s.addText("to MVP in 3 months: salaries, speech-to-text and LLM usage, and labelling ~5,000 negation utterances", { x: 0.85, y: 5.85, w: 4.0, h: 0.8, fontFace: BF, fontSize: 12, color: C.white, valign: "top", margin: 0, isTextBox: true });
   // gantt
   const gx = 5.7, gw = 7.0, gy = 1.6;
   s.addText("MVP timeline", { x: gx, y: gy, w: 4, h: 0.4, fontFace: HF, fontSize: 18, bold: true, color: C.navy, margin: 0, isTextBox: true });
   const lblW = 2.6, colW = (gw - lblW) / 3;
   ["Month 1", "Month 2", "Month 3"].forEach((m, i) => s.addText(m, { x: gx + lblW + i * colW, y: gy + 0.5, w: colW, h: 0.3, fontFace: BF, fontSize: 11, bold: true, color: C.muted, align: "center", margin: 0, isTextBox: true }));
-  const tasks = [["Negation dataset + lexicon", 0, 1.2, C.amber], ["Polarity + risk engine", 0.5, 1.5, C.navy], ["Speech-to-text confidence wiring", 1.0, 1.0, C.navy], ["Freshdesk / Freddy integration", 1.3, 1.5, C.blue], ["Design-partner pilot + tuning", 2.0, 1.0, C.green]];
+  const tasks = [["Negation dataset + lexicon", 0, 1.2, C.amber], ["Plug-in core + decision layer", 0.5, 1.5, C.navy], ["Voice: DTMF, interrupts", 1.0, 1.2, C.navy], ["Sentiment, SOP audit, store", 1.3, 1.5, C.blue], ["Design-partner pilot", 2.0, 1.0, C.green]];
   tasks.forEach(([t, st, du, c], i) => {
     const y = gy + 0.85 + i * 0.5;
     s.addShape(pres.shapes.RECTANGLE, { x: gx, y: y - 0.04, w: gw, h: 0.52, fill: { color: i % 2 ? C.white : "F4F6F9" }, line: { color: i % 2 ? C.white : "F4F6F9" } });
@@ -552,27 +673,29 @@ function bullets(s, items, x, y, w, h, size = 14, color = C.ink) {
   s = pres.addSlide(); s.background = { color: C.white };
   header(s, "11", "Expected Benefits & Success Metrics");
   const kpi = [
-    ["< 0.5%", "Wrong actions", "irreversible actions taken on a held-out set of negated Hindi + Tamil requests (today our engine misroutes them)", C.red],
-    ["≤ 15%", "Confirmation rate", "Friction budget: at most 15% of guarded actions trigger a read-back", C.amber],
-    ["−30%", "Reversal tickets", "fewer refund or cancellation reversal tickets at pilot customers", C.green],
-    ["15%", "Adoption", "of eligible Freddy AI Agent voice customers turn it on within 2 quarters", C.blue],
+    ["< 0.5%", "Wrong actions", "irreversible API calls on negated Hindi + Tamil requests", C.red],
+    ["< 150 ms", "Added latency (p95)", "what the plug-in adds on top of the agent", C.navy],
+    ["≤ 15%", "Confirmation rate", "share of guarded actions that ask a question", C.amber],
+    ["100%", "Audit coverage", "API actions stored with transcript + SOP result", C.green],
+    ["−30%", "Reversal tickets", "refund / cancellation reversals at pilot customers", C.green],
+    ["15%", "Adoption", "of eligible voice customers within 2 quarters", C.blue],
   ];
   kpi.forEach(([n, h, b, c], i) => {
-    const x = 0.6 + (i % 2) * 3.55, y = 1.6 + Math.floor(i / 2) * 2.6;
-    card(s, x, y, 3.35, 2.35);
-    s.addText(n, { x: x + 0.25, y: y + 0.15, w: 2.9, h: 0.85, fontFace: HF, fontSize: 38, bold: true, color: c, margin: 0, isTextBox: true });
-    s.addText(h, { x: x + 0.25, y: y + 1.0, w: 2.9, h: 0.35, fontFace: BF, fontSize: 14, bold: true, color: C.navy, margin: 0, isTextBox: true });
-    s.addText(b, { x: x + 0.25, y: y + 1.35, w: 2.9, h: 0.9, fontFace: BF, fontSize: 11, color: C.muted, valign: "top", margin: 0, isTextBox: true });
+    const x = 0.6 + (i % 2) * 3.55, y = 1.6 + Math.floor(i / 2) * 1.72;
+    card(s, x, y, 3.35, 1.55);
+    s.addText(n, { x: x + 0.2, y: y + 0.1, w: 3.0, h: 0.6, fontFace: HF, fontSize: 28, bold: true, color: c, margin: 0, isTextBox: true });
+    s.addText(h, { x: x + 0.2, y: y + 0.7, w: 3.0, h: 0.3, fontFace: BF, fontSize: 13, bold: true, color: C.navy, margin: 0, isTextBox: true });
+    s.addText(b, { x: x + 0.2, y: y + 1.0, w: 3.0, h: 0.5, fontFace: BF, fontSize: 10.5, color: C.muted, valign: "top", margin: 0, isTextBox: true });
   });
-  card(s, 7.95, 1.6, 4.8, 4.95);
+  card(s, 7.95, 1.6, 4.8, 5.0);
   s.addChart(pres.charts.DOUGHNUT, [{ name: "Target decision mix", labels: ["ALLOW", "CONFIRM", "BLOCK / re-route"], values: [80, 15, 5] }], {
-    x: 8.1, y: 1.7, w: 4.5, h: 4.75, holeSize: 55, chartColors: [C.green, C.amber, C.red],
+    x: 8.1, y: 1.7, w: 4.5, h: 4.8, holeSize: 55, chartColors: [C.green, C.amber, C.red],
     showTitle: true, title: "Target mix of guarded actions (%)", titleFontFace: BF, titleFontSize: 13, titleColor: C.navy,
     showValue: true, showPercent: false, dataLabelColor: C.white, dataLabelFontSize: 12, dataLabelFontBold: true,
     showLegend: true, legendPos: "b", legendFontFace: BF, legendFontSize: 11, legendColor: C.ink,
   });
   footer(s);
-  s.addNotes("The first metric is measurable today, because our Round-1 engine gives us a baseline on the negation set. The decision mix is a design target, not a measurement.");
+  s.addNotes("The wrong-action metric is measurable today: our Round-1 engine gives a baseline on the negation set. Latency, confirmation rate and decision mix are design targets.");
 
   // ===== 18. Risks =====
   s = pres.addSlide(); s.background = { color: C.white };
@@ -591,7 +714,7 @@ function bullets(s, items, x, y, w, h, size = 14, color = C.ink) {
   });
   const rl = [
     ["R1 · Speech-to-text drops the negation completely", "Mitigation: for irreversible actions, low confidence on a short word, or a missing word where one is expected, sends the call to CONFIRM"],
-    ["R2 · Too many confirmations annoy callers", "Mitigation: 15% friction budget, and only irreversible actions are guarded. We tune the threshold in the pilot"],
+    ["R2 · The plug-in adds latency or friction", "Mitigation: fast offline path (< 5 ms), LLM only when unclear, and questions only for risky actions"],
     ["R3 · Dialects and spellings (vendaam, venaam, matt)", "Mitigation: lexicon plus LLM fallback, and every human override is added to the training set"],
     ["R4 · Assumption: callers accept a read-back", "In their own language. We validate with pilot CSAT, and an English read-back is the fallback"],
   ];
@@ -607,7 +730,7 @@ function bullets(s, items, x, y, w, h, size = 14, color = C.ink) {
   s = pres.addSlide(); s.background = { color: C.navy };
   iconCircle(s, I.shieldW, 0.8, 1.0, 1.1, C.navy2);
   s.addText("“Don't cancel” should mean don't cancel.", { x: 0.8, y: 2.35, w: 11.8, h: 0.9, fontFace: HF, fontSize: 36, bold: true, color: C.white, margin: 0, isTextBox: true });
-  s.addText("ActionGuard lets AI agents act for India's code-mixed callers and stops them acting on a word they misheard.", { x: 0.8, y: 3.4, w: 11.5, h: 0.9, fontFace: BF, fontSize: 20, color: C.ice, margin: 0, isTextBox: true });
+  s.addText("One plug-in between your AI agent and your APIs. It understands mixed-language callers, confirms when unsure, and audits every action.", { x: 0.8, y: 3.4, w: 11.5, h: 0.9, fontFace: BF, fontSize: 20, color: C.ice, margin: 0, isTextBox: true });
   const ask = [["Our ask", "A Freshworks sandbox with Freddy AI Agent + Freshcaller for a 3-brand pilot"], ["Live today", "codemix-skill.vercel.app: the Round-1 engine that ActionGuard builds on"]];
   ask.forEach(([h, b], i) => {
     const x = 0.8 + i * 6.0;
