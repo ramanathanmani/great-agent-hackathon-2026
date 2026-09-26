@@ -27,7 +27,10 @@ let N = 0;
 
 // ---------- helpers ----------
 const T = (s, text, o) => s.addText(text, Object.assign({ fontFace: BF, margin: 0, isTextBox: true, valign: "top", color: C.ink }, o));
+const SECTIONS = ["", "Initiative Overview", "Problem Statement", "Why Now", "Competitive Landscape", "Proposed Solution · MVP · Freshworks · AI design", "Target Customers", "Value Proposition", "Pricing & Packaging", "Go-to-Market Plan", "Costs & Resources", "Benefits & Success Metrics", "Risks & Assumptions"];
+let SEC5 = "Proposed Solution";
 function header(s, num, title, sub, subSize = 13.5) {
+  T(s, `SECTION ${num} OF 12  ·  ${(num === 5 ? SEC5 : SECTIONS[num]).toUpperCase()}`, { x: 6.3, y: 0.12, w: 6.45, h: 0.28, fontSize: 9, bold: true, color: "8A93A3", align: "right", charSpacing: 1 });
   s.addShape(pres.shapes.OVAL, { x: 0.6, y: 0.48, w: 0.62, h: 0.62, fill: { color: C.amber }, line: { color: C.amber } });
   T(s, String(num), { x: 0.6, y: 0.48, w: 0.62, h: 0.62, align: "center", valign: "middle", fontSize: 15, bold: true, color: C.navy });
   T(s, title, { x: 1.4, y: 0.4, w: 11.4, h: 0.78, fontFace: HF, fontSize: 30, bold: true, color: C.navy, valign: "middle" });
@@ -118,9 +121,10 @@ function tag(s, x, y, text, fill, color) { box(s, x, y, Math.max(0.9, text.lengt
   T(s, "Team Ramanathan & Sadhana  •  Track 1: Customer & Employee Experience", { x: 0.8, y: 6.4, w: 11.5, h: 0.4, fontSize: 14, color: C.white });
   N++;
 
+
   // ===== 2. Initiative Overview =====
   s = slide();
-  header(s, 2, "Initiative Overview", "Initiative: Codemix Skill  ·  Owner: Team Ramanathan & Sadhana  ·  a plug-in that makes tool-using AI agents safe", 13);
+  header(s, 1, "Initiative Overview", "Initiative: Codemix Skill  ·  Owner: Team Ramanathan & Sadhana  ·  a plug-in that makes tool-using AI agents safe", 13);
   [["The gap", "Voice agents can understand a request and immediately call a refund, cancellation or replacement API. A small missed negation can turn the right conversation into the wrong transaction.", C.red],
    ["Our product", "Codemix Skill sits between the AI agent and its API/tool calls. It validates intent, negation, confidence, sentiment and SOP rules before execution.", C.navy],
    ["Freshworks extension", "Unsafe, uncertain or emotionally escalated calls become Freshdesk tickets with transcript, decision context and action details for a human agent.", C.fresh]].forEach(([h, b, c], i) => {
@@ -144,9 +148,10 @@ function tag(s, x, y, text, fill, color) { box(s, x, y, Math.max(0.9, text.lengt
   T(s, "The agent proposes an action. Codemix Skill decides whether it runs, needs confirmation, or goes to a human.", { x: 7.3, y: 6.0, w: 5.2, h: 0.6, fontSize: 11.5, italic: true, color: C.muted });
   footer(s);
 
+
   // ===== 3. Problem Statement =====
   s = slide();
-  header(s, 3, "Problem Statement", "In code-mixed voice, one short word can reverse the meaning of an API action");
+  header(s, 2, "Problem Statement", "In code-mixed voice, one short word can reverse the meaning of an API action");
   [["HINDI EXAMPLE", ["Order cancel ", "mat", " karo, bas address change karna hai."], "Correct intent: do NOT cancel → update address."],
    ["TAMIL EXAMPLE", ["Refund ", "vendam", ", replacement anuppunga."], "Correct intent: do NOT refund → request replacement."]].forEach(([h, q, c], i) => {
     const x = 0.6 + i * 6.2;
@@ -166,9 +171,10 @@ function tag(s, x, y, text, fill, color) { box(s, x, y, Math.max(0.9, text.lengt
   });
   footer(s);
 
+
   // ===== 4. Why Now =====
   s = slide();
-  header(s, 4, "Why Now", "AI agents have write access, so misunderstanding is no longer just a bad answer");
+  header(s, 3, "Why Now", "AI agents have write access, so misunderstanding is no longer just a bad answer");
   [[I.bolt, "AI agents can act", "Tool calling and MCP let agents trigger refunds, cancellations, returns and other business actions directly."],
    [I.lang, "Code-mixing is normal", "Indian callers switch between languages inside a sentence. The risk is concentrated around small intent-flipping words."],
    [I.wave, "Voice stack is ready", "VoBiz provides phone access + DTMF, Sarvam handles Indian speech-to-text, Claude validates intent, and ElevenLabs returns the response."]].forEach(([ic, h, b], i) => {
@@ -181,9 +187,10 @@ function tag(s, x, y, text, fill, color) { box(s, x, y, Math.max(0.9, text.lengt
   banner(s, 0.6, 5.45, 12.1, 1.25, "Our timing", "The missing layer is not another voice bot. It is a safety and decision layer that controls when an existing AI agent is allowed to call an API.", { size: 15 });
   footer(s);
 
+
   // ===== 5. Competitive Landscape =====
   s = slide();
-  header(s, 5, "Competitive Landscape", "We focus specifically on the gap between language understanding and action execution");
+  header(s, 4, "Competitive Landscape", "We focus specifically on the gap between language understanding and action execution");
   const comp = [
     ["Do nothing", "Zero integration effort.", "Risky actions can execute on the agent's first interpretation.", false],
     ["Confirm-everything IVR", "Safe confirmation.", "Adds friction to every action, even low-risk requests.", false],
@@ -212,9 +219,10 @@ function tag(s, x, y, text, fill, color) { box(s, x, y, Math.max(0.9, text.lengt
   banner(s, 0.6, 5.85, 12.1, 0.9, "Our edge", "A policy-aware action gate with human escalation and an auditable record of what the caller said, what the agent decided, and what API was called.", { size: 13 });
   footer(s);
 
+
   // ===== 6. Solution Architecture =====
   s = slide();
-  header(s, 6, "Solution Architecture", "Codemix Skill is the control point between an existing AI agent and its tools");
+  header(s, 5, "Solution Architecture", "Codemix Skill is the control point between an existing AI agent and its tools");
   const arch = [["Customer", "speaks", C.slate, C.navy], ["VoBiz AI", "receives the call", C.blueLt, C.blue], ["Sarvam AI", "speech → text", C.blueLt, C.blue],
     ["Claude API", "intent + negation check", C.navy, C.amber]];
   arch.forEach(([h, b, f, c], i) => {
@@ -239,9 +247,10 @@ function tag(s, x, y, text, fill, color) { box(s, x, y, Math.max(0.9, text.lengt
   banner(s, 0.6, 5.95, 12.15, 0.8, "Our innovation", "We put an intent-validation safety gate between what the voice agent hears and what the agent is allowed to do.", { size: 14 });
   footer(s);
 
+
   // ===== 7. Sponsor & Integration Stack =====
   s = slide();
-  header(s, 7, "Sponsor & Integration Stack", "Each sponsor/API has one clear job; Codemix Skill coordinates the handoff and controls action execution");
+  header(s, 5, "Sponsor & Integration Stack", "Each sponsor/API has one clear job; Codemix Skill coordinates the handoff and controls action execution");
   const layers = [
     ["CHANNEL", "VoBiz AI", "PHONE + DTMF", "The number customers call. Keypad (DTMF) gives a confirmation that needs no speech recognition.", C.blue, C.blueLt],
     ["LISTEN", "Sarvam AI", "SPEECH → TEXT", "Transcribes code-mixed Hindi + English and Tamil + English, so the negation reaches the intent check.", C.blue, C.blueLt],
@@ -261,34 +270,32 @@ function tag(s, x, y, text, fill, color) { box(s, x, y, Math.max(0.9, text.lengt
   });
   footer(s);
 
-  // ===== 8. Freshworks HITL =====
+
+  // ===== 11. The Safety Decision =====
   s = slide();
-  header(s, 8, "Freshworks Integration — Human-in-the-Loop", "Freshdesk is the operational destination for cases the AI should not resolve alone");
-  const hitl = [["AI Agent", "proposes action", C.blueLt, C.blue], ["Codemix Skill", "safety + decision", C.navy, C.amber], ["Decision", "ALLOW / CONFIRM / BLOCK", C.amberLt, C.amberDk], ["Freshdesk", "only when human is needed", C.freshLt, C.fresh]];
-  hitl.forEach(([h, b, f, c], i) => {
-    const x = 0.6 + i * 3.15;
-    rich(s, x, 1.75, 2.7, 1.0, h, b, { fill: f, hc: c, bc: f === C.navy ? C.white : C.ink, line: i === 3 ? C.fresh : f, lw: 2, hs: 14 });
-    if (i < 3) arrow(s, x + 2.7, 2.25, x + 3.15, 2.25, C.navy, 2.5);
-  });
-  const cols8 = [
-    [I.hand, "When a ticket is created", ["Unsafe or unclear action", "Caller does not confirm", "Caller is angry / distressed", "AI should not guess"], C.red],
-    [I.ticket, "What Freshdesk receives", ["English summary", "Full code-mixed transcript", "Intent + confidence", "Safety verdict", "Attempted API action", "Tags / timestamps"], C.fresh],
-    [I.user, "What the human gets", null, C.navy],
-  ];
-  cols8.forEach(([ic, h, items, c], i) => {
+  header(s, 5, "The Safety Decision", "The agent never silently guesses on an irreversible action");
+  box(s, 0.6, 1.95, 2.3, 1.1, "AI proposes\nrefund(order)", { fill: C.blueLt, color: C.blue, size: 13 });
+  arrow(s, 2.9, 2.5, 3.35, 2.5, C.navy);
+  diamond(s, 3.35, 1.7, 2.7, 1.6, "Risk check\nmoney /\nirreversible?", { size: 12 });
+  arrow(s, 6.05, 2.5, 6.5, 2.5, C.navy);
+  diamond(s, 6.5, 1.7, 2.7, 1.6, "Claude check\nnegation +\nconfidence", { size: 12 });
+  arrow(s, 9.2, 2.5, 9.65, 2.5, C.navy);
+  box(s, 9.65, 1.95, 3.1, 1.1, "Decision\nALLOW / CONFIRM / BLOCK", { fill: C.amber, color: C.navy, size: 13 });
+  const out11 = [["ALLOW", "High confidence + safe action → execute and log.", C.green, C.greenLt], ["CONFIRM", "Uncertain meaning on a risky action → explain uncertainty → voice / DTMF confirmation.", C.amberDk, C.amberLt], ["BLOCK / ROUTE", "Negation conflicts with action, confirmation fails, or human handoff is needed → stop API call + Freshdesk.", C.red, C.redLt]];
+  out11.forEach(([h, b, c, f], i) => {
     const x = 0.6 + i * 4.1;
-    card(s, x, 3.05, 3.85, 2.75);
-    iconCircle(s, ic, x + 0.25, 3.2, 0.55, c);
-    T(s, h, { x: x + 0.95, y: 3.2, w: 2.8, h: 0.55, fontFace: HF, fontSize: 15, bold: true, color: C.navy, valign: "middle" });
-    if (items) bullets(s, items, x + 0.3, 3.9, 3.35, 1.85, 12);
-    else T(s, "A ready-to-handle case instead of a blind escalation: context, reasoning and conversation history arrive with the ticket.", { x: x + 0.3, y: 3.95, w: 3.3, h: 1.7, fontSize: 13 });
+    arrow(s, 11.2, 3.05, x + 1.9, 3.75, c === C.amberDk ? C.amber : c, 1.75);
+    rich(s, x, 3.75, 3.85, 1.55, h, b, { fill: f, line: c === C.amberDk ? C.amber : c, hc: c, hs: 15, bs: 12.5 });
   });
-  chevrons(s, ["Codemix Skill", "Freshdesk REST API", "POST /api/v2/tickets", "Human agent"], 0.6, 6.05, 12.15, 0.7, { hi: [2], size: 12.5 });
+  card(s, 0.6, 5.6, 12.15, 1.1, C.navy);
+  T(s, "EXAMPLE", { x: 0.85, y: 5.7, w: 2, h: 0.3, fontSize: 11, bold: true, color: C.amber, charSpacing: 1 });
+  chevrons(s, ["“Refund vendam, replacement anuppunga.”", "BLOCK refund", "Confirm replacement", "If needed: Freshdesk ticket"], 0.85, 6.02, 11.7, 0.55, { fill: C.navy2, hi: [1], size: 11.5 });
   footer(s);
+
 
   // ===== 9. Feature Set =====
   s = slide();
-  header(s, 9, "The Feature Set", "The product combines understanding, decisioning, conversation control and auditability");
+  header(s, 5, "The Feature Set", "The product combines understanding, decisioning, conversation control and auditability");
   const groups = [
     ["UNDERSTAND", C.slate, C.navy, [["Mixed-language understanding", "Hinglish / Tanglish, including mid-sentence switching."], ["Intent + negation", "Maps what the caller actually wants; catches mat / nahi / vendam / vaddu."]]],
     ["DECIDE", C.amberLt, C.amberDk, [["Decision layer", "ALLOW, CONFIRM or BLOCK for each API action."], ["Transparent uncertainty", "States what is uncertain and asks before acting."], ["Sentiment → human", "Angry or distressed callers are routed to Freshdesk."]]],
@@ -308,9 +315,10 @@ function tag(s, x, y, text, fill, color) { box(s, x, y, Math.max(0.9, text.lengt
   });
   footer(s);
 
+
   // ===== 10. One Call End to End =====
   s = slide();
-  header(s, 10, "One Call — End to End", "Every feature appears only where it adds value");
+  header(s, 5, "One Call — End to End", "Every feature appears only where it adds value");
   const G = { conv: [C.blueLt, C.blue], und: [C.slate, C.navy], dec: [C.amberLt, C.amberDk], act: [C.navy, C.white], aud: [C.greenLt, C.green] };
   const life = [["Caller speaks", "VoBiz phone line", "conv"], ["Speech → text", "Sarvam AI", "conv"], ["Language + intent", "Codemix engine + Claude", "und"], ["Negation check", "mat / vendam / nahi", "und"], ["Sentiment check", "human route if needed", "dec"],
     ["Decision", "ALLOW / CONFIRM / BLOCK", "dec"], ["Transparent confirmation", "ElevenLabs voice or DTMF", "dec"], ["Action", "Company API / Dodo", "act"], ["SOP audit", "company rules", "aud"], ["Audit trail", "transcript + decisions + API", "aud"]];
@@ -328,133 +336,85 @@ function tag(s, x, y, text, fill, color) { box(s, x, y, Math.max(0.9, text.lengt
   banner(s, 0.6, 5.7, 12.1, 1.0, "Core principle", "Most routine calls take the fast path. Confirmation and Freshworks handoff activate only when risk or uncertainty requires them.");
   footer(s);
 
-  // ===== 11. The Safety Decision =====
+
+  // ===== Confirming before acting (uncertainty + DTMF + interrupts) =====
   s = slide();
-  header(s, 11, "The Safety Decision", "The agent never silently guesses on an irreversible action");
-  box(s, 0.6, 1.95, 2.3, 1.1, "AI proposes\nrefund(order)", { fill: C.blueLt, color: C.blue, size: 13 });
-  arrow(s, 2.9, 2.5, 3.35, 2.5, C.navy);
-  diamond(s, 3.35, 1.7, 2.7, 1.6, "Risk check\nmoney /\nirreversible?", { size: 12 });
-  arrow(s, 6.05, 2.5, 6.5, 2.5, C.navy);
-  diamond(s, 6.5, 1.7, 2.7, 1.6, "Claude check\nnegation +\nconfidence", { size: 12 });
-  arrow(s, 9.2, 2.5, 9.65, 2.5, C.navy);
-  box(s, 9.65, 1.95, 3.1, 1.1, "Decision\nALLOW / CONFIRM / BLOCK", { fill: C.amber, color: C.navy, size: 13 });
-  const out11 = [["ALLOW", "High confidence + safe action → execute and log.", C.green, C.greenLt], ["CONFIRM", "Uncertain meaning on a risky action → explain uncertainty → voice / DTMF confirmation.", C.amberDk, C.amberLt], ["BLOCK / ROUTE", "Negation conflicts with action, confirmation fails, or human handoff is needed → stop API call + Freshdesk.", C.red, C.redLt]];
-  out11.forEach(([h, b, c, f], i) => {
+  header(s, 5, "Confirming Before Acting", "Transparent uncertainty, DTMF / IVR confirmation and interrupt handling in one call");
+  card(s, 0.6, 1.75, 6.3, 4.0, C.panel);
+  const chat = [
+    ["CALLER · speaks", "“Refund… vendam… maybe replacement.”", "R", C.white, C.ink, 0.5],
+    ["AGENT · ElevenLabs, in the caller's mix", "“I'm not fully sure whether you want a refund or a replacement. Press 1 for replacement, 2 for a human agent.”", "L", C.navy, C.white, 0.85],
+    ["CALLER · keypad via VoBiz", "presses 1  →  no speech-to-text ambiguity", "R", C.amberLt, C.amberDk, 0.45],
+    ["INTERRUPT", "Caller can cut in at any time: the agent stops speaking and treats it as the latest input.", "L", C.blueLt, C.blue, 0.55],
+  ];
+  let cy = 1.9;
+  chat.forEach(([who, t, side, f, c, h]) => {
+    const w = 4.9, x = side === "L" ? 0.8 : 6.7 - w;
+    T(s, who, { x, y: cy, w, h: 0.25, fontSize: 9.5, bold: true, color: C.muted, align: side === "L" ? "left" : "right" });
+    box(s, x, cy + 0.26, w, h, t, { fill: f, color: c, size: 12, align: "left", margin: 8, bold: false, r: 0.12 });
+    cy += h + 0.33;
+  });
+  arrow(s, 6.9, 3.75, 7.25, 3.75, C.navy, 2.5);
+  diamond(s, 7.25, 2.95, 1.85, 1.6, "Caller\nresponse?", { fill: C.amber, color: C.navy, size: 12 });
+  [["CONFIRM  (voice or press 1)", "Action may proceed through the company API.", C.green, C.greenLt, 1.75],
+   ["DECLINE / NO  (press 2)", "No action → offer human help via Freshdesk.", C.fresh, C.freshLt, 3.13],
+   ["NO RESPONSE / STILL RISKY", "Do not execute → escalate to a human.", C.red, C.redLt, 4.51]].forEach(([h, b, c, f, y]) => {
+    arrow(s, 9.1, 3.75, 9.35, y + 0.6, c, 2);
+    rich(s, 9.35, y, 3.4, 1.2, h, b, { fill: f, line: c, hc: c, hs: 12.5, bs: 11.5 });
+  });
+  banner(s, 0.6, 6.0, 12.15, 0.75, "Principle", "Uncertainty becomes a visible decision point, not a hidden model guess. DTMF gives the safety layer a deterministic input.", { size: 13 });
+  footer(s);
+
+
+  // ===== 22. SOP Auditing =====
+  s = slide();
+  header(s, 5, "SOP-Based Auditing & Full Audit Trail", "Every sensitive action can be reconstructed after the call");
+  [["Captured", ["Full transcript", "Detected intent", "Negation result", "Confidence", "Sentiment / handoff", "Confirmation", "API action"], C.blue, I.file],
+   ["Checked", ["Company SOP", "Action authorization", "Required confirmation", "Escalation policy", "Sensitive-action rules"], C.navy, I.search],
+   ["Produced", ["PASS / VIOLATION", "Audit reference", "Supervisor flag", "Freshdesk context", "Post-call trace"], C.green, I.list]].forEach(([h, items, c, ic], i) => {
+    const x = 0.6 + i * 4.2;
+    card(s, x, 1.75, 3.7, 3.95);
+    iconCircle(s, ic, x + 0.25, 1.95, 0.6, c);
+    T(s, h, { x: x + 1.0, y: 1.95, w: 2.5, h: 0.6, fontFace: HF, fontSize: 18, bold: true, color: C.navy, valign: "middle" });
+    items.forEach((t, j) => box(s, x + 0.25, 2.75 + j * 0.42, 3.2, 0.36, t, { fill: j === 0 && i === 2 ? C.greenLt : C.panel, color: C.ink, size: 11.5, align: "left", margin: 8, bold: j === 0 && i === 2 }));
+    if (i < 2) arrow(s, x + 3.7, 3.7, x + 4.2, 3.7, C.amber, 3);
+  });
+  T(s, "EXAMPLE AUDIT CHAIN", { x: 0.6, y: 5.85, w: 4, h: 0.28, fontSize: 10.5, bold: true, color: C.amber, charSpacing: 1 });
+  chevrons(s, ["Transcript", "Intent", "Safety decision", "Confirmation", "API call", "SOP result", "Freshdesk case"], 0.6, 6.15, 12.15, 0.6, { size: 11, hi: [2] });
+  footer(s);
+
+
+  // ===== Freshworks integration (merged) =====
+  s = slide();
+  SEC5 = "Freshworks Integration"; header(s, 5, "Freshworks Integration — Human-in-the-Loop", "Freshdesk is where the AI hands over when it should not act alone");
+  rich(s, 0.6, 1.8, 1.9, 1.05, "AI Agent", "proposes action", { fill: C.blueLt, hc: C.blue, hs: 13.5 });
+  arrow(s, 2.5, 2.325, 2.85, 2.325, C.navy, 2.5);
+  rich(s, 2.85, 1.8, 2.2, 1.05, "Codemix Skill", "safety gate", { fill: C.navy, hc: C.amber, bc: C.white, hs: 13.5, line: C.amber, lw: 2 });
+  arrow(s, 5.05, 2.325, 5.4, 2.325, C.navy, 2.5);
+  diamond(s, 5.4, 1.6, 2.0, 1.45, "Safe to\nact?", { fill: C.amber, color: C.navy, size: 12.5 });
+  arrow(s, 7.4, 2.1, 7.85, 1.95, C.green, 2); lbl(s, 7.3, 1.6, 0.6, "YES", C.green);
+  arrow(s, 7.4, 2.55, 7.85, 2.75, C.red, 2); lbl(s, 7.3, 2.8, 0.6, "NO", C.red);
+  rich(s, 7.85, 1.6, 4.9, 0.7, "Company API executes", "Transcript, decision and API call are logged", { fill: C.greenLt, line: C.green, hc: C.green, hs: 12.5, bs: 11 });
+  box(s, 7.85, 2.45, 4.9, 0.7, "Freshdesk REST API  →  POST /api/v2/tickets  →  human agent", { fill: C.fresh, color: C.white, size: 12 });
+  const fc = [
+    [I.hand, "When a ticket is created", ["Unsafe or unclear action", "Caller does not confirm", "Caller is angry / distressed", "AI should not guess"], C.red],
+    [I.layers, "What we add to Freshdesk", ["Code-mixed intent validation", "Action gating (ALLOW / CONFIRM / BLOCK)", "Transparent confirmation", "Structured escalation on top of ticketing, agent workspace and history"], C.navy],
+    [I.user, "What the human agent gets", ["English summary + full transcript", "Intent, confidence, safety verdict", "Attempted API action + reason", "A ready-to-handle case, not a blind escalation"], C.fresh],
+  ];
+  fc.forEach(([ic, h, items, c], i) => {
     const x = 0.6 + i * 4.1;
-    arrow(s, 11.2, 3.05, x + 1.9, 3.75, c === C.amberDk ? C.amber : c, 1.75);
-    rich(s, x, 3.75, 3.85, 1.55, h, b, { fill: f, line: c === C.amberDk ? C.amber : c, hc: c, hs: 15, bs: 12.5 });
+    card(s, x, 3.35, 3.85, 2.45);
+    iconCircle(s, ic, x + 0.22, 3.5, 0.5, c);
+    T(s, h, { x: x + 0.85, y: 3.5, w: 2.9, h: 0.5, fontFace: HF, fontSize: 14.5, bold: true, color: C.navy, valign: "middle" });
+    bullets(s, items, x + 0.25, 4.1, 3.4, 1.65, 11.5);
   });
-  card(s, 0.6, 5.6, 12.15, 1.1, C.navy);
-  T(s, "EXAMPLE", { x: 0.85, y: 5.7, w: 2, h: 0.3, fontSize: 11, bold: true, color: C.amber, charSpacing: 1 });
-  chevrons(s, ["“Refund vendam, replacement anuppunga.”", "BLOCK refund", "Confirm replacement", "If needed: Freshdesk ticket"], 0.85, 6.02, 11.7, 0.55, { fill: C.navy2, hi: [1], size: 11.5 });
+  banner(s, 0.6, 6.0, 12.15, 0.75, "Live today", "api/create-ticket.js already creates real Freshdesk tickets. We extend Freshworks at the AI-action boundary; we don't replace Freshdesk or the company's APIs.", { fill: C.fresh, hc: C.navy, size: 12.5 });
   footer(s);
 
-  // ===== 12. MVP Scope =====
-  s = slide();
-  header(s, 12, "MVP Scope & What Is Already Built", "Separate what is demonstrated today from the intended MVP and future extension");
-  const ph = [["DEMONSTRATED TODAY", ["Round-1 code-mix tagging engine", "Intent scoring", "MCP server", "Live Freshdesk ticket API", "Vercel demo", "Freshdesk ticket creation flow"], C.green, C.greenLt],
-    ["MVP SCOPE", ["VoBiz + Sarvam + ElevenLabs voice path", "Claude safety gate", "Dodo action path", "Freshdesk escalation", "Hindi + Tamil + English", "Transcript + audit trail"], C.navy, C.slate],
-    ["NEXT PHASE", ["Sentiment handoff tuning", "Interrupt handling tuning", "SOP rule editor + audit reports", "More Indian languages", "Freshworks Marketplace app", "Plug-in via MCP / REST"], C.blue, C.blueLt]];
-  ph.forEach(([h, items, c, f], i) => {
-    const x = 0.6 + i * 4.1;
-    s.addText(h, { x, y: 1.75, w: 3.95, h: 0.7, shape: i === 0 ? pres.shapes.PENTAGON : pres.shapes.CHEVRON, fill: { color: c }, line: { color: C.white, width: 1.5 },
-      fontFace: BF, fontSize: 14, bold: true, color: C.white, align: "center", valign: "middle", margin: 0, isTextBox: true });
-    card(s, x, 2.65, 3.8, 3.0, f);
-    items.forEach((t, j) => {
-      s.addShape(pres.shapes.OVAL, { x: x + 0.25, y: 2.87 + j * 0.44, w: 0.16, h: 0.16, fill: { color: c }, line: { color: c } });
-      T(s, t, { x: x + 0.55, y: 2.78 + j * 0.44, w: 3.1, h: 0.36, fontSize: 12.5, valign: "middle" });
-    });
-  });
-  banner(s, 0.6, 5.9, 12.15, 0.85, "Credibility rule", "Any latency, accuracy or adoption number that has not been measured in the demo is presented as a target, not a result.", { fill: C.amberLt, hc: C.amberDk, bc: C.ink, size: 13 });
-  footer(s);
-
-  // ===== 13. Target Customers & Value =====
-  s = slide();
-  header(s, 13, "Target Customers & Value Proposition", "Start where AI agents already have permission to take customer actions");
-  [[I.store, "Primary customers", "D2C, e-commerce and fintech brands using Freshdesk and deploying AI voice agents for Indian customers.", C.navy],
-   [I.headset, "Secondary customers", "BPOs and support outsourcers that need one safety / policy layer across multiple client accounts.", C.blue],
-   [I.shield, "Protected actions", "Refunds • returns • replacements • cancellations • other company APIs exposed to the AI agent.", C.red]].forEach(([ic, h, b, c], i) => {
-    const y = 1.75 + i * 1.7;
-    card(s, 0.6, y, 6.4, 1.5);
-    iconCircle(s, ic, 0.85, y + 0.3, 0.9, c);
-    T(s, h, { x: 1.95, y: y + 0.15, w: 4.9, h: 0.42, fontFace: HF, fontSize: 16, bold: true, color: C.navy });
-    T(s, b, { x: 1.95, y: y + 0.58, w: 4.9, h: 0.85, fontSize: 12.5 });
-  });
-  card(s, 7.35, 1.75, 5.4, 4.9, C.navy);
-  T(s, "VALUE PROPOSITION", { x: 7.65, y: 1.95, w: 4.8, h: 0.3, fontSize: 11, bold: true, color: C.amber, charSpacing: 1 });
-  T(s, "Plug it in once:", { x: 7.65, y: 2.3, w: 4.8, h: 0.45, fontFace: HF, fontSize: 19, bold: true, color: C.white });
-  T(s, "the existing AI agent can handle mixed-language customers while Codemix Skill…", { x: 7.65, y: 2.75, w: 4.8, h: 0.6, fontSize: 12.5, color: C.ice });
-  ["validates intent", "checks risky actions", "confirms when uncertain", "routes people to Freshworks when needed", "records the full audit trail"].forEach((t, j) => {
-    const y = 3.45 + j * 0.62;
-    s.addShape(pres.shapes.OVAL, { x: 7.7, y: y + 0.08, w: 0.34, h: 0.34, fill: { color: j === 3 ? C.fresh : C.amber }, line: { color: C.navy } });
-    T(s, String(j + 1), { x: 7.7, y: y + 0.08, w: 0.34, h: 0.34, fontSize: 11, bold: true, color: C.navy, align: "center", valign: "middle" });
-    T(s, t, { x: 8.2, y, w: 4.3, h: 0.5, fontSize: 14, color: C.white, valign: "middle" });
-  });
-  footer(s);
-
-  // ===== 14. Business model / GTM / Resources =====
-  s = slide();
-  header(s, 14, "Business Model, Go-to-Market & Resources", "A simple commercial path: pilot → measurable proof → Freshworks distribution");
-  // pricing
-  card(s, 0.6, 1.75, 3.85, 4.0);
-  T(s, "PRICING", { x: 0.85, y: 1.9, w: 3, h: 0.3, fontSize: 11, bold: true, color: C.amber, charSpacing: 1 });
-  [["Free", "monitor mode", C.slate, C.navy], ["$5", "per 1,000 guarded actions", C.navy, C.white], ["Custom", "Enterprise annual contract", C.slate, C.navy]].forEach(([p, d, f, c], j) => {
-    const y = 2.3 + j * 0.95;
-    s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x: 0.85, y, w: 3.35, h: 0.8, rectRadius: 0.08, fill: { color: f }, line: { color: f } });
-    T(s, p, { x: 1.0, y, w: 1.45, h: 0.8, fontFace: HF, fontSize: 19, bold: true, color: f === C.navy ? C.amber : c, valign: "middle" });
-    T(s, d, { x: 2.5, y, w: 1.65, h: 0.8, fontSize: 11, color: c, valign: "middle" });
-  });
-  T(s, "Proposed pricing — validate in pilot.", { x: 0.85, y: 5.2, w: 3.4, h: 0.35, fontSize: 11, italic: true, color: C.muted });
-  // GTM steps
-  card(s, 4.75, 1.75, 3.85, 4.0);
-  T(s, "GO-TO-MARKET", { x: 5.0, y: 1.9, w: 3, h: 0.3, fontSize: 11, bold: true, color: C.amber, charSpacing: 1 });
-  s.addShape(pres.shapes.LINE, { x: 5.17, y: 2.5, w: 0, h: 2.9, line: { color: C.line, width: 2 } });
-  ["3 Indian D2C design partners", "Free monitor-mode pilot", "Publish wrong-action proof", "Freshworks Marketplace listing", "Scale through Freshdesk + BPO partners"].forEach((t, j) => {
-    const y = 2.33 + j * 0.64;
-    s.addShape(pres.shapes.OVAL, { x: 5.0, y, w: 0.34, h: 0.34, fill: { color: j === 3 ? C.fresh : C.navy }, line: { color: C.white, width: 1.5 } });
-    T(s, String(j + 1), { x: 5.0, y, w: 0.34, h: 0.34, fontSize: 11, bold: true, color: C.white, align: "center", valign: "middle" });
-    T(s, t, { x: 5.5, y: y - 0.05, w: 3.0, h: 0.45, fontSize: 12, valign: "middle" });
-  });
-  // costs
-  card(s, 8.9, 1.75, 3.85, 4.0);
-  T(s, "COSTS & RESOURCES", { x: 9.15, y: 1.9, w: 3.3, h: 0.3, fontSize: 11, bold: true, color: C.amber, charSpacing: 1 });
-  T(s, "~$90K", { x: 9.15, y: 2.2, w: 3.4, h: 0.8, fontFace: HF, fontSize: 38, bold: true, color: C.navy });
-  T(s, "proposed MVP budget · 3-month timeline", { x: 9.15, y: 2.95, w: 3.4, h: 0.35, fontSize: 11.5, color: C.muted });
-  [[I.code, "3 engineers"], [I.mic, "1 linguist / data annotator"], [I.user, "Part-time PM"]].forEach(([ic, t], j) => {
-    const y = 3.5 + j * 0.65;
-    iconCircle(s, ic, 9.15, y, 0.5, C.navy);
-    T(s, t, { x: 9.8, y, w: 2.8, h: 0.5, fontSize: 13, bold: true, color: C.navy, valign: "middle" });
-  });
-  banner(s, 0.6, 6.0, 12.15, 0.75, "Why Freshworks matters", "Freshdesk converts an unsafe/uncertain AI decision into an actionable, context-rich human support case.", { fill: C.fresh, hc: C.navy, size: 13 });
-  footer(s);
-
-  // ===== 15. Freshworks — What We Add =====
-  s = slide();
-  header(s, 15, "Freshworks Integration — What We Add", "Freshdesk becomes the human-in-the-loop destination when Codemix Skill decides the AI should not act alone");
-  // layered stack diagram
-  s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x: 0.6, y: 1.8, w: 5.6, h: 1.45, rectRadius: 0.1, fill: { color: C.navy }, line: { color: C.amber, width: 2 } });
-  T(s, [{ text: "CODEMIX EXTENSION", options: { bold: true, color: C.amber, fontSize: 12, breakLine: true } }, { text: "Adds code-mixed intent validation, action gating, transparent confirmation and structured escalation.", options: { color: C.white, fontSize: 12.5 } }],
-    { x: 0.85, y: 1.8, w: 5.1, h: 1.45, valign: "middle" });
-  T(s, "+", { x: 3.1, y: 3.25, w: 0.6, h: 0.45, fontSize: 24, bold: true, color: C.muted, align: "center", valign: "middle" });
-  s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x: 0.6, y: 3.7, w: 5.6, h: 1.45, rectRadius: 0.1, fill: { color: C.freshLt }, line: { color: C.fresh, width: 1.5 } });
-  T(s, [{ text: "EXISTING FRESHDESK", options: { bold: true, color: C.fresh, fontSize: 12, breakLine: true } }, { text: "Ticketing • agent workspace • customer history • human support workflow", options: { color: C.ink, fontSize: 12.5 } }],
-    { x: 0.85, y: 3.7, w: 5.1, h: 1.45, valign: "middle" });
-  arrow(s, 6.2, 3.475, 6.95, 3.475, C.fresh, 3);
-  card(s, 6.95, 1.8, 5.8, 3.35);
-  s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x: 6.95, y: 1.8, w: 5.8, h: 0.5, rectRadius: 0.1, fill: { color: C.fresh }, line: { color: C.fresh } });
-  T(s, "FRESHDESK TICKET", { x: 7.15, y: 1.8, w: 5.4, h: 0.5, fontSize: 12.5, bold: true, color: C.white, valign: "middle", charSpacing: 1 });
-  ["Transcript", "Intent", "Confidence", "Safety verdict", "Requested / attempted action", "Reason for handoff"].forEach((t, j) => {
-    const x = 7.2 + (j % 2) * 2.75, y = 2.5 + Math.floor(j / 2) * 0.82;
-    box(s, x, y, 2.55, 0.65, t, { fill: C.panel, color: C.navy, size: 12 });
-  });
-  chevrons(s, ["Codemix Skill", "Freshdesk REST API", "POST /api/v2/tickets", "Human agent"], 0.6, 5.45, 12.15, 0.6, { hi: [2], size: 12 });
-  T(s, [{ text: "Positioning  ", options: { bold: true, color: C.navy } }, { text: "We extend Freshworks around the AI-action boundary; we do not replace Freshdesk or the company's existing APIs.", options: {} }],
-    { x: 0.6, y: 6.25, w: 12.15, h: 0.5, fontSize: 13, valign: "middle" });
-  footer(s);
 
   // ===== 16. Ticket payload =====
   s = slide();
-  header(s, 16, "Freshdesk Ticket Payload", "The handoff preserves the evidence a human needs to continue the conversation");
+  SEC5 = "Freshworks Integration"; header(s, 5, "Freshdesk Ticket Payload", "The handoff preserves the evidence a human needs to continue the conversation");
   card(s, 0.6, 1.75, 12.15, 3.95);
   s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x: 0.6, y: 1.75, w: 12.15, h: 0.55, rectRadius: 0.1, fill: { color: C.fresh }, line: { color: C.fresh } });
   T(s, "Freshdesk ticket  ·  created by Codemix Skill  ·  POST /api/v2/tickets", { x: 0.85, y: 1.75, w: 11, h: 0.55, fontSize: 13, bold: true, color: C.white, valign: "middle" });
@@ -472,28 +432,10 @@ function tag(s, x, y, text, fill, color) { box(s, x, y, Math.max(0.9, text.lengt
   banner(s, 0.6, 5.95, 12.15, 0.8, "Judge takeaway", "Freshdesk is the system where uncertainty becomes a human workflow, with the evidence needed to act quickly.");
   footer(s);
 
-  // ===== 17. Why Freshworks Is Central =====
-  s = slide();
-  header(s, 17, "Why Freshworks Is Central", "Freshdesk is part of the control loop: safe actions continue automatically; uncertain or unsafe cases become human work", 12.5);
-  const loop = [["AI Agent", "understands request", C.blueLt, C.blue, 0.6], ["Codemix Skill", "validates intent + risk", C.navy, C.amber, 3.45]];
-  loop.forEach(([h, b, f, c, x]) => rich(s, x, 2.3, 2.4, 1.1, h, b, { fill: f, hc: c, bc: f === C.navy ? C.white : C.ink, hs: 14 }));
-  arrow(s, 3.0, 2.85, 3.45, 2.85, C.navy, 2.5); arrow(s, 5.85, 2.85, 6.3, 2.85, C.navy, 2.5);
-  diamond(s, 6.3, 2.05, 2.3, 1.6, "Decision\nallow / confirm /\nblock", { fill: C.amber, color: C.navy, size: 11.5 });
-  rich(s, 9.4, 1.75, 3.35, 1.25, "ALLOW", "Action executes through the company API. Transcript, decision and API call are logged.", { fill: C.greenLt, line: C.green, hc: C.green, hs: 14 });
-  rich(s, 9.4, 3.35, 3.35, 1.25, "NOT SAFE TO ACT", "AI stops. Confirmation or Freshdesk escalation prevents an unsafe autonomous action.", { fill: C.redLt, line: C.red, hc: C.red, hs: 14 });
-  arrow(s, 8.6, 2.6, 9.4, 2.35, C.green, 2); arrow(s, 8.6, 3.1, 9.4, 3.9, C.red, 2);
-  rich(s, 9.4, 4.95, 3.35, 0.95, "Freshdesk", "human workflow", { fill: C.freshLt, line: C.fresh, hc: C.fresh, hs: 14 });
-  arrow(s, 11.075, 4.6, 11.075, 4.95, C.fresh, 2);
-  // loop back
-  s.addShape(pres.shapes.LINE, { x: 1.8, y: 5.42, w: 7.6, h: 0, line: { color: C.fresh, width: 2, dashType: "dash" } });
-  arrow(s, 1.8, 5.42, 1.8, 3.4, C.fresh, 2, "dash");
-  lbl(s, 3.2, 5.05, 5.0, "human resolves → outcome recorded → loop closed", C.fresh, 11);
-  banner(s, 0.6, 6.05, 12.15, 0.7, "Freshworks value", "It closes the loop between autonomous action and accountable human support.", { fill: C.fresh, hc: C.navy });
-  footer(s);
 
   // ===== 18. Agentic integration =====
   s = slide();
-  header(s, 18, "Agentic Integration — The Plugin Control Point", "Codemix Skill is middleware, not a replacement AI agent. It intercepts the proposed action before the company API is called", 12);
+  SEC5 = "Agentic / AI Design"; header(s, 5, "Agentic Integration — The Plugin Control Point", "Codemix Skill is middleware, not a replacement AI agent. It intercepts the proposed action before the company API is called", 12);
   const ag = [["1  EXISTING AI AGENT", "Understands the conversation and proposes a tool/API action.", C.blueLt, C.blue],
     ["2  CODEMIX SKILL", "Receives transcript + proposed action → Claude checks intent and negation; the gate checks risk, SOP and confidence.", C.navy, C.amber],
     ["3  DECISION GATE", "ALLOW → API call  ·  CONFIRM → customer confirmation  ·  BLOCK → stop action + Freshdesk handoff", C.amberLt, C.amberDk],
@@ -509,134 +451,172 @@ function tag(s, x, y, text, fill, color) { box(s, x, y, Math.max(0.9, text.lengt
   banner(s, 0.6, 6.4 - 0.1, 12.15, 0.6, "Core positioning", "Plugin between the AI agent and its action tools.", { size: 13 });
   footer(s);
 
-  // ===== 19. Voice & Conversation Intelligence =====
+
+  // ===== 12. MVP Scope =====
   s = slide();
-  header(s, 19, "Voice & Conversation Intelligence", "The voice experience is designed around how Indian customers actually speak");
-  const vc = [[I.langW, "Code-mixing", "“En account la money varala.” Tamil + English can switch inside a single sentence. Sarvam → transcript → intent layer.", C.navy],
-    [I.ban, "Negation", "“Refund vendam, replacement anuppunga.” The presence of “refund” must not trigger a refund when “vendam” reverses it.", C.red],
-    [I.hand, "Interrupts", "Caller can interrupt while the AI speaks. The agent stops, listens and treats the new utterance as the latest input.", C.blue],
-    [I.keys, "DTMF / IVR", "For exact confirmation, keypad input provides a reliable alternative to speech.", C.blue],
-    [I.angry, "Sentiment", "Angry / distressed caller → human handoff through Freshdesk.", C.fresh],
-    [I.voice, "Natural response", "ElevenLabs speaks the validated response and confirmation back to the customer.", C.amber]];
-  vc.forEach(([ic, h, b, c], i) => {
-    const x = 0.6 + (i % 3) * 4.1, y = 1.75 + Math.floor(i / 3) * 2.55;
-    card(s, x, y, 3.85, 2.35);
-    iconCircle(s, ic.includes ? ic : ic, x + 0.25, y + 0.25, 0.7, c);
-    T(s, h, { x: x + 1.1, y: y + 0.3, w: 2.6, h: 0.6, fontFace: HF, fontSize: 17, bold: true, color: C.navy, valign: "middle" });
-    T(s, b, { x: x + 0.25, y: y + 1.05, w: 3.4, h: 1.2, fontSize: 12 });
+  SEC5 = "MVP Scope"; header(s, 5, "MVP Scope & What Is Already Built", "Separate what is demonstrated today from the intended MVP and future extension");
+  const ph = [["DEMONSTRATED TODAY", ["Round-1 code-mix tagging engine", "Intent scoring", "MCP server", "Live Freshdesk ticket API", "Vercel demo", "Freshdesk ticket creation flow"], C.green, C.greenLt],
+    ["MVP SCOPE", ["VoBiz + Sarvam + ElevenLabs voice path", "Claude safety gate", "Dodo action path", "Freshdesk escalation", "Hindi + Tamil + English", "Transcript + audit trail"], C.navy, C.slate],
+    ["NEXT PHASE", ["Sentiment handoff tuning", "Interrupt handling tuning", "SOP rule editor + audit reports", "More Indian languages", "Freshworks Marketplace app", "Plug-in via MCP / REST"], C.blue, C.blueLt]];
+  ph.forEach(([h, items, c, f], i) => {
+    const x = 0.6 + i * 4.1;
+    s.addText(h, { x, y: 1.75, w: 3.95, h: 0.7, shape: i === 0 ? pres.shapes.PENTAGON : pres.shapes.CHEVRON, fill: { color: c }, line: { color: C.white, width: 1.5 },
+      fontFace: BF, fontSize: 14, bold: true, color: C.white, align: "center", valign: "middle", margin: 0, isTextBox: true });
+    card(s, x, 2.65, 3.8, 3.0, f);
+    items.forEach((t, j) => {
+      s.addShape(pres.shapes.OVAL, { x: x + 0.25, y: 2.87 + j * 0.44, w: 0.16, h: 0.16, fill: { color: c }, line: { color: c } });
+      T(s, t, { x: x + 0.55, y: 2.78 + j * 0.44, w: 3.1, h: 0.36, fontSize: 12.5, valign: "middle" });
+    });
+  });
+  banner(s, 0.6, 5.9, 12.15, 0.85, "Credibility rule", "Any latency, accuracy or adoption number that has not been measured in the demo is presented as a target, not a result.", { fill: C.amberLt, hc: C.amberDk, bc: C.ink, size: 13 });
+  footer(s);
+
+
+  // ===== Target customers =====
+  s = slide();
+  header(s, 6, "Target Customers", "Start where AI agents already have permission to take customer actions");
+  [[I.store, "Primary customers", "D2C, e-commerce and fintech brands using Freshdesk and deploying AI voice agents for Indian customers.", C.navy],
+   [I.headset, "Secondary customers", "BPOs and support outsourcers that need one safety / policy layer across multiple client accounts.", C.blue],
+   [I.shield, "Protected actions", "Refunds • returns • replacements • cancellations • other company APIs exposed to the AI agent.", C.red]].forEach(([ic, h, b, c], i) => {
+    const y = 1.75 + i * 1.7;
+    card(s, 0.6, y, 6.4, 1.5);
+    iconCircle(s, ic, 0.85, y + 0.3, 0.9, c);
+    T(s, h, { x: 1.95, y: y + 0.15, w: 4.9, h: 0.42, fontFace: HF, fontSize: 16, bold: true, color: C.navy });
+    T(s, b, { x: 1.95, y: y + 0.58, w: 4.9, h: 0.85, fontSize: 12.5 });
+  });
+  T(s, "WHO WE START WITH", { x: 7.4, y: 1.8, w: 5, h: 0.3, fontSize: 11, bold: true, color: C.amber, charSpacing: 1 });
+  [["Freshdesk customers", 5.3, C.slate, C.navy], ["…running AI voice agents", 4.5, C.blueLt, C.blue], ["…with Indian, code-mixed callers", 3.7, C.amberLt, C.amberDk], ["…whose agent can refund / return / replace", 2.9, C.navy, C.white]].forEach(([t, w, f, c], j) => {
+    const x = 7.4 + (5.3 - w) / 2;
+    box(s, x, 2.25 + j * 1.05, w, 0.85, t, { fill: f, color: c, size: 12.5 });
+  });
+  T(s, "The narrower the funnel, the higher the cost of a wrong action.", { x: 7.4, y: 6.35, w: 5.3, h: 0.4, fontSize: 11.5, italic: true, color: C.muted, align: "center" });
+  footer(s);
+
+
+  // ===== Value proposition =====
+  s = slide();
+  header(s, 7, "Value Proposition", "Why a customer would choose this over doing nothing or a generic guardrail");
+  banner(s, 0.6, 1.75, 12.15, 1.1, "Plug it in once:", "the existing AI agent handles mixed-language customers, and nothing irreversible happens on a misheard word.", { size: 17 });
+  [["Without Codemix Skill", I.xmark, C.red, C.redLt, ["Agent acts on its first interpretation", "A dropped “mat” or “vendam” becomes a wrong refund or cancellation", "Blind escalation: humans start from zero", "No record of what the caller said vs. what the agent did"]],
+   ["With Codemix Skill", I.check, C.green, C.greenLt, ["Validates intent and negation before any sensitive action", "Confirms when uncertain (voice or DTMF)", "Routes people to Freshworks with full context", "Records the full audit trail: transcript, decision, API call, SOP result"]]].forEach(([h, ic, c, f, items], i) => {
+    const x = 0.6 + i * 6.2;
+    card(s, x, 3.1, 5.95, 3.6, f);
+    s.addImage({ data: ic, x: x + 0.3, y: 3.3, w: 0.45, h: 0.45 });
+    T(s, h, { x: x + 0.9, y: 3.28, w: 4.8, h: 0.5, fontFace: HF, fontSize: 19, bold: true, color: c, valign: "middle" });
+    bullets(s, items, x + 0.35, 3.95, 5.3, 2.65, 14);
   });
   footer(s);
 
-  // ===== 20. Transparent Uncertainty =====
+
+  // ===== Pricing =====
   s = slide();
-  header(s, 20, "Transparent Uncertainty", "Instead of pretending to understand, the agent exposes uncertainty before a risky action");
-  card(s, 0.6, 1.75, 5.9, 3.9, C.panel);
-  T(s, "AMBIGUOUS INPUT", { x: 0.85, y: 1.9, w: 3, h: 0.28, fontSize: 10.5, bold: true, color: C.muted });
-  box(s, 2.0, 2.2, 4.3, 0.6, "Caller: “Refund… vendam… maybe replacement.”", { fill: C.white, color: C.ink, size: 12.5, align: "left", margin: 10, bold: false, r: 0.15 });
-  T(s, "The system detects conflicting or uncertain intent and does not silently choose an irreversible action.", { x: 0.85, y: 2.95, w: 5.4, h: 0.6, fontSize: 11.5, italic: true, color: C.muted });
-  T(s, "TRANSPARENT CONFIRMATION", { x: 0.85, y: 3.6, w: 4, h: 0.28, fontSize: 10.5, bold: true, color: C.muted });
-  box(s, 0.85, 3.9, 4.5, 0.85, "AI: “I'm not fully sure whether you want a refund or replacement. Please confirm.”", { fill: C.navy, color: C.white, size: 12.5, align: "left", margin: 10, bold: false, r: 0.15 });
-  T(s, "Voice confirmation or DTMF can resolve it.", { x: 0.85, y: 4.9, w: 5.4, h: 0.4, fontSize: 11.5, italic: true, color: C.muted });
-  arrow(s, 6.5, 3.7, 7.1, 3.7, C.navy, 2.5);
-  diamond(s, 7.1, 2.9, 2.0, 1.6, "Caller\nresponse?", { fill: C.amber, color: C.navy, size: 12 });
-  [["CONFIRM", "Caller confirms → action may proceed.", C.green, C.greenLt, 1.75], ["DECLINE / NO", "No action → offer human help / Freshdesk.", C.fresh, C.freshLt, 3.1], ["NO RESPONSE / RISK", "Do not execute → escalate to human.", C.red, C.redLt, 4.45]].forEach(([h, b, c, f, y]) => {
-    arrow(s, 9.1, 3.7, 9.55, y + 0.55, c, 2);
-    rich(s, 9.55, y, 3.2, 1.1, h, b, { fill: f, line: c, hc: c, hs: 13, bs: 11.5 });
+  header(s, 8, "Pricing & Packaging", "Proposed pricing, validated in the pilot. Only guarded (sensitive) actions are metered");
+  [["Free", "Monitor mode", "for every Freshdesk customer", ["Flags risky actions, never blocks", "Weekly wrong-action report", "Shows the value before paying"], C.slate, C.navy, false],
+   ["$5", "Codemix Skill add-on", "per 1,000 guarded actions", ["Full safety gate: ALLOW / CONFIRM / BLOCK", "DTMF confirmation + interrupts", "Freshdesk escalation + audit trail", "First 30 days free"], C.navy, C.white, true],
+   ["Custom", "Enterprise", "annual contract", ["Custom SOP rule packs", "Transcript retention + data residency in India", "SLA"], C.slate, C.navy, false]].forEach(([p, n, u, items, f, c, hi], i) => {
+    const x = 0.9 + i * 4.0, y = hi ? 1.7 : 1.95, h = hi ? 4.55 : 4.1;
+    card(s, x, y, 3.6, h, f);
+    T(s, n, { x: x + 0.3, y: y + 0.25, w: 3.0, h: 0.4, fontSize: 15, bold: true, color: hi ? C.amber : C.muted });
+    T(s, p, { x: x + 0.3, y: y + 0.65, w: 3.0, h: 0.85, fontFace: HF, fontSize: 40, bold: true, color: c });
+    T(s, u, { x: x + 0.3, y: y + 1.5, w: 3.0, h: 0.35, fontSize: 12, color: hi ? C.ice : C.muted });
+    bullets(s, items, x + 0.3, y + 2.0, 3.05, h - 2.1, 12.5, c);
   });
-  banner(s, 0.6, 5.95, 12.15, 0.8, "Principle", "Uncertainty becomes a visible decision point, not a hidden model guess.");
+  T(s, "Price tracks the risk removed: routine requests are free; only refunds, returns, replacements and cancellations count.", { x: 0.9, y: 6.4, w: 11.6, h: 0.4, fontSize: 12.5, italic: true, color: C.muted, align: "center" });
   footer(s);
 
-  // ===== 21. DTMF + IVR =====
+
+  // ===== Go-to-market =====
   s = slide();
-  header(s, 21, "DTMF + IVR Safety Path", "Numeric confirmation does not need speech recognition");
-  const dt = [["Agent proposes", "“You want me to confirm the replacement. Press 1 to continue, 2 for a human agent.”", C.navy, C.amber, C.white],
-    ["Caller presses", "VoBiz passes the keypad signal directly. No speech-to-text ambiguity for the confirmation choice.", C.blueLt, C.blue, C.ink]];
-  dt.forEach(([h, b, f, c, bc], i) => {
-    const x = 0.6 + i * 3.3;
-    rich(s, x, 1.85, 2.95, 2.1, h, b, { fill: f, hc: c, bc, hs: 15, bs: 12 });
-    arrow(s, x + 2.95, 2.9, x + 3.3, 2.9, C.navy, 2.5);
+  header(s, 9, "Go-to-Market Plan", "A simple commercial path: pilot → measurable proof → Freshworks distribution");
+  const gt = [["3 Indian D2C design partners", "Brands already on Freshdesk with AI voice agents"], ["Free monitor-mode pilot", "Measure wrong actions without blocking anything"], ["Publish wrong-action proof", "Case study + Hinglish / Tanglish demo video"], ["Freshworks Marketplace listing", "One-click install for Freshdesk admins"], ["Scale via Freshdesk + BPO partners", "Sold alongside Freshdesk deals in India / SEA"]];
+  s.addShape(pres.shapes.LINE, { x: 1.0, y: 2.35, w: 11.3, h: 0, line: { color: C.line, width: 3 } });
+  gt.forEach(([h, b], i) => {
+    const x = 0.6 + i * 2.45;
+    s.addShape(pres.shapes.OVAL, { x: x + 0.1, y: 2.0, w: 0.7, h: 0.7, fill: { color: i === 3 ? C.fresh : C.navy }, line: { color: C.white, width: 3 } });
+    T(s, String(i + 1), { x: x + 0.1, y: 2.0, w: 0.7, h: 0.7, fontSize: 18, bold: true, color: C.white, align: "center", valign: "middle" });
+    card(s, x, 3.0, 2.25, 2.4);
+    T(s, h, { x: x + 0.18, y: 3.15, w: 1.95, h: 0.85, fontFace: HF, fontSize: 14, bold: true, color: C.navy });
+    T(s, b, { x: x + 0.18, y: 4.05, w: 1.95, h: 1.25, fontSize: 12 });
   });
-  // keypad
-  card(s, 7.3, 1.75, 2.0, 2.7, C.navy);
-  ["1", "2", "3", "4", "5", "6", "7", "8", "9", "*", "0", "#"].forEach((k, j) => {
-    const hi = k === "1" ? C.green : k === "2" ? C.fresh : C.navy2;
-    box(s, 7.45 + (j % 3) * 0.6, 1.9 + Math.floor(j / 3) * 0.62, 0.5, 0.5, k, { fill: hi, color: C.white, size: 14, r: 0.25 });
-  });
-  arrow(s, 9.3, 3.1, 9.6, 3.1, C.navy, 2.5);
-  diamond(s, 9.6, 2.3, 1.75, 1.6, "Decide", { fill: C.amber, color: C.navy, size: 12 });
-  rich(s, 11.45, 1.75, 1.3, 1.1, "1", "continue safely", { fill: C.greenLt, line: C.green, hc: C.green, hs: 20, bs: 11 });
-  rich(s, 11.45, 3.35, 1.3, 1.1, "2", "Freshdesk human handoff", { fill: C.freshLt, line: C.fresh, hc: C.fresh, hs: 20, bs: 10.5 });
-  arrow(s, 11.3, 2.9, 11.45, 2.3, C.green, 2); arrow(s, 11.3, 3.3, 11.45, 3.9, C.fresh, 2);
-  card(s, 0.6, 4.85, 12.15, 1.85, C.panel);
-  T(s, [{ text: "Why it matters  ", options: { bold: true, color: C.navy } }, { text: "Order IDs, account numbers and binary confirmation choices are better represented by DTMF than by speech recognition. This gives the safety layer a deterministic input channel.", options: {} }],
-    { x: 0.9, y: 4.85, w: 11.6, h: 1.85, fontSize: 15, valign: "middle" });
+  banner(s, 0.6, 5.8, 12.15, 0.9, "Why Freshworks matters", "Freshdesk converts an unsafe/uncertain AI decision into an actionable, context-rich human support case, which is what makes the add-on sellable.", { fill: C.fresh, hc: C.navy, size: 13 });
   footer(s);
 
-  // ===== 22. SOP Auditing =====
+
+  // ===== Costs & resources =====
   s = slide();
-  header(s, 22, "SOP-Based Auditing & Full Audit Trail", "Every sensitive action can be reconstructed after the call");
-  [["Captured", ["Full transcript", "Detected intent", "Negation result", "Confidence", "Sentiment / handoff", "Confirmation", "API action"], C.blue, I.file],
-   ["Checked", ["Company SOP", "Action authorization", "Required confirmation", "Escalation policy", "Sensitive-action rules"], C.navy, I.search],
-   ["Produced", ["PASS / VIOLATION", "Audit reference", "Supervisor flag", "Freshdesk context", "Post-call trace"], C.green, I.list]].forEach(([h, items, c, ic], i) => {
-    const x = 0.6 + i * 4.2;
-    card(s, x, 1.75, 3.7, 3.95);
-    iconCircle(s, ic, x + 0.25, 1.95, 0.6, c);
-    T(s, h, { x: x + 1.0, y: 1.95, w: 2.5, h: 0.6, fontFace: HF, fontSize: 18, bold: true, color: C.navy, valign: "middle" });
-    items.forEach((t, j) => box(s, x + 0.25, 2.75 + j * 0.42, 3.2, 0.36, t, { fill: j === 0 && i === 2 ? C.greenLt : C.panel, color: C.ink, size: 11.5, align: "left", margin: 8, bold: j === 0 && i === 2 }));
-    if (i < 2) arrow(s, x + 3.7, 3.7, x + 4.2, 3.7, C.amber, 3);
+  header(s, 10, "Costs & Resources Needed", "Proposed budget for a 3-month MVP");
+  [[I.code, "3 engineers", "voice path, safety gate, Freshworks app"], [I.mic, "1 linguist / data annotator", "Hindi + Tamil negation set"], [I.user, "Part-time PM", "pilots + pricing"]].forEach(([ic, h, b], i) => {
+    const y = 1.8 + i * 1.0;
+    iconCircle(s, ic, 0.6, y, 0.72, C.navy);
+    T(s, h, { x: 1.5, y: y + 0.02, w: 3.7, h: 0.38, fontSize: 15, bold: true, color: C.navy });
+    T(s, b, { x: 1.5, y: y + 0.38, w: 3.7, h: 0.34, fontSize: 12, color: C.muted });
   });
-  T(s, "EXAMPLE AUDIT CHAIN", { x: 0.6, y: 5.85, w: 4, h: 0.28, fontSize: 10.5, bold: true, color: C.amber, charSpacing: 1 });
-  chevrons(s, ["Transcript", "Intent", "Safety decision", "Confirmation", "API call", "SOP result", "Freshdesk case"], 0.6, 6.15, 12.15, 0.6, { size: 11, hi: [2] });
+  card(s, 0.6, 4.95, 4.6, 1.8, C.navy);
+  T(s, "~$90K", { x: 0.85, y: 5.0, w: 4.1, h: 0.8, fontFace: HF, fontSize: 40, bold: true, color: C.amber });
+  T(s, "proposed MVP budget: salaries, Sarvam / Claude / ElevenLabs / VoBiz usage, negation data labelling", { x: 0.85, y: 5.8, w: 4.1, h: 0.85, fontSize: 11.5, color: C.white });
+  const gx = 5.7, gw = 7.05, lw = 2.65, cwid = (gw - lw) / 3;
+  T(s, "3-month MVP timeline", { x: gx, y: 1.75, w: 5, h: 0.4, fontFace: HF, fontSize: 17, bold: true, color: C.navy });
+  ["Month 1", "Month 2", "Month 3"].forEach((m, i) => T(s, m, { x: gx + lw + i * cwid, y: 2.2, w: cwid, h: 0.3, fontSize: 11, bold: true, color: C.muted, align: "center" }));
+  [["Negation dataset + lexicon", 0, 1.2, C.amber], ["Claude safety gate + Dodo", 0.5, 1.5, C.navy], ["VoBiz + Sarvam + ElevenLabs", 1.0, 1.2, C.blue], ["Freshdesk escalation + audit", 1.3, 1.5, C.fresh], ["Design-partner pilot", 2.0, 1.0, C.green]].forEach(([t, st, du, c], i) => {
+    const y = 2.6 + i * 0.5;
+    s.addShape(pres.shapes.RECTANGLE, { x: gx, y: y - 0.03, w: gw, h: 0.46, fill: { color: i % 2 ? C.white : C.panel }, line: { color: i % 2 ? C.white : C.panel } });
+    T(s, t, { x: gx + 0.1, y, w: lw - 0.15, h: 0.4, fontSize: 11.5, valign: "middle" });
+    s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x: gx + lw + st * cwid, y: y + 0.06, w: du * cwid, h: 0.28, rectRadius: 0.08, fill: { color: c }, line: { color: c } });
+  });
+  card(s, gx, 5.3, gw, 1.45, C.panel);
+  T(s, [{ text: "Optional: revenue estimate (assumption-based)  ", options: { bold: true, color: C.navy, breakLine: true } },
+    { text: "100 paying customers × 20,000 guarded actions / month × $5 per 1,000 ≈ ", options: {} }, { text: "$120K ARR in Year 1", options: { bold: true, color: C.green } },
+    { text: ". Every input is an assumption to test in the pilot.", options: { color: C.muted } }], { x: gx + 0.25, y: 5.3, w: gw - 0.5, h: 1.45, fontSize: 12.5, valign: "middle" });
   footer(s);
 
-  // ===== 23. Performance & Reliability =====
+
+  // ===== Success metrics + performance =====
   s = slide();
-  header(s, 23, "Performance & Reliability Design", "Performance is a product feature, but measured claims are presented as targets unless already benchmarked");
-  box(s, 0.6, 2.75, 2.0, 1.0, "Incoming\nrequest", { fill: C.slate, color: C.navy, size: 13 });
-  arrow(s, 2.6, 3.25, 3.0, 3.25, C.navy, 2.5);
-  diamond(s, 2.95, 2.45, 2.6, 1.6, "Sensitive or\nirreversible?", { size: 11.5 });
-  arrow(s, 5.55, 2.90, 5.9, 2.25, C.green, 2); lbl(s, 5.2, 1.95, 0.8, "No", C.green);
-  arrow(s, 5.55, 3.60, 5.9, 4.25, C.amber, 2); lbl(s, 5.2, 3.7, 0.8, "Yes", C.amberDk);
-  rich(s, 5.9, 1.75, 3.3, 1.05, "Low-latency fast path", "Routine requests avoid unnecessary deep reasoning; minimum checks before a safe action.", { fill: C.greenLt, line: C.green, hc: C.green, hs: 13, bs: 11 });
-  rich(s, 5.9, 3.75, 3.3, 1.05, "Risk-based depth", "Stronger intent + negation + confirmation checks for sensitive / irreversible actions.", { fill: C.amberLt, line: C.amber, hc: C.amberDk, hs: 13, bs: 11 });
-  arrow(s, 9.2, 4.30, 9.6, 4.30, C.muted, 2);
-  rich(s, 9.6, 3.65, 3.15, 1.3, "Fallbacks", "DTMF for confirmation, Freshdesk for human handling, transcript retained for audit.", { fill: C.freshLt, line: C.fresh, hc: C.fresh, hs: 13, bs: 11.5 });
-  // targets tiles
-  T(s, "PROPOSED TARGETS (validate during pilot)", { x: 0.6, y: 5.05, w: 8, h: 0.3, fontSize: 11, bold: true, color: C.amber, charSpacing: 1 });
-  [["< 900 ms", "p95 response target, sensitive-action path"], ["≤ 15%", "confirmation rate"], ["100%", "audit coverage"]].forEach(([n, d], j) => {
-    const x = 0.6 + j * 4.1;
-    card(s, x, 5.4, 3.85, 1.3, C.navy);
-    T(s, n, { x: x + 0.25, y: 5.45, w: 3.4, h: 0.7, fontFace: HF, fontSize: 28, bold: true, color: C.amber, valign: "middle" });
-    T(s, d, { x: x + 0.25, y: 6.12, w: 3.4, h: 0.5, fontSize: 12, color: C.white });
+  header(s, 11, "Expected Benefits & Success Metrics", "Targets to validate in the pilot, not measured results");
+  [["< 0.5%", "Wrong actions", "on negated Hindi + Tamil requests", C.red], ["< 900 ms", "p95 reply time", "on the sensitive-action path", C.navy], ["≤ 15%", "Confirmation rate", "friction budget", C.amberDk],
+   ["100%", "Audit coverage", "transcript + decision + API + SOP", C.green], ["−30%", "Reversal tickets", "at pilot customers", C.green], ["15%", "Adoption", "of eligible customers in 2 quarters", C.blue]].forEach(([n, h, d, c], j) => {
+    const x = 0.6 + (j % 2) * 3.4, y = 1.75 + Math.floor(j / 2) * 1.65;
+    card(s, x, y, 3.2, 1.5);
+    T(s, n, { x: x + 0.2, y: y + 0.1, w: 2.8, h: 0.6, fontFace: HF, fontSize: 26, bold: true, color: c, valign: "middle" });
+    T(s, h, { x: x + 0.2, y: y + 0.7, w: 2.8, h: 0.32, fontSize: 13, bold: true, color: C.navy });
+    T(s, d, { x: x + 0.2, y: y + 1.02, w: 2.8, h: 0.4, fontSize: 10.5, color: C.muted });
   });
+  card(s, 7.55, 1.75, 5.2, 4.8, C.panel);
+  T(s, "HOW LOW LATENCY IS KEPT", { x: 7.8, y: 1.9, w: 4.7, h: 0.3, fontSize: 11, bold: true, color: C.amber, charSpacing: 1 });
+  box(s, 7.8, 2.4, 1.35, 0.8, "Request", { fill: C.slate, color: C.navy, size: 12.5 });
+  arrow(s, 9.15, 2.8, 9.35, 2.8, C.navy, 2);
+  diamond(s, 9.35, 2.15, 1.95, 1.3, "Sensitive\naction?", { size: 10.5 });
+  arrow(s, 10.325, 3.45, 10.325, 3.75, C.amber, 2); lbl(s, 10.4, 3.42, 0.6, "Yes", C.amberDk);
+  arrow(s, 11.3, 2.8, 11.5, 2.8, C.green, 2); lbl(s, 11.15, 2.42, 0.5, "No", C.green);
+  box(s, 11.5, 2.3, 1.05, 1.0, "Fast path", { fill: C.greenLt, color: C.green, line: C.green, size: 12 });
+  rich(s, 7.8, 3.75, 4.75, 1.05, "Risk-based depth", "Claude intent + negation + confirmation only for sensitive / irreversible actions", { fill: C.amberLt, line: C.amber, hc: C.amberDk, hs: 12.5, bs: 11 });
+  rich(s, 7.8, 5.0, 4.75, 1.35, "Fallbacks", "DTMF for confirmation · Freshdesk for human handling · transcript retained for audit", { fill: C.freshLt, line: C.fresh, hc: C.fresh, hs: 12.5, bs: 11 });
   footer(s);
 
-  // ===== 24. Metrics, Risks & Ask =====
+
+  // ===== Risks & assumptions + ask =====
   s = slide();
-  header(s, 24, "Success Metrics, Risks & The Ask", "Measure safer actions, faster handling and complete accountability");
-  [["< 0.5%", "wrong actions", C.red], ["< 900 ms", "p95 reply target", C.navy], ["≤ 15%", "confirmation rate", C.amberDk], ["100%", "audit coverage", C.green], ["−30%", "reversal tickets", C.green], ["15%", "adoption target", C.blue]].forEach(([n, d, c], j) => {
-    const x = 0.6 + j * 2.05;
-    card(s, x, 1.75, 1.9, 1.3);
-    T(s, n, { x: x + 0.1, y: 1.82, w: 1.7, h: 0.65, fontFace: HF, fontSize: 22, bold: true, color: c, align: "center", valign: "middle" });
-    T(s, d, { x: x + 0.1, y: 2.47, w: 1.7, h: 0.45, fontSize: 11, color: C.muted, align: "center" });
+  header(s, 12, "Risks & Assumptions", "What could go wrong, how we reduce it, and what we're assuming");
+  T(s, "KEY RISKS  →  MITIGATION", { x: 0.6, y: 1.75, w: 7, h: 0.3, fontSize: 11, bold: true, color: C.amber, charSpacing: 1 });
+  [["Speech-to-text drops the negation", "Confirm every risky action (voice or DTMF)"], ["Safety check adds latency", "Deeper checks only for sensitive actions"], ["Dialect / spelling variation", "Lexicon + model fallback, learn from human overrides"], ["Read-back feels like friction", "≤ 15% confirmation budget, tuned in pilot"]].forEach(([r, m], j) => {
+    const y = 2.1 + j * 0.68;
+    box(s, 0.6, y, 3.3, 0.56, r, { fill: C.redLt, color: C.red, size: 12, line: C.red });
+    arrow(s, 3.9, y + 0.28, 4.3, y + 0.28, C.navy, 2);
+    box(s, 4.3, y, 3.35, 0.56, m, { fill: C.greenLt, color: C.green, size: 11.5, line: C.green });
   });
-  T(s, "KEY RISKS  →  MITIGATION", { x: 0.6, y: 3.3, w: 6, h: 0.3, fontSize: 11, bold: true, color: C.amber, charSpacing: 1 });
-  [["STT drops negation", "confirm risky actions"], ["Latency", "deeper checks only when needed"], ["Dialect variation", "lexicon + model fallback"], ["Read-back friction", "validate in pilot"]].forEach(([r, m], j) => {
-    const y = 3.65 + j * 0.56;
-    box(s, 0.6, y, 2.9, 0.46, r, { fill: C.redLt, color: C.red, size: 12, line: C.red });
-    arrow(s, 3.5, y + 0.23, 3.95, y + 0.23, C.navy, 2);
-    box(s, 3.95, y, 3.6, 0.46, m, { fill: C.greenLt, color: C.green, size: 12, line: C.green });
-  });
-  card(s, 7.95, 3.3, 4.8, 2.55, C.navy);
-  T(s, "OUR ASK", { x: 8.25, y: 3.45, w: 3, h: 0.3, fontSize: 11, bold: true, color: C.amber, charSpacing: 1 });
-  T(s, "Freshdesk sandbox + Marketplace listing path for a 3-brand pilot.", { x: 8.25, y: 3.8, w: 4.25, h: 0.9, fontFace: HF, fontSize: 17, bold: true, color: C.white });
-  T(s, "Use the pilot to measure wrong-action reduction, confirmation rate, latency and adoption.", { x: 8.25, y: 4.8, w: 4.25, h: 0.9, fontSize: 12.5, color: C.ice });
-  banner(s, 0.6, 6.05, 12.15, 0.7, "Decision principle", "Do not silently guess on a sensitive action; expose uncertainty, confirm or route to a human.", { fill: C.amberLt, hc: C.amberDk, bc: C.ink, size: 13 });
+  T(s, "ASSUMPTIONS", { x: 0.6, y: 4.95, w: 7, h: 0.3, fontSize: 11, bold: true, color: C.amber, charSpacing: 1 });
+  bullets(s, ["Pilot brands expose refund / return APIs to their AI agent", "Callers accept a short confirmation on risky actions", "Sarvam accuracy on phone audio is good enough with the confirmation fallback"], 0.6, 5.3, 7.05, 1.4, 12.5);
+  card(s, 7.95, 1.75, 4.8, 3.2, C.navy);
+  T(s, "OUR ASK", { x: 8.25, y: 1.9, w: 3, h: 0.3, fontSize: 11, bold: true, color: C.amber, charSpacing: 1 });
+  T(s, "Freshdesk sandbox + Marketplace listing path for a 3-brand pilot.", { x: 8.25, y: 2.25, w: 4.25, h: 1.0, fontFace: HF, fontSize: 18, bold: true, color: C.white });
+  T(s, "Use the pilot to measure wrong-action reduction, confirmation rate, latency and adoption.", { x: 8.25, y: 3.4, w: 4.25, h: 1.0, fontSize: 12.5, color: C.ice });
+  card(s, 7.95, 5.2, 4.8, 1.5, C.amberLt);
+  T(s, [{ text: "Decision principle  ", options: { bold: true, color: C.amberDk, breakLine: true } }, { text: "Do not silently guess on a sensitive action; expose uncertainty, confirm or route to a human.", options: {} }], { x: 8.2, y: 5.2, w: 4.35, h: 1.5, fontSize: 13, valign: "middle" });
   footer(s);
 
   // ===== 25. Final pitch =====
   s = slide(true);
-  T(s, "25", { x: 0.6, y: 0.48, w: 0.62, h: 0.62, align: "center", valign: "middle", fontSize: 15, bold: true, color: C.navy, shape: pres.shapes.OVAL, fill: { color: C.amber } });
+  T(s, "★", { x: 0.6, y: 0.48, w: 0.62, h: 0.62, align: "center", valign: "middle", fontSize: 15, bold: true, color: C.navy, shape: pres.shapes.OVAL, fill: { color: C.amber } });
   T(s, "Final Pitch — Why This Is a Freshworks Extension", { x: 1.4, y: 0.4, w: 11.4, h: 0.78, fontFace: HF, fontSize: 27, bold: true, color: C.white, valign: "middle" });
   T(s, "A concise closing story for the judges", { x: 1.4, y: 1.13, w: 11, h: 0.4, fontSize: 14, italic: true, color: C.ice });
   [["THE PROBLEM", "Code-mixed voice + negation can cause an AI agent to misunderstand an action.", C.red],
@@ -654,6 +634,7 @@ function tag(s, x, y, text, fill, color) { box(s, x, y, Math.max(0.9, text.lengt
     { x: 0.6, y: 5.45, w: 12.15, h: 0.9, fontFace: HF, fontSize: 21, valign: "middle" });
   T(s, "Codemix Skill  •  Understand → Decide → Act → Audit  •  Thank you", { x: 0.6, y: 6.5, w: 12, h: 0.35, fontSize: 13, color: "8FA0BF" });
   footer(s, true);
+
 
   await pres.writeFile({ fileName: OUT });
   console.log("wrote", OUT, N);
