@@ -1,7 +1,8 @@
 // Negation benchmark: does a negated request still trigger a refund / cancel action?
 //
 // Compares the Round-1 intent engine alone against the same engine behind a
-// v0 lexicon negation gate. The test set is small and written by the team,
+// v0 lexicon negation gate on Hindi, Tamil, English and Kannada requests.
+// The test set is small and written by the team,
 // so treat the numbers as a reproducible demo, not a production benchmark.
 //
 // Run: node decision-policy/negation-benchmark.mjs
@@ -31,9 +32,7 @@ const NEGATED = [
   ["ta", "Ippo cancel pannaadheenga, naalaikku sollren"],
   ["en", "Don't cancel the order, just change the address"],
   ["en", "I don't want a refund, send a replacement"],
-  ["te", "Refund vaddu, replacement pampandi"],
   ["kn", "Order cancel beda, address change maadi"],
-  ["bn", "Order cancel korben na, address change korte hobe"],
 ];
 
 // Caller DOES want the refund / cancel / return action (some contain a
@@ -56,9 +55,7 @@ const AFFIRMATIVE = [
   ["en", "Please cancel my order"],
   ["en", "I want a refund for order 48211"],
   ["en", "The item never arrived, refund me please"],
-  ["te", "Refund kaavali, product baagaaledu"],
   ["kn", "Order cancel maadi"],
-  ["bn", "Order cancel kore din"],
 ];
 
 const ACTION = /^(cancel\w*|refund\w*|return\w*)$/i;

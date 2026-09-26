@@ -150,7 +150,7 @@ function tag(s, x, y, text, fill, color) { box(s, x, y, Math.max(0.9, text.lengt
     if (i < 3) arrow(s, x + 2.75, 4.275, x + 3.08, 4.275, C.navy, 2.5);
   });
   // evidence
-  [["48%", "of negated requests would still trigger a refund / cancel in our own Round-1 engine", "Measured: 11 of 23 team-written test sentences (Hindi, Tamil, English, Telugu, Kannada, Bengali)", C.red],
+  [["48%", "of negated requests would still trigger a refund / cancel in our own Round-1 engine", "Measured: 10 of 21 team-written test sentences (Hindi, Tamil, English, Kannada)", C.red],
    ["26%", "of cash-on-delivery orders in India return to origin, so refund / cancel / return calls are high-volume", "Source: Shipway ShipNotes report, FY25 (Jul 2025)", C.navy]].forEach(([n, d, src, c], i) => {
     const x = 0.6 + i * 6.2;
     card(s, x, 5.0, 5.95, 1.75);
@@ -335,7 +335,7 @@ function tag(s, x, y, text, fill, color) { box(s, x, y, Math.max(0.9, text.lengt
   T(s, "AGENTIC DESIGN: THE PLUG-IN CONTROL POINT", { x: 0.6, y: 1.72, w: 8, h: 0.28, fontSize: 10.5, bold: true, color: C.amber, charSpacing: 1 });
   chevrons(s, ["1  Existing AI agent (Freddy or own) proposes a tool call", "2  Codemix Skill intercepts via MCP / REST", "3  Claude + gate: ALLOW / CONFIRM / BLOCK", "4  Dodo / company API runs, or Freshdesk handoff"], 0.6, 2.05, 12.15, 0.78, { hi: [1], size: 10.5 });
   const ph3 = [["BUILT TODAY", "Code-mix engine + intent scoring · MCP server · live Freshdesk ticket API · negation gate v0 + benchmark · Vercel demo", C.green, C.greenLt],
-    ["MVP (3 MONTHS)", "VoBiz + Sarvam + ElevenLabs voice path · Claude safety gate · Dodo action path · Freshdesk escalation · Hindi + Tamil + English · audit trail", C.navy, C.slate],
+    ["MVP (3 MONTHS)", "VoBiz + Sarvam + ElevenLabs voice path · Claude safety gate · Dodo action path · Freshdesk escalation · Hindi + Tamil + English + Kannada · audit trail", C.navy, C.slate],
     ["NEXT", "Sentiment + interrupt tuning · SOP rule editor + reports · more Indian languages · Freshworks Marketplace app", C.blue, C.blueLt]];
   ph3.forEach(([h, b, c, f], i) => {
     const y = 3.1 + i * 1.2;
@@ -345,15 +345,15 @@ function tag(s, x, y, text, fill, color) { box(s, x, y, Math.max(0.9, text.lengt
   });
   card(s, 7.3, 3.1, 5.45, 3.6);
   T(s, "EARLY PROOF (MEASURED)", { x: 7.55, y: 3.2, w: 5, h: 0.28, fontSize: 10.5, bold: true, color: C.amber, charSpacing: 1 });
-  s.addChart(pres.charts.BAR, [{ name: "Round-1 engine alone", labels: ["Negated requests"], values: [47.8] }, { name: "With negation gate v0", labels: ["Negated requests"], values: [0] }], {
+  s.addChart(pres.charts.BAR, [{ name: "Round-1 engine alone", labels: ["Negated requests"], values: [47.6] }, { name: "With negation gate v0", labels: ["Negated requests"], values: [0] }], {
     x: 7.45, y: 3.45, w: 5.15, h: 2.15, barDir: "col", chartColors: [C.red, C.green], barGapWidthPct: 60,
     showValue: true, dataLabelPosition: "outEnd", dataLabelFormatCode: "0.0\"%\"", dataLabelColor: C.ink, dataLabelFontSize: 11, dataLabelFontBold: true,
     catAxisLabelColor: C.ink, catAxisLabelFontSize: 10, valAxisHidden: true, valAxisMaxVal: 60, valAxisMinVal: 0, valGridLine: { style: "none" }, showLegend: true, legendPos: "b", legendFontSize: 10,
     showTitle: true, title: "Wrong refund / cancel on negated requests", titleFontSize: 11, titleColor: C.navy,
   });
-  T(s, [{ text: "11 of 23 → 0 of 23 ", options: { bold: true, color: C.navy } }, { text: "wrong actions; 0 of 20 genuine requests blocked. 43 team-written sentences in 6 languages; the pilot measures real calls.", options: {} }], { x: 7.55, y: 5.65, w: 5.0, h: 0.95, fontSize: 10.5 });
+  T(s, [{ text: "10 of 21 → 0 of 21 ", options: { bold: true, color: C.navy } }, { text: "wrong actions; 0 of 18 genuine requests blocked. 39 team-written sentences in Hindi, Tamil, English and Kannada; the pilot measures real calls.", options: {} }], { x: 7.55, y: 5.65, w: 5.0, h: 0.95, fontSize: 10.5 });
   footer(s);
-  s.addNotes("Reproduce: node decision-policy/negation-benchmark.mjs. The same run shows the Round-1 keyword engine recognised only 7 of 20 genuine requests, which is why the MVP uses Claude for intent.");
+  s.addNotes("Reproduce: node decision-policy/negation-benchmark.mjs. The same run shows the Round-1 keyword engine recognised only 6 of 18 genuine requests, which is why the MVP uses Claude for intent.");
 
 
   // ===== 9. Sections 6-9 =====
@@ -416,7 +416,7 @@ function tag(s, x, y, text, fill, color) { box(s, x, y, Math.max(0.9, text.lengt
     T(s, now, { x: 6.95, y, w: 0.8, h: 0.34, fontSize: 10, bold: true, color: now === "—" ? C.line : now.startsWith("1.87") ? C.green : C.red, align: "center", valign: "middle" });
     T(s, tg, { x: 7.72, y, w: 0.8, h: 0.34, fontSize: 10.5, bold: true, color: C.green, align: "center", valign: "middle" });
   });
-  T(s, "* Round-1 engine, no gate, 23-sentence test set   † npm test average", { x: 4.92, y: 5.1, w: 3.6, h: 0.35, fontSize: 8.5, italic: true, color: C.muted });
+  T(s, "* Round-1 engine, no gate, 21-sentence test set   † npm test average", { x: 4.92, y: 5.1, w: 3.6, h: 0.35, fontSize: 8.5, italic: true, color: C.muted });
   col(8.85, 12, "Risks & Assumptions");
   [["STT drops the negation", "confirm every risky action"], ["Safety check adds latency", "deep checks only when sensitive"], ["Dialect / spelling variation", "lexicon + model fallback"], ["Read-back friction", "≤15% confirmation budget"]].forEach(([r, m], j) => {
     const y = 2.3 + j * 0.47;
