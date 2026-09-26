@@ -394,7 +394,7 @@ function tag(s, x, y, text, fill, color) { box(s, x, y, Math.max(0.9, text.lengt
 
   // ===== 10. Sections 10-12 + ask =====
   s = slide();
-  header(s, "10–12", "Costs, Success Metrics, Risks & The Ask", "Estimates and targets are labelled; two baselines are already measured", 13.5, "SECTIONS 10–12 OF 12  ·  COSTS  ·  METRICS  ·  RISKS & ASSUMPTIONS");
+  header(s, "10–12", "Costs, Success Metrics & Risks", "Estimates and targets are labelled; two baselines are already measured", 13.5, "SECTIONS 10–12 OF 12  ·  COSTS  ·  METRICS  ·  RISKS & ASSUMPTIONS");
   const col = (x, n, t) => { card(s, x, 1.72, 3.9, 4.3); box(s, x + 0.18, 1.86, 0.5, 0.34, String(n), { fill: C.amber, color: C.navy, size: 11, margin: 0, r: 0.1 }); T(s, t, { x: x + 0.78, y: 1.84, w: 3.1, h: 0.38, fontFace: HF, fontSize: 14, bold: true, color: C.navy, valign: "middle" }); };
   col(0.6, 10, "Costs & Resources");
   T(s, "~$90K", { x: 0.8, y: 2.3, w: 2, h: 0.55, fontFace: HF, fontSize: 26, bold: true, color: C.navy, valign: "middle" });
@@ -427,8 +427,8 @@ function tag(s, x, y, text, fill, color) { box(s, x, y, Math.max(0.9, text.lengt
   T(s, "ASSUMPTIONS", { x: 9.02, y: 4.45, w: 3, h: 0.25, fontSize: 9, bold: true, color: C.amber, charSpacing: 1 });
   bullets(s, ["Pilot brands expose refund / return APIs", "Callers accept a short confirmation", "Sarvam is accurate enough with the fallback"], 9.02, 4.72, 3.6, 1.2, 10);
   card(s, 0.6, 6.15, 12.15, 0.62, C.navy);
-  T(s, [{ text: "OUR ASK  ", options: { bold: true, color: C.amber } }, { text: "Freshdesk sandbox + Marketplace listing path for a 3-brand pilot.   ", options: { color: C.white, bold: true } }, { text: "“Don't cancel” should mean don't cancel.", options: { color: C.ice, italic: true } }],
-    { x: 0.85, y: 6.15, w: 11.7, h: 0.62, fontSize: 13, valign: "middle" });
+  T(s, [{ text: "“Don't cancel” should mean don't cancel.", options: { color: C.white, bold: true } }, { text: "   Codemix Skill  ·  Understand → Decide → Act → Audit", options: { color: C.ice } }],
+    { x: 0.85, y: 6.15, w: 11.7, h: 0.62, fontSize: 14, valign: "middle", align: "center" });
   footer(s);
 
   await pres.writeFile({ fileName: OUT });
