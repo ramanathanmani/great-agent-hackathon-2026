@@ -114,12 +114,13 @@ function tag(s, x, y, text, fill, color) { box(s, x, y, Math.max(0.9, text.lengt
   T(s, [{ text: "“Order cancel ", options: { color: C.ice } }, { text: "mat", options: { color: C.amber, bold: true } }, { text: " karo, bas address change karna hai.”", options: { color: C.ice } }],
     { x: 0.8, y: 3.45, w: 11.5, h: 0.55, fontFace: HF, fontSize: 22, italic: true });
   chevrons(s, ["Understand", "Decide", "Act", "Audit"], 0.8, 4.55, 8.4, 0.75, { fill: C.navy2, size: 16, hi: [1] });
+  T(s, "We put an intent-validation safety gate between what the voice agent hears and what the agent is allowed to do.", { x: 0.8, y: 5.55, w: 11.8, h: 0.5, fontSize: 16, color: C.white, bold: true });
   T(s, "Team Ramanathan & Sadhana  •  Track 1: Customer & Employee Experience", { x: 0.8, y: 6.4, w: 11.5, h: 0.4, fontSize: 14, color: C.white });
   N++;
 
   // ===== 2. Initiative Overview =====
   s = slide();
-  header(s, 2, "Initiative Overview", "A plug-in layer that makes tool-using AI agents safer for code-mixed Indian conversations");
+  header(s, 2, "Initiative Overview", "Initiative: Codemix Skill  ·  Owner: Team Ramanathan & Sadhana  ·  a plug-in that makes tool-using AI agents safe", 13);
   [["The gap", "Voice agents can understand a request and immediately call a refund, cancellation or replacement API. A small missed negation can turn the right conversation into the wrong transaction.", C.red],
    ["Our product", "Codemix Skill sits between the AI agent and its API/tool calls. It validates intent, negation, confidence, sentiment and SOP rules before execution.", C.navy],
    ["Freshworks extension", "Unsafe, uncertain or emotionally escalated calls become Freshdesk tickets with transcript, decision context and action details for a human agent.", C.fresh]].forEach(([h, b, c], i) => {
@@ -214,33 +215,41 @@ function tag(s, x, y, text, fill, color) { box(s, x, y, Math.max(0.9, text.lengt
   // ===== 6. Solution Architecture =====
   s = slide();
   header(s, 6, "Solution Architecture", "Codemix Skill is the control point between an existing AI agent and its tools");
-  const arch = [["Customer", "voice call", C.slate, C.navy], ["VoBiz AI", "phone + DTMF", C.blueLt, C.blue], ["Sarvam AI", "speech → text", C.blueLt, C.blue],
-    ["Codemix Skill", "intent + negation + decision", C.navy, C.amber], ["Company APIs", "refund / return / replace", C.greenLt, C.green]];
+  const arch = [["Customer", "speaks", C.slate, C.navy], ["VoBiz AI", "receives the call", C.blueLt, C.blue], ["Sarvam AI", "speech → text", C.blueLt, C.blue],
+    ["Claude API", "intent + negation check", C.navy, C.amber]];
   arch.forEach(([h, b, f, c], i) => {
-    const x = 0.6 + i * 2.5, w = 2.1;
-    rich(s, x, 1.8, w, 1.15, h, b, { fill: f, hc: c, bc: f === C.navy ? C.white : C.ink, line: f === C.navy ? C.amber : f, lw: 2, hs: 14, bs: 11.5 });
-    if (i < 4) arrow(s, x + w, 2.375, x + 2.5, 2.375, C.navy, 2);
+    const x = 0.6 + i * 2.3, w = 1.95;
+    rich(s, x, 1.8, w, 1.05, h, b, { fill: f, hc: c, bc: f === C.navy ? C.white : C.ink, hs: 14, bs: 11.5 });
+    arrow(s, x + w, 2.325, x + 2.3, 2.325, C.navy, 2);
   });
-  arrow(s, 8.15, 2.95, 8.15, 3.45, C.amber, 2.5);
-  diamond(s, 6.55, 3.45, 3.2, 1.35, "Decision layer\nALLOW • CONFIRM\n• BLOCK", { fill: C.amber, color: C.navy, size: 11 });
-  const dec = [["ALLOW", "Safe action → existing API executes + audit.", C.green, C.greenLt, 1.6], ["CONFIRM", "Uncertain / irreversible → transparent read-back + voice or DTMF.", C.amberDk, C.amberLt, 5.65], ["BLOCK / HANDOFF", "Unsafe, failed confirmation or angry caller → Freshdesk ticket + human.", C.red, C.redLt, 9.7]];
-  dec.forEach(([h, b, c, f, x]) => {
-    rich(s, x - 1.0 + 0, 5.25, 3.3, 1.4, h, b, { fill: f, line: c === C.amberDk ? C.amber : c, hc: c, hs: 14, bs: 12 });
-    arrow(s, 8.15, 4.8, x + 0.65, 5.25, c === C.amberDk ? C.amber : c, 2);
+  diamond(s, 9.8, 1.55, 2.95, 1.55, "SAFETY GATE\nCodemix Skill\nsafe to act?", { fill: C.amber, color: C.navy, size: 11.5 });
+  const outs6 = [
+    ["YES", "Dodo Payments", "refund / return / replacement runs", C.green, C.greenLt, 9.05],
+    ["UNCLEAR", "Confirm with caller", "transparent read-back, voice or DTMF", C.amberDk, C.amberLt, 5.55],
+    ["NO / angry", "Freshworks ticket", "Freshdesk case for a human agent", C.red, C.redLt, 2.05],
+  ];
+  outs6.forEach(([lb, h, b, c, f, x]) => {
+    const lc = c === C.amberDk ? C.amber : c;
+    arrow(s, 11.275, 3.1, x + 1.6, 3.75, lc, 2);
+    rich(s, x, 3.75, 3.2, 1.0, h, b, { fill: f, line: lc, hc: c, hs: 14, bs: 11.5 });
+    lbl(s, x + 1.6 + (x > 8 ? 0.2 : 0), 3.4, 1.3, lb, c, 10.5);
+    arrow(s, x + 1.6, 4.75, x + 1.6, 5.1, C.muted, 1.5);
   });
+  box(s, 2.05, 5.1, 10.2, 0.6, "ElevenLabs speaks the reply in the caller's own language mix", { fill: C.blueLt, color: C.blue, size: 13 });
+  banner(s, 0.6, 5.95, 12.15, 0.8, "Our innovation", "We put an intent-validation safety gate between what the voice agent hears and what the agent is allowed to do.", { size: 14 });
   footer(s);
 
   // ===== 7. Sponsor & Integration Stack =====
   s = slide();
   header(s, 7, "Sponsor & Integration Stack", "Each sponsor/API has one clear job; Codemix Skill coordinates the handoff and controls action execution");
   const layers = [
-    ["CHANNEL", "VoBiz AI", "PHONE + DTMF", "Customer-facing phone access, IVR/keypad input and deterministic confirmation.", C.blue, C.blueLt],
-    ["LISTEN", "Sarvam AI", "SPEECH → TEXT", "Indian-language and code-mixed speech transcription for downstream intent validation.", C.blue, C.blueLt],
-    ["VALIDATE", "Claude API", "INTENT + SAFETY", "Checks actual intent, negation, conflicting meaning and uncertainty before sensitive actions.", C.navy, C.slate],
-    ["CONTROL", "Codemix Skill", "ORCHESTRATION + SAFETY", "The orchestration + safety layer between the agent and action APIs.", C.amber, C.navy],
-    ["ACT", "Dodo Payments", "ACTION API", "Demonstration action layer for refund/return/replacement; called only after the decision gate.", C.green, C.greenLt],
-    ["ESCALATE", "Freshworks / Freshdesk", "HUMAN WORKFLOW", "Creates structured tickets when the AI should not resolve the case alone.", C.fresh, C.freshLt],
-    ["RESPOND", "ElevenLabs", "VOICE OUTPUT", "Natural response + transparent read-back / confirmation.", C.amberDk, C.amberLt],
+    ["CHANNEL", "VoBiz AI", "PHONE + DTMF", "The number customers call. Keypad (DTMF) gives a confirmation that needs no speech recognition.", C.blue, C.blueLt],
+    ["LISTEN", "Sarvam AI", "SPEECH → TEXT", "Transcribes code-mixed Hindi + English and Tamil + English, so the negation reaches the intent check.", C.blue, C.blueLt],
+    ["VALIDATE", "Claude API", "INTENT + SAFETY", "Before any sensitive action: finds the real intent. “Refund vendam” = NO refund, YES replacement.", C.navy, C.slate],
+    ["CONTROL", "Codemix Skill", "ORCHESTRATION + SAFETY", "The safety gate between what the voice agent hears and what it is allowed to do.", C.amber, C.navy],
+    ["ACT", "Dodo Payments", "ACTION API", "Runs refunds, returns and replacements, but only after the safety gate says YES.", C.green, C.greenLt],
+    ["ESCALATE", "Freshworks / Freshdesk", "HUMAN WORKFLOW", "If it can't be resolved safely, a Freshdesk ticket hands the case to a human agent.", C.fresh, C.freshLt],
+    ["RESPOND", "ElevenLabs", "VOICE OUTPUT", "Speaks the reply in the caller's own language mix and reads back what it understood.", C.amberDk, C.amberLt],
   ];
   layers.forEach(([stage, n, role, d, c, f], i) => {
     const y = 1.72 + i * 0.72, dark = f === C.navy;
@@ -326,7 +335,7 @@ function tag(s, x, y, text, fill, color) { box(s, x, y, Math.max(0.9, text.lengt
   arrow(s, 2.9, 2.5, 3.35, 2.5, C.navy);
   diamond(s, 3.35, 1.7, 2.7, 1.6, "Risk check\nmoney /\nirreversible?", { size: 12 });
   arrow(s, 6.05, 2.5, 6.5, 2.5, C.navy);
-  diamond(s, 6.5, 1.7, 2.7, 1.6, "Language check\nnegation +\nconfidence", { size: 12 });
+  diamond(s, 6.5, 1.7, 2.7, 1.6, "Claude check\nnegation +\nconfidence", { size: 12 });
   arrow(s, 9.2, 2.5, 9.65, 2.5, C.navy);
   box(s, 9.65, 1.95, 3.1, 1.1, "Decision\nALLOW / CONFIRM / BLOCK", { fill: C.amber, color: C.navy, size: 13 });
   const out11 = [["ALLOW", "High confidence + safe action → execute and log.", C.green, C.greenLt], ["CONFIRM", "Uncertain meaning on a risky action → explain uncertainty → voice / DTMF confirmation.", C.amberDk, C.amberLt], ["BLOCK / ROUTE", "Negation conflicts with action, confirmation fails, or human handoff is needed → stop API call + Freshdesk.", C.red, C.redLt]];
@@ -486,7 +495,7 @@ function tag(s, x, y, text, fill, color) { box(s, x, y, Math.max(0.9, text.lengt
   s = slide();
   header(s, 18, "Agentic Integration — The Plugin Control Point", "Codemix Skill is middleware, not a replacement AI agent. It intercepts the proposed action before the company API is called", 12);
   const ag = [["1  EXISTING AI AGENT", "Understands the conversation and proposes a tool/API action.", C.blueLt, C.blue],
-    ["2  CODEMIX SKILL", "Receives transcript + proposed action → checks intent, negation, risk, SOP and confidence.", C.navy, C.amber],
+    ["2  CODEMIX SKILL", "Receives transcript + proposed action → Claude checks intent and negation; the gate checks risk, SOP and confidence.", C.navy, C.amber],
     ["3  DECISION GATE", "ALLOW → API call  ·  CONFIRM → customer confirmation  ·  BLOCK → stop action + Freshdesk handoff", C.amberLt, C.amberDk],
     ["4  COMPANY SYSTEMS", "Existing APIs execute only after the gate. Freshdesk receives structured human handoffs.", C.greenLt, C.green]];
   ag.forEach(([h, b, f, c], i) => {
@@ -631,7 +640,7 @@ function tag(s, x, y, text, fill, color) { box(s, x, y, Math.max(0.9, text.lengt
   T(s, "Final Pitch — Why This Is a Freshworks Extension", { x: 1.4, y: 0.4, w: 11.4, h: 0.78, fontFace: HF, fontSize: 27, bold: true, color: C.white, valign: "middle" });
   T(s, "A concise closing story for the judges", { x: 1.4, y: 1.13, w: 11, h: 0.4, fontSize: 14, italic: true, color: C.ice });
   [["THE PROBLEM", "Code-mixed voice + negation can cause an AI agent to misunderstand an action.", C.red],
-   ["THE PRODUCT", "Codemix Skill sits between the agent and its tools: Understand → Decide → Act → Audit.", C.amber],
+   ["THE PRODUCT", "An intent-validation safety gate between what the voice agent hears and what it is allowed to do: Understand → Decide → Act → Audit.", C.amber],
    ["THE FRESHWORKS VALUE", "When the AI should not act, Freshdesk turns uncertainty into a structured human workflow with transcript + decision context.", C.fresh]].forEach(([h, b, c], i) => {
     const x = 0.6 + i * 4.1;
     s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x, y: 1.8, w: 3.85, h: 1.95, rectRadius: 0.1, fill: { color: C.navy2 }, line: { color: C.navy2 } });
