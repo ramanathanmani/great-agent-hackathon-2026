@@ -381,7 +381,7 @@ function tag(s, x, y, text, fill, color) { box(s, x, y, Math.max(0.9, text.lengt
     T(s, p, { x: 0.8, y, w: 1.35, h: 0.4, fontFace: HF, fontSize: 13.5, bold: true, color: j === 1 ? C.amberDk : C.navy, valign: "middle" });
     T(s, d, { x: 2.15, y, w: 4.3, h: 0.4, fontSize: 10.5, valign: "middle" });
   });
-  T(s, "Only sensitive actions are metered: one prevented ₹1,000 wrong refund pays for 2,000+ guarded actions.", { x: 0.8, y: 6.15, w: 5.6, h: 0.5, fontSize: 10, italic: true, color: C.muted });
+  T(s, "Only sensitive actions are metered: one prevented ₹1,000 wrong refund pays for 2,000+ guarded actions (~2.3× customer ROI, slide 10).", { x: 0.8, y: 6.15, w: 5.6, h: 0.5, fontSize: 10, italic: true, color: C.muted });
   quad(6.77, 4.3, 9, "Go-to-Market Plan");
   ["3 Indian D2C design partners on Freshdesk", "Free monitor-mode pilot", "Publish wrong-action proof + demo video", "Freshworks Marketplace listing", "Scale via Freshdesk deals + BPO partners"].forEach((t, j) => {
     const y = 4.83 + j * 0.36;
@@ -394,8 +394,8 @@ function tag(s, x, y, text, fill, color) { box(s, x, y, Math.max(0.9, text.lengt
 
   // ===== 10. Sections 10-12 + ask =====
   s = slide();
-  header(s, "10–12", "Costs, Success Metrics & Risks", "Estimates and targets are labelled; two baselines are already measured", 13.5, "SECTIONS 10–12 OF 12  ·  COSTS  ·  METRICS  ·  RISKS & ASSUMPTIONS");
-  const col = (x, n, t) => { card(s, x, 1.72, 3.9, 4.3); box(s, x + 0.18, 1.86, 0.5, 0.34, String(n), { fill: C.amber, color: C.navy, size: 11, margin: 0, r: 0.1 }); T(s, t, { x: x + 0.78, y: 1.84, w: 3.1, h: 0.38, fontFace: HF, fontSize: 14, bold: true, color: C.navy, valign: "middle" }); };
+  header(s, "10–12", "Costs, ROI, Success Metrics & Risks", "What it costs, what it returns, how we measure it, and what could go wrong", 13.5, "SECTIONS 10–12 OF 12  ·  COSTS & ROI  ·  METRICS  ·  RISKS & ASSUMPTIONS");
+  const col = (x, n, t) => { card(s, x, 1.72, 3.9, 3.78); box(s, x + 0.18, 1.86, 0.5, 0.34, String(n), { fill: C.amber, color: C.navy, size: 11, margin: 0, r: 0.1 }); T(s, t, { x: x + 0.78, y: 1.84, w: 3.1, h: 0.38, fontFace: HF, fontSize: 14, bold: true, color: C.navy, valign: "middle" }); };
   col(0.6, 10, "Costs & Resources");
   T(s, "~$90K", { x: 0.8, y: 2.3, w: 2, h: 0.55, fontFace: HF, fontSize: 26, bold: true, color: C.navy, valign: "middle" });
   T(s, "3-month MVP (estimate)", { x: 2.6, y: 2.3, w: 1.9, h: 0.55, fontSize: 10.5, color: C.muted, valign: "middle" });
@@ -405,30 +405,38 @@ function tag(s, x, y, text, fill, color) { box(s, x, y, Math.max(0.9, text.lengt
     s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x: 2.45, y: y + 0.05, w: 1.35 * v / 60, h: 0.2, rectRadius: 0.05, fill: { color: j ? C.blue : C.navy }, line: { color: j ? C.blue : C.navy } });
     T(s, `$${v}K`, { x: 2.5 + 1.35 * v / 60, y, w: 0.6, h: 0.3, fontSize: 10, bold: true, color: C.navy, valign: "middle" });
   });
-  T(s, [{ text: "Timeline: ", options: { bold: true, color: C.navy } }, { text: "M1 negation data · M2 Claude gate, Dodo, voice path · M3 Freshdesk, audit, pilot", options: { breakLine: true } },
-    { text: "Optional: ", options: { bold: true, color: C.navy } }, { text: "100 customers × 20K actions/mo × $5/1K ≈ ", options: {} }, { text: "$120K ARR", options: { bold: true, color: C.green } }, { text: " (assumption)", options: { color: C.muted } }],
-    { x: 0.8, y: 4.85, w: 3.65, h: 1.1, fontSize: 10, paraSpaceAfter: 4 });
+  T(s, [{ text: "Timeline: ", options: { bold: true, color: C.navy } }, { text: "M1 negation data · M2 Claude gate, Dodo, voice path · M3 Freshdesk, audit, pilot", options: {} }],
+    { x: 0.8, y: 4.8, w: 3.65, h: 0.6, fontSize: 10 });
   col(4.77, 11, "Success Metrics");
   T(s, "TODAY", { x: 6.95, y: 2.28, w: 0.8, h: 0.25, fontSize: 9, bold: true, color: C.amber, align: "center" });
   T(s, "TARGET", { x: 7.72, y: 2.28, w: 0.8, h: 0.25, fontSize: 9, bold: true, color: C.amber, align: "center" });
   [["Wrong actions on negation", "48%*", "<0.5%"], ["Engine latency", "1.87ms†", "<5ms"], ["p95 reply (sensitive)", "—", "<900ms"], ["Confirmation rate", "—", "≤15%"], ["Audit coverage", "—", "100%"], ["Reversal tickets", "—", "−30%"], ["Adoption (2 qtrs)", "—", "15%"]].forEach(([m, now, tg], j) => {
-    const y = 2.55 + j * 0.42;
-    s.addShape(pres.shapes.RECTANGLE, { x: 4.87, y, w: 3.65, h: 0.38, fill: { color: j % 2 ? C.white : C.panel }, line: { color: j % 2 ? C.white : C.panel } });
-    T(s, m, { x: 4.95, y, w: 2.0, h: 0.38, fontSize: 10.5, bold: true, color: C.navy, valign: "middle" });
-    T(s, now, { x: 6.95, y, w: 0.8, h: 0.38, fontSize: 10, bold: true, color: now === "—" ? C.line : now.startsWith("1.87") ? C.green : C.red, align: "center", valign: "middle" });
-    T(s, tg, { x: 7.72, y, w: 0.8, h: 0.38, fontSize: 10.5, bold: true, color: C.green, align: "center", valign: "middle" });
+    const y = 2.52 + j * 0.37;
+    s.addShape(pres.shapes.RECTANGLE, { x: 4.87, y, w: 3.65, h: 0.34, fill: { color: j % 2 ? C.white : C.panel }, line: { color: j % 2 ? C.white : C.panel } });
+    T(s, m, { x: 4.95, y, w: 2.0, h: 0.34, fontSize: 10.5, bold: true, color: C.navy, valign: "middle" });
+    T(s, now, { x: 6.95, y, w: 0.8, h: 0.34, fontSize: 10, bold: true, color: now === "—" ? C.line : now.startsWith("1.87") ? C.green : C.red, align: "center", valign: "middle" });
+    T(s, tg, { x: 7.72, y, w: 0.8, h: 0.34, fontSize: 10.5, bold: true, color: C.green, align: "center", valign: "middle" });
   });
-  T(s, "* Round-1 engine, no gate, 23-sentence test set   † npm test average", { x: 4.92, y: 5.5, w: 3.6, h: 0.4, fontSize: 8.5, italic: true, color: C.muted });
+  T(s, "* Round-1 engine, no gate, 23-sentence test set   † npm test average", { x: 4.92, y: 5.1, w: 3.6, h: 0.35, fontSize: 8.5, italic: true, color: C.muted });
   col(8.85, 12, "Risks & Assumptions");
   [["STT drops the negation", "confirm every risky action"], ["Safety check adds latency", "deep checks only when sensitive"], ["Dialect / spelling variation", "lexicon + model fallback"], ["Read-back friction", "≤15% confirmation budget"]].forEach(([r, m], j) => {
-    const y = 2.32 + j * 0.52;
+    const y = 2.3 + j * 0.47;
     T(s, [{ text: r, options: { bold: true, color: C.red, breakLine: true } }, { text: "→ " + m, options: { color: C.green } }], { x: 9.02, y, w: 3.6, h: 0.5, fontSize: 10.5 });
   });
-  T(s, "ASSUMPTIONS", { x: 9.02, y: 4.45, w: 3, h: 0.25, fontSize: 9, bold: true, color: C.amber, charSpacing: 1 });
-  bullets(s, ["Pilot brands expose refund / return APIs", "Callers accept a short confirmation", "Sarvam is accurate enough with the fallback"], 9.02, 4.72, 3.6, 1.2, 10);
-  card(s, 0.6, 6.15, 12.15, 0.62, C.navy);
-  T(s, [{ text: "“Don't cancel” should mean don't cancel.", options: { color: C.white, bold: true } }, { text: "   Codemix Skill  ·  Understand → Decide → Act → Audit", options: { color: C.ice } }],
-    { x: 0.85, y: 6.15, w: 11.7, h: 0.62, fontSize: 14, valign: "middle", align: "center" });
+  T(s, "ASSUMPTIONS", { x: 9.02, y: 4.2, w: 3, h: 0.25, fontSize: 9, bold: true, color: C.amber, charSpacing: 1 });
+  bullets(s, ["Pilot brands expose refund / return APIs", "Callers accept a short confirmation", "Sarvam is accurate enough with the fallback"], 9.02, 4.45, 3.6, 1.0, 10);
+  // ROI strip
+  card(s, 0.6, 5.65, 12.15, 1.15, C.navy);
+  T(s, "RETURN ON INVESTMENT", { x: 0.85, y: 5.72, w: 3, h: 0.26, fontSize: 10.5, bold: true, color: C.amber, charSpacing: 1 });
+  T(s, "illustrative · built on the deck's pricing assumptions · validated in the pilot", { x: 3.6, y: 5.72, w: 8.9, h: 0.26, fontSize: 9, italic: true, color: "8FA0BF", align: "right" });
+  [["~2.3×", "Customer ROI", "₹20K saved vs ₹8.5K fee per month"],
+   ["9", "Break-even", "wrong ₹1,000 refunds prevented per month"],
+   ["~1.3×", "Year-1 ROI (Freshworks)", "~$120K ARR on a ~$90K build"],
+   ["~9 mo", "Payback", "at ~$10K MRR"]].forEach(([n, h, d], i) => {
+    const x = 0.85 + i * 3.0;
+    T(s, n, { x, y: 6.0, w: 1.35, h: 0.72, fontFace: HF, fontSize: 22, bold: true, color: C.amber, valign: "middle" });
+    T(s, [{ text: h, options: { bold: true, color: C.white, breakLine: true } }, { text: d, options: { color: C.ice } }], { x: x + 1.38, y: 6.0, w: 1.55, h: 0.72, fontSize: 9.5, valign: "middle" });
+  });
   footer(s);
 
   await pres.writeFile({ fileName: OUT });
