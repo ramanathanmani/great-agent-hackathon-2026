@@ -172,12 +172,11 @@ function tag(s, x, y, text, fill, color) { box(s, x, y, Math.max(0.9, text.lengt
   });
   // evidence
   [["48%", "of negated requests would still trigger a refund / cancel in our own Round-1 engine", "Measured: 11 of 23 team-written test sentences (Hindi, Tamil, English, Telugu, Kannada, Bengali)", C.red],
-   ["27–70%", "word error rate on Hinglish across speech-to-text models, on identical audio", "Source: Deepgram, “Hinglish Voice AI: Why ASR Fails”", C.amberDk],
    ["26%", "of cash-on-delivery orders in India return to origin, so refund / cancel / return calls are high-volume", "Source: Shipway ShipNotes report, FY25 (Jul 2025)", C.navy]].forEach(([n, d, src, c], i) => {
-    const x = 0.6 + i * 4.1;
-    card(s, x, 5.0, 3.85, 1.75);
-    T(s, n, { x: x + 0.25, y: 5.08, w: 3.4, h: 0.6, fontFace: HF, fontSize: 28, bold: true, color: c, valign: "middle" });
-    T(s, d, { x: x + 0.25, y: 5.66, w: 3.4, h: 0.62, fontSize: 11.5, color: C.ink });
+    const x = 0.6 + i * 6.2;
+    card(s, x, 5.0, 5.95, 1.75);
+    T(s, n, { x: x + 0.25, y: 5.1, w: 1.6, h: 1.2, fontFace: HF, fontSize: 34, bold: true, color: c, valign: "middle" });
+    T(s, d, { x: x + 1.95, y: 5.12, w: 3.8, h: 1.15, fontSize: 13, color: C.ink, valign: "middle" });
     T(s, src, { x: x + 0.25, y: 6.3, w: 3.4, h: 0.4, fontSize: 9, italic: true, color: C.muted });
   });
   footer(s);
@@ -191,12 +190,16 @@ function tag(s, x, y, text, fill, color) { box(s, x, y, Math.max(0.9, text.lengt
    [I.lang, "Code-mixing is normal", "Indian callers switch between languages inside a sentence. The risk is concentrated around small intent-flipping words."],
    [I.wave, "Voice stack is ready", "VoBiz provides phone access + DTMF, Sarvam handles Indian speech-to-text, Claude validates intent, and ElevenLabs returns the response."]].forEach(([ic, h, b], i) => {
     const x = 0.6 + i * 4.1;
-    card(s, x, 1.75, 3.85, 3.4);
-    iconCircle(s, ic, x + 0.3, 2.0, 0.85, C.amberLt);
-    T(s, h, { x: x + 0.3, y: 3.0, w: 3.3, h: 0.45, fontFace: HF, fontSize: 18, bold: true, color: C.navy });
-    T(s, b, { x: x + 0.3, y: 3.5, w: 3.3, h: 1.55, fontSize: 13 });
+    card(s, x, 1.75, 3.85, 2.95);
+    iconCircle(s, ic, x + 0.3, 1.95, 0.7, C.amberLt);
+    T(s, h, { x: x + 1.15, y: 1.95, w: 2.55, h: 0.7, fontFace: HF, fontSize: 17, bold: true, color: C.navy, valign: "middle" });
+    T(s, b, { x: x + 0.3, y: 2.85, w: 3.3, h: 1.75, fontSize: 13 });
   });
-  banner(s, 0.6, 5.45, 12.1, 1.25, "Our timing", "The missing layer is not another voice bot. It is a safety and decision layer that controls when an existing AI agent is allowed to call an API.", { size: 15 });
+  card(s, 0.6, 4.9, 12.1, 0.95, C.amberLt);
+  T(s, "27–70%", { x: 0.85, y: 4.9, w: 2.0, h: 0.95, fontFace: HF, fontSize: 30, bold: true, color: C.amberDk, valign: "middle" });
+  T(s, [{ text: "word error rate on Hinglish across speech-to-text models, on identical audio. ", options: { bold: true, color: C.navy } }, { text: "Speech recognition alone can't yet be trusted with irreversible actions, so the gate is needed now.", options: {} }, { text: "  Source: Deepgram, “Hinglish Voice AI: Why ASR Fails”", options: { italic: true, color: C.muted, fontSize: 9.5 } }],
+    { x: 2.9, y: 4.9, w: 9.6, h: 0.95, fontSize: 12.5, valign: "middle" });
+  banner(s, 0.6, 6.05, 12.1, 0.7, "Our timing", "The missing layer is not another voice bot. It is a safety and decision layer that controls when an existing AI agent is allowed to call an API.", { size: 13 });
   footer(s);
 
 
@@ -309,7 +312,7 @@ function tag(s, x, y, text, fill, color) { box(s, x, y, Math.max(0.9, text.lengt
     if (i === 4) arrow(s, x + 1.05, y + 1.95, x + 1.05, 4.05, C.amber, 2.5);
     if (i > 4 && i < 9) arrow(s, x, y + 0.97, x - 0.4, y + 0.97, C.amber, 2.5);
   });
-  T(s, "White tags = the 11 product features. Low latency: fast offline checks first; Claude runs only before sensitive actions.", { x: 0.6, y: 6.2, w: 12.15, h: 0.5, fontSize: 12, italic: true, color: C.muted, valign: "middle" });
+  T(s, [{ text: "Sentiment: ", options: { bold: true, color: C.amberDk } }, { text: "Claude scores caller sentiment every turn; two negative turns or an explicit request for a human → Freshdesk ticket.", options: { breakLine: true } }, { text: "Low latency: ", options: { bold: true, color: C.blue } }, { text: "fast offline checks first (1.87 ms measured); Claude runs only before sensitive actions. White tags = the 11 features.", options: {} }], { x: 0.6, y: 6.1, w: 12.15, h: 0.65, fontSize: 11.5, color: C.muted, valign: "middle" });
   footer(s);
 
 
@@ -339,7 +342,7 @@ function tag(s, x, y, text, fill, color) { box(s, x, y, Math.max(0.9, text.lengt
     box(s, x, yy + 0.25, w, h, t, { fill: f, color: c, size: 11.5, align: "left", margin: 8, bold: false, r: 0.12 });
     yy += h + 0.3;
   });
-  T(s, "Interrupts: the caller can cut in at any time; the agent stops and treats it as the latest input.", { x: 0.85, y: 6.18, w: 6.7, h: 0.5, fontSize: 10.5, italic: true, color: C.blue, valign: "middle" });
+  T(s, "Interrupts: VoBiz voice-activity detection stops ElevenLabs playback the moment the caller speaks; the new words become the latest input.", { x: 0.85, y: 6.18, w: 6.7, h: 0.5, fontSize: 10.5, italic: true, color: C.blue, valign: "middle" });
   card(s, 8.0, 4.6, 4.75, 2.15, C.navy);
   T(s, [{ text: "EXAMPLE OUTCOME", options: { bold: true, color: C.amber, fontSize: 10.5, breakLine: true } },
     { text: "“Refund vendam, replacement anuppunga.”", options: { color: C.white, italic: true, fontSize: 12.5, breakLine: true } },
@@ -350,7 +353,7 @@ function tag(s, x, y, text, fill, color) { box(s, x, y, Math.max(0.9, text.lengt
 
   // ===== Freshworks integration =====
   s = slide();
-  header(s, 5, "Freshworks Integration — Human-in-the-Loop", "Freshdesk is where the AI hands over when it should not act alone", 13.5, "SECTION 5 OF 12  ·  FRESHWORKS INTEGRATION");
+  header(s, 5, "Freshworks Integration — Human-in-the-Loop", "Freshdesk takes the handoff; also works with Freshcaller as the voice channel and alongside Freddy AI Agent", 13, "SECTION 5 OF 12  ·  FRESHWORKS INTEGRATION");
   rich(s, 0.6, 1.8, 1.8, 1.0, "AI Agent", "proposes action", { fill: C.blueLt, hc: C.blue, hs: 13 });
   arrow(s, 2.4, 2.3, 2.7, 2.3, C.navy, 2.5);
   rich(s, 2.7, 1.8, 2.0, 1.0, "Codemix Skill", "safety gate", { fill: C.navy, hc: C.amber, bc: C.white, hs: 13, line: C.amber, lw: 2 });
@@ -393,7 +396,7 @@ function tag(s, x, y, text, fill, color) { box(s, x, y, Math.max(0.9, text.lengt
     rich(s, 0.6, y, 6.0, 0.84, h, b, { fill: f, hc: c, bc: f === C.navy ? C.white : C.ink, hs: 12.5, bs: 11, align: "left", margin: 12, line: i === 1 ? C.amber : f, lw: 2 });
     if (i < 3) arrow(s, 3.6, y + 0.84, 3.6, y + 1.02, C.amber, 2.5);
   });
-  T(s, "Plugs in via an MCP / REST adapter around the agent's tool calls. The company keeps its existing agent and APIs.", { x: 0.6, y: 5.9, w: 6.0, h: 0.8, fontSize: 12, italic: true, color: C.muted, valign: "middle" });
+  T(s, "Plugs in via an MCP / REST adapter around the agent's tool calls, whether that is Freddy AI Agent or the company's own agent. The company keeps its existing agent and APIs.", { x: 0.6, y: 5.9, w: 6.0, h: 0.8, fontSize: 12, italic: true, color: C.muted, valign: "middle" });
   // SOP audit
   card(s, 6.95, 1.75, 5.8, 4.95, C.panel);
   T(s, "SOP-BASED AUDITING", { x: 7.2, y: 1.88, w: 5, h: 0.28, fontSize: 10.5, bold: true, color: C.amber, charSpacing: 1 });
@@ -525,14 +528,14 @@ function tag(s, x, y, text, fill, color) { box(s, x, y, Math.max(0.9, text.lengt
   T(s, "METRIC", { x: 0.6, y: 1.75, w: 3, h: 0.28, fontSize: 10.5, bold: true, color: C.amber, charSpacing: 1 });
   T(s, "TODAY", { x: 4.1, y: 1.75, w: 1.6, h: 0.28, fontSize: 10.5, bold: true, color: C.amber, charSpacing: 1, align: "center" });
   T(s, "PILOT TARGET", { x: 5.8, y: 1.75, w: 1.6, h: 0.28, fontSize: 10.5, bold: true, color: C.amber, charSpacing: 1, align: "center" });
-  [["Wrong actions on negated requests", "48%*", "< 0.5%", C.red], ["p95 reply time (sensitive path)", "—", "< 900 ms", C.navy], ["Confirmation rate (friction budget)", "—", "≤ 15%", C.amberDk], ["Audit coverage", "—", "100%", C.green], ["Refund / cancel reversal tickets", "—", "−30%", C.green], ["Adoption (eligible customers, 2 quarters)", "—", "15%", C.blue]].forEach(([m, now, tgt, c], j) => {
-    const y = 2.1 + j * 0.68;
-    s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x: 0.6, y, w: 6.9, h: 0.58, rectRadius: 0.06, fill: { color: j % 2 ? C.white : C.panel }, line: { color: C.panel } });
-    T(s, m, { x: 0.8, y, w: 3.3, h: 0.58, fontSize: 12.5, bold: true, color: C.navy, valign: "middle" });
-    T(s, now, { x: 4.1, y, w: 1.6, h: 0.58, fontSize: 15, bold: true, color: now === "—" ? C.line : C.red, align: "center", valign: "middle" });
-    T(s, tgt, { x: 5.8, y, w: 1.6, h: 0.58, fontFace: HF, fontSize: 16, bold: true, color: c, align: "center", valign: "middle" });
+  [["Wrong actions on negated requests", "48%*", "< 0.5%", C.red], ["Engine latency (language + intent)", "1.87 ms†", "< 5 ms", C.green], ["p95 reply time (sensitive path)", "—", "< 900 ms", C.navy], ["Confirmation rate (friction budget)", "—", "≤ 15%", C.amberDk], ["Audit coverage", "—", "100%", C.green], ["Refund / cancel reversal tickets", "—", "−30%", C.green], ["Adoption (eligible customers, 2 quarters)", "—", "15%", C.blue]].forEach(([m, now, tgt, c], j) => {
+    const y = 2.1 + j * 0.58;
+    s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x: 0.6, y, w: 6.9, h: 0.5, rectRadius: 0.06, fill: { color: j % 2 ? C.white : C.panel }, line: { color: C.panel } });
+    T(s, m, { x: 0.8, y, w: 3.3, h: 0.5, fontSize: 12, bold: true, color: C.navy, valign: "middle" });
+    T(s, now, { x: 4.1, y, w: 1.6, h: 0.5, fontSize: 14, bold: true, color: now === "—" ? C.line : now.startsWith("1.87") ? C.green : C.red, align: "center", valign: "middle" });
+    T(s, tgt, { x: 5.8, y, w: 1.6, h: 0.5, fontFace: HF, fontSize: 16, bold: true, color: c, align: "center", valign: "middle" });
   });
-  T(s, "* Round-1 engine without the gate, on the 23-sentence negation test set.", { x: 0.6, y: 6.25, w: 6.9, h: 0.4, fontSize: 10, italic: true, color: C.muted });
+  T(s, "* Round-1 engine without the gate, 23-sentence negation test set.   † Average over the repo benchmark (npm test), 0.12 ms median.", { x: 0.6, y: 6.2, w: 6.9, h: 0.5, fontSize: 10, italic: true, color: C.muted });
   card(s, 7.85, 1.75, 4.9, 4.95, C.panel);
   T(s, "HOW LOW LATENCY IS KEPT", { x: 8.1, y: 1.88, w: 4.5, h: 0.28, fontSize: 10.5, bold: true, color: C.amber, charSpacing: 1 });
   box(s, 8.1, 2.4, 1.25, 0.8, "Request", { fill: C.slate, color: C.navy, size: 12 });
