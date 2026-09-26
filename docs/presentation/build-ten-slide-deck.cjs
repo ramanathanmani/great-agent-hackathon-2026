@@ -30,7 +30,6 @@ const T = (s, text, o) => s.addText(text, Object.assign({ fontFace: BF, margin: 
 const SECTIONS = ["", "Initiative Overview", "Problem Statement", "Why Now", "Competitive Landscape", "Proposed Solution · MVP · Freshworks · AI design", "Target Customers", "Value Proposition", "Pricing & Packaging", "Go-to-Market Plan", "Costs & Resources", "Benefits & Success Metrics", "Risks & Assumptions"];
 let SEC5 = "Proposed Solution";
 function header(s, num, title, sub, subSize = 13.5, eyebrow) {
-  T(s, eyebrow || `SECTION ${num} OF 12  ·  ${(num === 5 ? SEC5 : SECTIONS[num]).toUpperCase()}`, { x: 6.3, y: 0.12, w: 6.45, h: 0.28, fontSize: 9, bold: true, color: "8A93A3", align: "right", charSpacing: 1 });
   s.addShape(pres.shapes.OVAL, { x: 0.6, y: 0.48, w: 0.62, h: 0.62, fill: { color: C.amber }, line: { color: C.amber } });
   T(s, String(num), { x: 0.6, y: 0.48, w: 0.62, h: 0.62, align: "center", valign: "middle", fontSize: String(num).length > 3 ? 9 : String(num).length > 2 ? 11 : 15, bold: true, color: C.navy });
   T(s, title, { x: 1.4, y: 0.4, w: 11.4, h: 0.78, fontFace: HF, fontSize: 30, bold: true, color: C.navy, valign: "middle" });
@@ -111,7 +110,6 @@ function tag(s, x, y, text, fill, color) { box(s, x, y, Math.max(0.9, text.lengt
 
   // ===== 1. Title + Initiative overview =====
   let s = slide(true);
-  T(s, "SECTION 1 OF 12  ·  INITIATIVE OVERVIEW", { x: 6.3, y: 0.12, w: 6.45, h: 0.28, fontSize: 9, bold: true, color: "8FA0BF", align: "right", charSpacing: 1 });
   T(s, "THE GREAT AGENT HACKATHON 2026  ·  FINAL ROUND", { x: 0.7, y: 0.55, w: 9, h: 0.35, fontSize: 12.5, bold: true, color: C.amber, charSpacing: 2 });
   T(s, "CODEMIX SKILL", { x: 0.7, y: 0.9, w: 11.5, h: 0.95, fontFace: HF, fontSize: 48, bold: true, color: C.white });
   T(s, "The safety + decision layer between AI agents and their actions", { x: 0.7, y: 1.85, w: 11.8, h: 0.5, fontSize: 21, color: C.ice });
@@ -394,7 +392,7 @@ function tag(s, x, y, text, fill, color) { box(s, x, y, Math.max(0.9, text.lengt
 
   // ===== 10. Sections 10-12 + ask =====
   s = slide();
-  header(s, "10–12", "Costs, ROI, Success Metrics & Risks", "What it costs to build and run, what it returns, how we measure it, and what could go wrong", 13.5, "SECTIONS 10–12 OF 12  ·  COSTS & ROI  ·  METRICS  ·  RISKS & ASSUMPTIONS");
+  header(s, "10–12", "Costs, Savings & Revenue, Metrics & Risks", "What it costs, who gains what, how we measure it, and what could go wrong", 13.5, "SECTIONS 10–12 OF 12  ·  COSTS & ROI  ·  METRICS  ·  RISKS & ASSUMPTIONS");
   const col = (x, n, t) => { card(s, x, 1.72, 3.9, 3.78); box(s, x + 0.18, 1.86, 0.5, 0.34, String(n), { fill: C.amber, color: C.navy, size: 11, margin: 0, r: 0.1 }); T(s, t, { x: x + 0.78, y: 1.84, w: 3.1, h: 0.38, fontFace: HF, fontSize: 14, bold: true, color: C.navy, valign: "middle" }); };
   col(0.6, 10, "Costs & Unit Economics");
   T(s, "~$90K", { x: 0.8, y: 2.28, w: 1.75, h: 0.5, fontFace: HF, fontSize: 24, bold: true, color: C.navy, valign: "middle" });
@@ -426,25 +424,25 @@ function tag(s, x, y, text, fill, color) { box(s, x, y, Math.max(0.9, text.lengt
   });
   T(s, "ASSUMPTIONS", { x: 9.02, y: 4.2, w: 3, h: 0.25, fontSize: 9, bold: true, color: C.amber, charSpacing: 1 });
   bullets(s, ["Pilot brands expose refund / return APIs", "Callers accept a short confirmation", "Sarvam is accurate enough with the fallback"], 9.02, 4.45, 3.6, 1.0, 10);
-  // ROI strip
+  // Savings & revenue strip
   card(s, 0.6, 5.62, 12.15, 1.36, C.navy);
-  T(s, "RETURN ON INVESTMENT", { x: 0.85, y: 5.63, w: 3, h: 0.26, fontSize: 10.5, bold: true, color: C.amber, charSpacing: 1 });
-  T(s, "illustrative · full assumptions in speaker notes · validated in the pilot", { x: 3.6, y: 5.63, w: 8.9, h: 0.26, fontSize: 9, italic: true, color: "8FA0BF", align: "right" });
-  [["~3.8×", "Customer ROI", "₹1.9L saved vs ₹51K fee / month"],
-   ["0.26%", "Break-even", "of guarded actions going wrong"],
-   ["$349K", "Year-1 revenue", "vs $90K build · ~$195K gross profit"],
-   ["~8 mo", "Payback", "after launch, on gross profit"]].forEach(([n, h, d], i) => {
-    const x = 0.85 + i * 3.0;
-    T(s, n, { x, y: 5.88, w: 1.35, h: 0.62, fontFace: HF, fontSize: 22, bold: true, color: C.amber, valign: "middle" });
-    T(s, [{ text: h, options: { bold: true, color: C.white, breakLine: true } }, { text: d, options: { color: C.ice } }], { x: x + 1.38, y: 5.88, w: 1.55, h: 0.62, fontSize: 9.5, valign: "middle" });
+  T(s, "WHO GAINS WHAT IN YEAR 1", { x: 0.85, y: 5.66, w: 5, h: 0.26, fontSize: 10.5, bold: true, color: C.amber, charSpacing: 1 });
+  T(s, "illustrative · 48% misfire rate measured, volumes assumed · details in speaker notes", { x: 5.2, y: 5.66, w: 7.3, h: 0.26, fontSize: 8.5, italic: true, color: "8FA0BF", align: "right" });
+  const flow = [
+    ["BRANDS SAVE", "≈ ₹6 Cr", "wrong refunds & cancellations avoided · ₹3.8 saved for every ₹1 paid", C.green],
+    ["FRESHWORKS EARNS", "$349K", "Plug-in $180K + Voice agent $169K", C.amber],
+    ["GROSS PROFIT", "~$195K", "after $154K run costs · pays back the $90K build in ~8 months", C.fresh],
+  ];
+  flow.forEach(([h, n, d, c], i) => {
+    const x = 0.85 + i * 4.0;
+    s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x, y: 5.98, w: 3.55, h: 0.9, rectRadius: 0.08, fill: { color: C.navy2 }, line: { color: c, width: 1.25 } });
+    T(s, h, { x: x + 0.15, y: 6.02, w: 3.3, h: 0.26, fontSize: 9, bold: true, color: c, charSpacing: 1 });
+    T(s, n, { x: x + 0.15, y: 6.27, w: 1.45, h: 0.55, fontFace: HF, fontSize: 22, bold: true, color: C.white, valign: "middle" });
+    T(s, d, { x: x + 1.6, y: 6.25, w: 1.88, h: 0.6, fontSize: 9, color: C.ice, valign: "middle" });
+    if (i < 2) arrow(s, x + 3.55, 6.43, x + 4.0, 6.43, c, 2.5);
   });
-  s.addShape(pres.shapes.LINE, { x: 0.85, y: 6.55, w: 11.65, h: 0, line: { color: C.navy2, width: 1 } });
-  T(s, [{ text: "REVENUE SPLIT  ", options: { bold: true, color: C.amber, fontSize: 9.5 } },
-    { text: "Plug-in: ", options: { bold: true, color: C.white } }, { text: "25 avg customers × $600/mo = $180K → $99K profit", options: { color: C.ice } },
-    { text: "   ·   Voice agent: ", options: { bold: true, color: C.white } }, { text: "5 avg brands × $2,824/mo = $169K → $96K profit", options: { color: C.ice } }],
-    { x: 0.85, y: 6.6, w: 11.75, h: 0.33, fontSize: 10.5, valign: "middle" });
   footer(s);
-  s.addNotes("ROI assumptions. Unit costs (Sep 2026 list prices, ₹85/$): VoBiz ₹0.45/min; Sarvam STT ₹30/hr; ElevenLabs Flash $0.05 per 1K chars (~1,500 agent chars per 3-min call); Claude checks ~2 per call, Haiku 4.5 ($1/$5 per M tokens) for routine and Sonnet 5 ($2/$10) for ~20% ambiguous cases, ~2K in / 300 out tokens each; hosting + storage ~$0.005. Voice call cost ~₹10.4 per 3 min (~₹3.5/min) vs ₹8/min price (~56% margin). Plug-in cost ~₹1.1 per guarded action vs $0.03 (₹2.55) price (~55% margin). Dodo Payments fees (4% + $0.15 per INR transaction, $1 per refund) and Freshdesk plans are paid by the customer on their own accounts. Year 1: plug-in ramps to 50 customers (avg 25) at 20K guarded actions/month = $180K; voice ramps to 10 brands (avg 5) at 30K minutes/month = $169K; total $349K revenue, ~$195K gross profit; cumulative gross profit passes the $90K build around month 8. Customer ROI: brand with 20K guarded actions pays $600 (₹51K)/month; if 2% of requests contain a negation and 48% of those misfire (our measured rate), ~192 wrong ₹1,000 actions are prevented = ₹1.92L/month, ~3.8x; break-even at 51 prevented actions = 0.26%.");
+  s.addNotes("Say it simply: brands save about ₹3.8 for every ₹1 they pay us, roughly ₹6 crore of wrong refunds avoided in Year 1, and Freshworks earns $349K. Savings: plug-in customer with 20K guarded actions/month, 2% negated, 48% misfire (measured) = 192 wrong ₹1,000 actions prevented = ₹1.92L/month vs ₹51K fee; 25 avg customers x 12 = ₹5.76 Cr; voice brands add ~₹23L. ROI assumptions. Unit costs (Sep 2026 list prices, ₹85/$): VoBiz ₹0.45/min; Sarvam STT ₹30/hr; ElevenLabs Flash $0.05 per 1K chars (~1,500 agent chars per 3-min call); Claude checks ~2 per call, Haiku 4.5 ($1/$5 per M tokens) for routine and Sonnet 5 ($2/$10) for ~20% ambiguous cases, ~2K in / 300 out tokens each; hosting + storage ~$0.005. Voice call cost ~₹10.4 per 3 min (~₹3.5/min) vs ₹8/min price (~56% margin). Plug-in cost ~₹1.1 per guarded action vs $0.03 (₹2.55) price (~55% margin). Dodo Payments fees (4% + $0.15 per INR transaction, $1 per refund) and Freshdesk plans are paid by the customer on their own accounts. Year 1: plug-in ramps to 50 customers (avg 25) at 20K guarded actions/month = $180K; voice ramps to 10 brands (avg 5) at 30K minutes/month = $169K; total $349K revenue, ~$195K gross profit; cumulative gross profit passes the $90K build around month 8. Customer ROI: brand with 20K guarded actions pays $600 (₹51K)/month; if 2% of requests contain a negation and 48% of those misfire (our measured rate), ~192 wrong ₹1,000 actions are prevented = ₹1.92L/month, ~3.8x; break-even at 51 prevented actions = 0.26%.");
 
   await pres.writeFile({ fileName: OUT });
   console.log("wrote", OUT, N);
